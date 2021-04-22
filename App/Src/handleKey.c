@@ -86,11 +86,11 @@ static uint16_t scanKey(void)
 {
 	volatile uint16_t tmpKeycode,portA,portB,portC;
 
-	portA= (GPIOA->IDR & 0x1901);
+	portA= (GPIOA->IDR & 0x1901); //GPIO port input data register "IDR"
 	portB =(GPIOB->IDR & 0x13);
 	portC= (GPIOC->IDR & 0x8040);
-	tmpKeycode =  portA & 0x01;				// Key9
-	tmpKeycode |= ((portA & 0x0100)>>7);	// Key3
+	tmpKeycode =  portA & 0x01;				// Key9 ---PA0
+	tmpKeycode |= ((portA & 0x0100)>>7);	// Key3 --PA8
 	tmpKeycode |= ((portA & 0x1800)>>9);	// Key5,Key6
 	tmpKeycode |= ((portB & 0x0003)<<4);	// Key1,Key2
 	tmpKeycode |= ((portB & 0x0010)<<2);	// Key7
@@ -100,7 +100,9 @@ static uint16_t scanKey(void)
 
 	return tmpKeycode;
 }
-
+/*
+*intitial keyInit 
+*/
 void keyInit(void)
 {
 	glKey.keyCode=NO_KEY;
@@ -126,7 +128,13 @@ void startTimeDown(uint8_t en)
 	counter_Waitingtime=0;
 	timerDownFlag=en;
 }
-
+/**********************************************************************************
+**
+*Function Name:void updateKeyStatus(void)
+*Function: in timer callback funciton process 2ms 
+*
+*
+***********************************************************************************/
 void updateKeyStatus(void)
 {
   uint16_t tmpKey;
@@ -214,7 +222,14 @@ void updateKeyStatus(void)
 }
 
 
-
+/*****************************************************************************************************
+**
+*Function Name:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+*Function : timer of callback function ,timer of times is 2ms
+*
+*
+*
+******************************************************************************************************/
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)	// 2ms
 {
 	static uint8_t tick_250ms=0;
@@ -253,7 +268,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)	// 2ms
 	}
 	updateKeyStatus();
 }
-
+/*****************************************************************************************
+***
+*Function Name:void handleInput(void)
+*Function : be dected key input status
+*Input Ref:NO
+*Return Ref:NO
+*
+*******************************************************************************************/
 void handleInput(void)
 {
 	pKeyStruct pkey=getKey();
@@ -266,10 +288,10 @@ void handleInput(void)
 		//blinkLed();
 	}
 
-	if(checkParameterFlag)
+	if(checkParameterFlag) //1s
 	{
 		checkParameterFlag=0;
-		updateParameter(echoUnion,echoLight,echoFilter);
+		updateParameter(echoUnion,echoLight,echoFilter); //USART1
 	}
 
 	if(waitingTimeoutFlag)	// the motor board timeout
@@ -291,7 +313,7 @@ void handleInput(void)
 	{
 		pkey->status=KEY_STATUS_FREEZE;
 
-		if(!(pkey->keyCode & KEY_CODE_KEY2))	// change light +
+		if(!(pkey->keyCode & KEY_CODE_KEY2))	// change light +  //LED 
 		{
 			if(echoLight>=MAX_LIGHT_NUMBER-1) echoLight=0;
 			else echoLight++;
@@ -312,7 +334,7 @@ void handleInput(void)
 			// turn on cw quickly
 			//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_HIGH,MOTOR_DIR_CW);
 		}
-		else if(!(pkey->keyCode & KEY_CODE_KEY4))	// change filter +
+		else if(!(pkey->keyCode & KEY_CODE_KEY4))	// change filter +  
 		{
 			if(echoFilter>=MAX_FILTER_NUMBER-1) echoFilter=0;
 			else echoFilter++;

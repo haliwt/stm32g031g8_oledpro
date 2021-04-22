@@ -22,8 +22,9 @@ static void printWithFmt(u8g2_t *pU8g2,uint8_t frmOrigX,uint8_t frmOrigY,uint8_t
 
 u8g2_t u8g2;
 
-const char filterStr[MAX_FILTER_INDEX][MAX_FILTER_STR_LEN+1]={"VIS\0","415\0","450\0","Y-495\0","532\0",
-														"550\0","O-590\0","R-620\0","695\0","IR\0"};
+/*filter name Modify */
+const char filterStr[MAX_FILTER_INDEX][MAX_FILTER_STR_LEN+1]={"VIS\0","BPS32\0","LP595\0","LP635\0","LP665\0",
+														"LP695\0","LP715\0","LP730\0","LP780\0","LP850\0"};
 /*LED name Modify */
 const char lightStr[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"White\0","UV365\0","Violet\0","Blue1\0","Blue2\0","Cyan\0",
 													 "Green\0","Orange\0","Red\0","640\0","690\0","720\0","750\0","770\0","840\0","930\0"};

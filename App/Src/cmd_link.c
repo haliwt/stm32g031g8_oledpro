@@ -16,8 +16,8 @@
 #define BOARD_ADDR		0x43	// 'C' control board
 #define BOARD_ADDR_BT	0x42	// 'B' for BT link
 
-#define MAX_BUFFER_SIZE	32
-#define MAX_CMD_PARA_SIZE	8
+#define MAX_BUFFER_SIZE				32
+#define MAX_CMD_PARA_SIZE			8
 
 //#define MAX_FILTER_NUMBER	10
 

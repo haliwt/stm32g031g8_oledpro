@@ -38,9 +38,9 @@ void MX_TIM17_Init(void)
 
   /* USER CODE END TIM17_Init 1 */
   htim17.Instance = TIM17;
-  htim17.Init.Prescaler = 23;
+  htim17.Init.Prescaler = 23;  //System clock = 24MHz /(prescale +1) = 1MHz
   htim17.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim17.Init.Period = 1999;
+  htim17.Init.Period = 1999;  //timer frequency = 1MHz/(1999+1)=0.0005MHz=0.5KHz T = 1/f =2ms
   htim17.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim17.Init.RepetitionCounter = 0;
   htim17.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
