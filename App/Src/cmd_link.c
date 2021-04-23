@@ -73,24 +73,23 @@ static uint8_t resetCmd[]={"AT+RESET"};
 static uint8_t getAdvDataCmd[]={"AT+ADVDATA"};
 static uint8_t advData[]={"AT+ADVDATA=03FF03FF"};
 
-volatile static uint8_t transOngoingFlag;
+volatile static uint8_t transOngoingFlag; //interrupt Transmit flag bit , 1---stop,0--run
 volatile static uint8_t bleTransOngoingFlag;
 /****************************************************************************************************
 **
-*Function Name:static void selectLight(uint8_t index)
-*Function: UART to LED  communication protocol
-*Input Ref: dir --driection CCW or CW
+*Function Name:void cmdInit(void)
+*Function: 
+*Input Ref: NO
 *Return Ref:NO
 *
 ****************************************************************************************************/
-
 void cmdInit(void)
 {
 	transferSize=0;
 	state=STATE_PREAMBLE1;
 	decodeFlag=0;
 	bleDecodeFlag=0;
-	transOngoingFlag=0;
+	transOngoingFlag=0; //UART run
 	bleTransOngoingFlag=0;
 	powerOnFlag=1;
 	nowLightState=NOW_LIGHT_IS_OFF;
@@ -118,29 +117,30 @@ void decode(void)
 /****************************************************************************************************
 **
 *Function Name:void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t filterIndex)
-*Function: 
-*Input Ref: 
+*Function: main function per 1 second process one time
+*Input Ref: unioIndex---smart menu, lightIndex---LED number,filterIndex----filter number
 *Return Ref:NO
 *
 ****************************************************************************************************/
 void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t filterIndex)
 {
 
-	if(unionIndex!=currUnion || filterIndex !=currFilter || lightIndex!=currLight)
+	if(unionIndex!=currUnion || filterIndex !=currFilter || lightIndex!=currLight) //currUnion = 0xff,
 	{
-		notifyStatusToHost(lightIndex,filterIndex,unionIndex);
+		notifyStatusToHost(lightIndex,filterIndex,unionIndex); //Smart Menu update parameter .
+		//for Blue UART Transmit 
 	}
 
-	if(unionIndex!=currUnion)
+	if(unionIndex!=currUnion) //currUnion =0xff
 	{
 		currUnion=unionIndex;
 	}
-	if(filterIndex!=currFilter)
+	if(filterIndex!=currFilter) //currFilter = 0xff
 	{
 		currFilter=filterIndex;
 		tmpLight=lightIndex;
 		setEchoFilterBlink(ENABLE_BLINK);
-		selectFilter(filterIndex);
+		selectFilter(filterIndex); //filter HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
 		startTimeDown(1);
 	}
 	else
@@ -160,9 +160,9 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t filterIndex)
 //}
 /****************************************************************************************************
 **
-*Function Name:static void selectLight(uint8_t index)
-*Function: UART to LED  communication protocol
-*Input Ref: dir --driection CCW or CW
+*Function Name:void updateLight(uint8_t lightIndex)
+*Function:
+*Input Ref: 
 *Return Ref:NO
 *
 ****************************************************************************************************/
@@ -175,7 +175,7 @@ void updateLight(uint8_t lightIndex)
 		if(powerOnFlag) powerOnFlag=0;	//need not turn on light when power on
 		else
 		{
-			selectLight(lightIndex);
+			selectLight(lightIndex); //Transmit Interrupt process 
 			//nowLightState=NOW_LIGHT_IS_ON;
 		}
 	}
@@ -188,7 +188,6 @@ void updateLight(uint8_t lightIndex)
 *Return Ref:
 *
 ****************************************************************************************************/
-
 uint8_t getLightOnoffState(void)
 {
 	return nowLightState;
@@ -205,19 +204,18 @@ void setCurrentLightOn(void)
 /****************************************************************************************************
 **
 *Function Name:uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_t *revealLight,uint8_t *revealGroup)
-*Function: 
+*Function: initial paramete 
 *Input Ref: 
-*Return Ref:
+*Return Ref: 0--success
 *
 ****************************************************************************************************/
-
 uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_t *revealLight,uint8_t *revealGroup)
 {
 	currUnion=0xff;
 	currFilter=0xff;
 	currLight=0xff;
 
-	*revealUnion=9;
+	*revealUnion=9; //
 	*revealFilter=0;
 	*revealLight=0;
 	*revealGroup=ECHO_GROUP_B;
@@ -412,7 +410,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if(huart==&CMD_LINKER)
 	{
-		transOngoingFlag=0;
+		transOngoingFlag=0; //UART Transmit interrupt flag =0 ,RUN
 	}
 	else if(huart==&BLE_USART)
 	{
@@ -521,13 +519,12 @@ static void bleRunCmd(void)
 }
 /****************************************************************************************************
 **
-*Function Name:static void selectLight(uint8_t index)
-*Function: UART to LED  communication protocol
-*Input Ref: dir --driection CCW or CW
+*Function Name:static void initBtleModule(void)
+*Function: 
+*Input Ref: 
 *Return Ref:NO
 *
 ****************************************************************************************************/
-
 static void initBtleModule(void)
 {
 	uint8_t tryTimes=3;
@@ -571,9 +568,9 @@ static uint8_t checkBleModuleAVDData(void)
 }
 /****************************************************************************************************
 **
-*Function Name:static void selectLight(uint8_t index)
-*Function: selectFilter
-*Input Ref: dir --driection CCW or CW --4D 58 4D 52 31 32
+*Function Name:static void selectFilter(uint8_t index)
+*Function: selectFilter transmit interrupt process--4D 58 4D 52 31 32   //4D 58 4D 52 31 30 
+*Input Ref:filter numbers
 *Return Ref:NO
 *
 ****************************************************************************************************/
@@ -593,7 +590,7 @@ static void selectFilter(uint8_t index)
 	transferSize=6;
 	if(transferSize)
 	{
-		while(transOngoingFlag);
+		while(transOngoingFlag); //UART interrupt transmit flag ,disable one more send data.
 		transOngoingFlag=1;
 		HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
 	}
@@ -629,9 +626,9 @@ void stopSelectFilter(void)
 }
 /****************************************************************************************************
 **
-*Function Name:static void selectLight(uint8_t index)
-*Function: UART to LED  communication protocol
-*Input Ref: dir --driection CCW or CW
+*Function Name:void turnoffAllLight(void
+*Function: 
+*Input Ref: NO
 *Return Ref:NO
 *
 ****************************************************************************************************/
@@ -655,9 +652,9 @@ void turnoffAllLight(void)
 }
 /****************************************************************************************************
 **
-*Function Name:static void selectLight(uint8_t index)
-*Function: UART to LED  communication protocol
-*Input Ref: dir --driection CCW or CW
+*Function Name:void brightnessAdj(uint8_t dir)
+*Function: 
+*Input Ref: dir
 *Return Ref:NO
 *
 ****************************************************************************************************/
@@ -726,8 +723,8 @@ void reportLightStatusChange(void)
 /****************************************************************************************************
 **
 *Function Name:static void selectLight(uint8_t index)
-*Function: UART to LED  communication protocol
-*Input Ref: dir --driection CCW or CW
+*Function: UART2 transmit interrupt process ---4D 58 4C 53 32 30 32 
+*Input Ref: LED number 
 *Return Ref:NO
 *
 ****************************************************************************************************/
@@ -736,7 +733,8 @@ static void selectLight(uint8_t index)
 	//uint8_t i,crc;
 	uint8_t tenNum;
 
-	tenNum=index/10; // remainder
+	//tenNum=index/10; // remainder
+	tenNum=index/16; // remainder
 
 	//crc=0x55;
 	outputBuf[0]='M'; //4D

@@ -125,8 +125,8 @@ pKeyStruct getKey(void)
 
 void startTimeDown(uint8_t en)
 {
-	counter_Waitingtime=0;
-	timerDownFlag=en;
+	counter_Waitingtime=0; //>120s,timer17 count 
+	timerDownFlag=en; //> 120s, timerDownFlag=0 ->counter_Waitingtime=0->;
 }
 /**********************************************************************************
 **
@@ -291,17 +291,18 @@ void handleInput(void)
 	if(checkParameterFlag) //1s
 	{
 		checkParameterFlag=0;
-		updateParameter(echoUnion,echoLight,echoFilter); //USART1
+		updateParameter(echoUnion,echoLight,echoFilter); //blue tooth --USART1
+		//updateParameter -> UART2,UART1 Transmit interrupt process
 	}
 
-	if(waitingTimeoutFlag)	// the motor board timeout
+	if(waitingTimeoutFlag)	//120s  the motor board timeout
 	{
 		waitingTimeoutFlag=0;
-		stopSelectFilter();
+		stopSelectFilter(); //UART_Transmit_IT--5 byte //4D 58 4D 53 30 
 		setEchoFilterBlink(DISABLE_BLINK);
 		printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
 		//printEchoFilter(echoFilter);
-		updateLight(echoLight);
+		updateLight(echoLight);  //LED number turn on or off
 	}
 
 	if(timeoutFlag) //15 minute 
