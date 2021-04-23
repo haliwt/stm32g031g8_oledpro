@@ -4,7 +4,6 @@
  *  Created on: 2019��7��30��
  *      Author: nk
  */
-
 #include "tim.h"
 #include "keyDef.h"
 
@@ -86,16 +85,17 @@ static uint16_t scanKey(void)
 {
 	volatile uint16_t tmpKeycode,portA,portB,portC;
 
-	portA= (GPIOA->IDR & 0x1901); //GPIO port input data register "IDR"
+	portA= (GPIOA->IDR & 0x9901);//(GPIOA->IDR & 0x1901); //GPIO port input data register "IDR"
 	portB =(GPIOB->IDR & 0x13);
 	portC= (GPIOC->IDR & 0x8040);
-	tmpKeycode =  portA & 0x01;				// Key9 ---PA0
-	tmpKeycode |= ((portA & 0x0100)>>7);	// Key3 --PA8
-	tmpKeycode |= ((portA & 0x1800)>>9);	// Key5,Key6
-	tmpKeycode |= ((portB & 0x0003)<<4);	// Key1,Key2
-	tmpKeycode |= ((portB & 0x0010)<<2);	// Key7
-	tmpKeycode |= ((portC & 0x0040)<<1);	// Key4
-	tmpKeycode |= ((portC & 0x8000)>>7);	// Key8
+	tmpKeycode =  portA & 0x01;				// Key9 ---PA0 ->          0B   0000  0001
+	tmpKeycode |= ((portA & 0x0100)>>7);	// Key3 --PA8 ->           0B   0000  0010
+	tmpKeycode |= ((portA & 0x1800)>>9);	// Key5,Key6,-->PA11,PA12  0B   0000  1100
+    tmpKeycode |= ((portA & 0x8000)>>6);    //Key10--PA15              0B 10 0000 0000
+	tmpKeycode |= ((portB & 0x0003)<<4);	// Key1,Key2-->PB0 ,PB1 -->0B    0011 0000
+	tmpKeycode |= ((portB & 0x0010)<<2);	// Key7  --PB4->           0B    0100 0000 
+	tmpKeycode |= ((portC & 0x0040)<<1);	// Key4  --PC6->           0B    1000 0000
+	tmpKeycode |= ((portC & 0x8000)>>7);	// Key8 ---->              0B 01 0000 0000
 	tmpKeycode &= NO_KEY;
 
 	return tmpKeycode;
@@ -278,6 +278,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)	// 2ms
 *******************************************************************************************/
 void handleInput(void)
 {
+   uint8_t buf;
 	pKeyStruct pkey=getKey();
 
 	if(_250msFlag)
@@ -314,7 +315,7 @@ void handleInput(void)
 	{
 		pkey->status=KEY_STATUS_FREEZE;
 
-		if(!(pkey->keyCode & KEY_CODE_KEY2))	// change light +  //LED 
+		if(!(pkey->keyCode & KEY_CODE_KEY2))	// change light +  //LED  
 		{
 			if(echoLight>=MAX_LIGHT_NUMBER-1) echoLight=0;
 			else echoLight++;
@@ -396,9 +397,10 @@ void handleInput(void)
 			brightnessAdj(BRIGHTNESS_ADJ_UP);
 			//motionCtrl(MOTION_CW);
 		}
-		else
+		else if(!(pkey->keyCode & KEY_CODE_KEY10))	// brightness adj +
 		{
-
+			   buf= 0x45;
+			   HAL_UART_Transmit(&huart2,&buf,1,0);
 		}
 	}
 	else if(pkey->status==KEY_STATUS_UP)

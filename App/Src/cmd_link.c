@@ -730,11 +730,12 @@ void reportLightStatusChange(void)
 ****************************************************************************************************/
 static void selectLight(uint8_t index)
 {
-	//uint8_t i,crc;
+	
+   //uint8_t i,crc;
 	uint8_t tenNum;
 
 	//tenNum=index/10; // remainder
-	tenNum=index/16; // remainder
+	tenNum=index/16; // WT.EDIT 16 group LED number 2021.04.23 remainder
 
 	//crc=0x55;
 	outputBuf[0]='M'; //4D
@@ -746,7 +747,7 @@ static void selectLight(uint8_t index)
 	outputBuf[6]=(index-tenNum*10)+0x30;
 	//for(i=3;i<7;i++) crc ^= outputBuf[i];
 	//outputBuf[i]=crc;
-	transferSize=7;
+    transferSize=7;
 	if(transferSize)
 	{
 		while(transOngoingFlag);
@@ -754,6 +755,8 @@ static void selectLight(uint8_t index)
 		HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
 	}
 	nowLightState=NOW_LIGHT_IS_ON;
+	
+
 }
 /**********************************************************************************************************
 **

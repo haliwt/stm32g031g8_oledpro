@@ -103,11 +103,15 @@ void Error_Handler(void);
 #define KEY9_Pin 					GPIO_PIN_0   //PA0 ----LED bright increase +
 #define KEY9_GPIO_Port 				GPIOA
 
-#define Mode_Self_Pin				GPIO_PIN_2   //PF2 ---mode oneself --new
-#define Mode_Self_GPIO_Port			GPIOF
 
-#define Mode_Auto_Pin               GPIO_PIN_15  //PA15  ---mode Auto  --new 
-#define Mode_Auto_GPIO_Port         GPIOA
+#define KEY10_Pin                   GPIO_PIN_15  //PA15  ---Spot board Mode switch 
+#define KEY10_GPIO_Port             GPIOA
+
+
+#define KEY11_Pin				    GPIO_PIN_2   //PF2 --- Smart and Oneself Mode switch "Menu"
+#define KEY11_GPIO_Port			    GPIOF
+
+
 
 //oled screen define
 #define ENVCC_Pin 					GPIO_PIN_3  //PB3 --driver oled screen
