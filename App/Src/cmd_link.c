@@ -48,11 +48,11 @@ static void initBtleModule(void);
 static uint8_t checkBleModuleAVDData(void);
 static void selectFilter(uint8_t index);
 static void selectLight(uint8_t index);
-static void notifyStatusToHost(uint8_t lightNum,uint8_t filterNum,uint8_t unionNum);
+static void notifyStatusToHost(uint8_t lightNum,uint8_t lightNum_LR,uint8_t filterNum,uint8_t unionNum);
 //static uint8_t suffBoardStatusToBuffer(void);
 //static void getTargetStatus(uint8_t *pBuf);
 
-static uint8_t currUnion,currLight,currFilter,tmpLight;
+static uint8_t currUnion,currLight,currFilter,currLight_LR,tmpLight,tmpLight_LR; //WT.EDIT 
 static uint8_t inputCmd[32],bleInputCmd[32];
 static uint8_t cmdSize,bleCmdSize;
 static uint8_t paraIndex,bleParaIndex;
@@ -122,12 +122,12 @@ void decode(void)
 *Return Ref:NO
 *
 ****************************************************************************************************/
-void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t filterIndex)
+void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,uint8_t filterIndex)
 {
 
-	if(unionIndex!=currUnion || filterIndex !=currFilter || lightIndex!=currLight) //currUnion = 0xff,
+	if(unionIndex!=currUnion || filterIndex !=currFilter || lightIndex!=currLight || lightIndx_LR != currLight_LR) //currUnion = 0xff,
 	{
-		notifyStatusToHost(lightIndex,filterIndex,unionIndex); //Smart Menu update parameter .
+		notifyStatusToHost(lightIndex,lightIndx_LR,filterIndex,unionIndex); //Smart Menu update parameter .
 		//for Blue UART Transmit 
 	}
 
@@ -139,6 +139,7 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t filterIndex)
 	{
 		currFilter=filterIndex;
 		tmpLight=lightIndex;
+		tmpLight_LR=lightIndx_LR;
 		setEchoFilterBlink(ENABLE_BLINK);
 		selectFilter(filterIndex); //filter HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
 		startTimeDown(1);
@@ -146,6 +147,7 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t filterIndex)
 	else
 	{
 		updateLight(lightIndex);
+	
 	}
 }
 
@@ -182,6 +184,16 @@ void updateLight(uint8_t lightIndex)
 }
 /****************************************************************************************************
 **
+*Function Name:void updateLight(uint8_t lightIndex)
+*Function:
+*Input Ref: 
+*Return Ref:NO
+*
+****************************************************************************************************/
+
+
+/****************************************************************************************************
+**
 *Function Name:uint8_t getLightOnoffState(void)
 *Function: 
 *Input Ref: 
@@ -209,15 +221,17 @@ void setCurrentLightOn(void)
 *Return Ref: 0--success
 *
 ****************************************************************************************************/
-uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_t *revealLight,uint8_t *revealGroup)
+uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_t *revealLight,uint8_t *revealLight_LR,uint8_t *revealGroup)
 {
 	currUnion=0xff;
 	currFilter=0xff;
 	currLight=0xff;
+	currLight_LR = 0xff;
 
 	*revealUnion=9; //
 	*revealFilter=0;
 	*revealLight=0;
+	*revealLight_LR = 0;
 	*revealGroup=ECHO_GROUP_B;
 
 	return CMD_SUCCESS;
@@ -488,7 +502,7 @@ static void bleRunCmd(void)
 				{
 					setCurrentLightOn();
 				}
-				notifyStatusToHost(((nowLightState==NOW_LIGHT_IS_ON) ? currLight : 0xff ),currFilter,currUnion);
+				notifyStatusToHost(((nowLightState==NOW_LIGHT_IS_ON) ? currLight : 0xff ),currLight_LR,currFilter,currUnion);
 				return;
 			}
 			break;
@@ -511,7 +525,7 @@ static void bleRunCmd(void)
 		trigParameterUpdateImmediate();
 		break;
 	case 'G':	// 0x47,only get leds status
-		notifyStatusToHost(((nowLightState==NOW_LIGHT_IS_ON) ? currLight : 0xff ),currFilter,currUnion);
+		notifyStatusToHost(((nowLightState==NOW_LIGHT_IS_ON) ? currLight : 0xff ),currLight_LR,currFilter,currUnion);
 		break;
 	default:
 		break;
@@ -718,7 +732,7 @@ void motionCtrl(uint8_t dir)
 *********************************************************************************************************/
 void reportLightStatusChange(void)
 {
-	notifyStatusToHost(((nowLightState==NOW_LIGHT_IS_ON) ? currLight : 0xff ),currFilter,currUnion);
+	notifyStatusToHost(((nowLightState==NOW_LIGHT_IS_ON) ? currLight : 0xff ),currLight_LR,currFilter,currUnion);
 }
 /****************************************************************************************************
 **
@@ -766,7 +780,7 @@ static void selectLight(uint8_t index)
 *Return Ref:NO
 *
 *********************************************************************************************************/
-static void notifyStatusToHost(uint8_t lightNum,uint8_t filterNum,uint8_t unionNum)
+static void notifyStatusToHost(uint8_t lightNum,uint8_t lightNum_LR,uint8_t filterNum,uint8_t unionNum)
 {
 	uint8_t i,crc=0xAA;
 
@@ -775,18 +789,19 @@ static void notifyStatusToHost(uint8_t lightNum,uint8_t filterNum,uint8_t unionN
 	bleOutputBuf[0]=BOARD_ADDR_BT;  //HEX:42 
 	bleOutputBuf[1]='L'; 	// leds status 'L' -HEX:4C
 	bleOutputBuf[2]=lightNum; //the first group LED number on or off 
-	bleOutputBuf[3]=filterNum; //filter of number 
-	if(unionNum>7)
+	bleOutputBuf[3]=lightNum_LR; //the auxiliary board left and right  //WT.EDIT 2021.04.23 
+	bleOutputBuf[4]=filterNum; //filter of number 
+	if(unionNum>8)
 	{
-		bleOutputBuf[4]=0xff;
-		bleOutputBuf[5]=unionNum-8;
+		bleOutputBuf[5]=0xff;
+		bleOutputBuf[6]=unionNum-8;
 	}
 	else
 	{
-		bleOutputBuf[4]=unionNum;
-		bleOutputBuf[5]=0xff;
+		bleOutputBuf[5]=unionNum;
+		bleOutputBuf[6]=0xff;
 	}
-	for(i=2;i<6;i++) crc ^= bleOutputBuf[i];
+	for(i=2;i<7;i++) crc ^= bleOutputBuf[i];
 	bleOutputBuf[i]= crc;	// checksum
 	bleTransferSize=i+1;
 

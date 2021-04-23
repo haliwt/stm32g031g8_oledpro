@@ -53,6 +53,7 @@ static void displayUnionInfo(uint8_t unionIndex);
 static KeyStruct glKey;				// key for forward/backward
 static uint8_t echoFilter;
 static uint8_t echoLight;
+static uint8_t  echoLight_LR; //WT.EDIT 2021.04.23
 static uint8_t echoUnion;
 static uint8_t echoGroup;
 static uint8_t timerDownFlag;
@@ -88,14 +89,14 @@ static uint16_t scanKey(void)
 	portA= (GPIOA->IDR & 0x9901);//(GPIOA->IDR & 0x1901); //GPIO port input data register "IDR"
 	portB =(GPIOB->IDR & 0x13);
 	portC= (GPIOC->IDR & 0x8040);
-	tmpKeycode =  portA & 0x01;				// Key9 ---PA0 ->          0B   0000  0001
-	tmpKeycode |= ((portA & 0x0100)>>7);	// Key3 --PA8 ->           0B   0000  0010
-	tmpKeycode |= ((portA & 0x1800)>>9);	// Key5,Key6,-->PA11,PA12  0B   0000  1100
-    tmpKeycode |= ((portA & 0x8000)>>6);    //Key10--PA15              0B 10 0000 0000
-	tmpKeycode |= ((portB & 0x0003)<<4);	// Key1,Key2-->PB0 ,PB1 -->0B    0011 0000
-	tmpKeycode |= ((portB & 0x0010)<<2);	// Key7  --PB4->           0B    0100 0000 
-	tmpKeycode |= ((portC & 0x0040)<<1);	// Key4  --PC6->           0B    1000 0000
-	tmpKeycode |= ((portC & 0x8000)>>7);	// Key8 ---->              0B 01 0000 0000
+	tmpKeycode =  portA & 0x01;				// Key9 ---PA0 ->          0B    0000  0001
+	tmpKeycode |= ((portA & 0x0100)>>7);	// Key3 --PA8 ->           0B    0000  0010
+	tmpKeycode |= ((portA & 0x1800)>>9);	// Key5,Key6,-->PA11,PA12  0B    0000  1100
+    tmpKeycode |= ((portA & 0x8000)>>6);    //Key10--PA15              0B 10 0000  0000
+	tmpKeycode |= ((portB & 0x0003)<<4);	// Key1,Key2-->PB0 ,PB1 -->0B    0011  0000
+	tmpKeycode |= ((portB & 0x0010)<<2);	// Key7  --PB4->           0B    0100  0000 
+	tmpKeycode |= ((portC & 0x0040)<<1);	// Key4  --PC6->           0B    1000  0000
+	tmpKeycode |= ((portC & 0x8000)>>7);	// Key8 ---->PC15          0B 01 0000  0000
 	tmpKeycode &= NO_KEY;
 
 	return tmpKeycode;
@@ -109,11 +110,12 @@ void keyInit(void)
 	glKey.status=KEY_STATUS_NOPRESSED;
 	glKey.long_pressed=0;
 	glKey.multi_pressed=0;
-	retrieveSavedParameter(&echoUnion,&echoFilter,&echoLight,&echoGroup);
+	retrieveSavedParameter(&echoUnion,&echoFilter,&echoLight,&echoLight_LR,&echoGroup);
 	//printEchoUnion(echoUnion,echoFilter,echoLight);
 	//printEchoFilter(echoFilter);
 	//printEchoLight(echoLight);
 	printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
+	printSettingInfo_LR_Led(echoUnion,echoFilter,echoLight_LR,BLINK_OFF);
 
 	HAL_TIM_Base_Start_IT(&htim17);
 }
@@ -292,7 +294,7 @@ void handleInput(void)
 	if(checkParameterFlag) //1s
 	{
 		checkParameterFlag=0;
-		updateParameter(echoUnion,echoLight,echoFilter); //blue tooth --USART1
+		updateParameter(echoUnion,echoLight,echoLight_LR,echoFilter); //blue tooth --USART1
 		//updateParameter -> UART2,UART1 Transmit interrupt process
 	}
 
@@ -302,6 +304,7 @@ void handleInput(void)
 		stopSelectFilter(); //UART_Transmit_IT--5 byte //4D 58 4D 53 30 
 		setEchoFilterBlink(DISABLE_BLINK);
 		printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
+		printSettingInfo_LR_Led(echoUnion,echoFilter,echoLight_LR,BLINK_OFF);
 		//printEchoFilter(echoFilter);
 		updateLight(echoLight);  //LED number turn on or off
 	}
@@ -397,10 +400,16 @@ void handleInput(void)
 			brightnessAdj(BRIGHTNESS_ADJ_UP);
 			//motionCtrl(MOTION_CW);
 		}
-		else if(!(pkey->keyCode & KEY_CODE_KEY10))	// brightness adj +
+		else if(!(pkey->keyCode & KEY_CODE_KEY10))	// auxiliary Menu WT.EDIT 
 		{
 			   buf= 0x45;
 			   HAL_UART_Transmit(&huart2,&buf,1,0);
+			   
+			   if(echoLight_LR>=MAX_LIGHT_LR_NUMBER-1) echoLight_LR=0;
+				else echoLight_LR++;
+				echoGroup=ECHO_GROUP_A;
+				printSettingInfo_LR_Led(echoUnion,echoFilter,echoLight_LR,BLINK_OFF); //echoLight = LED Name
+			   
 		}
 	}
 	else if(pkey->status==KEY_STATUS_UP)

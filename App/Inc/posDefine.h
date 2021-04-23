@@ -77,6 +77,10 @@
 #define LIGHT_INDEX_Y		62
 #define MAX_LIGHT_INDEX		16//WT.EDIT //10
 #define MAX_LIGHT_STR_LEN	6
+//define the sopt board of right and left 
+#define MAX_LIGHT_LR_INDEX		   5  //WT.EDIT 2021.04.23
+#define MAX_LIGHT_STR_LR_LEN       6  //wt.EDIT 2021.04.23
+
 
 #define UNION_STR_X				136
 #define UNION_STR_Y				62
