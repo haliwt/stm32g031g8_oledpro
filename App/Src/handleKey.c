@@ -243,12 +243,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)	// 2ms
 		_250msFlag=1;
 		tick_250ms=0;
 	}
-	if(counter_ActionDelay>500)
+	if(counter_ActionDelay>500)//500 * 2ms = 1000ms =1s
 	{
 		counter_ActionDelay=0;
 		checkParameterFlag=1;
 	}
-	if(counter_15m >= (uint32_t)450000L)
+	if(counter_15m >= (uint32_t)450000L) //15 minute 
 	{
 		timeoutFlag=1;
 		counter_15m=(uint32_t)0L;
@@ -256,7 +256,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)	// 2ms
 	if(timerDownFlag)
 	{
 		counter_Waitingtime++;
-		if(counter_Waitingtime>=60000)
+		if(counter_Waitingtime>=60000) //2ms * 60000=120s 
 		{
 			timerDownFlag=0;
 			waitingTimeoutFlag=1;
@@ -266,7 +266,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)	// 2ms
 	{
 		counter_Waitingtime=0;
 	}
-	updateKeyStatus();
+	updateKeyStatus(); //key scan every 2ms be detect
 }
 /*****************************************************************************************
 ***
@@ -304,7 +304,7 @@ void handleInput(void)
 		updateLight(echoLight);
 	}
 
-	if(timeoutFlag)
+	if(timeoutFlag) //15 minute 
 	{
 		timeoutFlag=0;
 		turnoffAllLight();
@@ -355,7 +355,7 @@ void handleInput(void)
 			// turn on ccw slowly
 			//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CCW);
 		}
-		else if(!(pkey->keyCode & KEY_CODE_KEY5))	// change union +
+		else if(!(pkey->keyCode & KEY_CODE_KEY5))	// change union + //smart button +
 		{
 			if(echoUnion>=MAX_UNION_NUMBER-1) echoUnion=0;
 			else echoUnion++;
@@ -364,7 +364,7 @@ void handleInput(void)
 			// turn on ccw slowly
 			//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CCW);
 		}
-		else if(!(pkey->keyCode & KEY_CODE_KEY6))	// change union -
+		else if(!(pkey->keyCode & KEY_CODE_KEY6))	// change union - //smart button-
 		{
 			if(echoUnion==0) echoUnion=MAX_UNION_NUMBER-1;
 			else echoUnion--;

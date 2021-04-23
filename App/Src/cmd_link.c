@@ -14,7 +14,7 @@
 #define USART_TX_TIMEOUT	5000	// 1s
 
 #define BOARD_ADDR		0x43	// 'C' control board
-#define BOARD_ADDR_BT	0x42	// 'B' for BT link
+#define BOARD_ADDR_BT	0x42	// 'B' for BT link --blue transmit
 
 #define MAX_BUFFER_SIZE				32
 #define MAX_CMD_PARA_SIZE			8
@@ -75,6 +75,14 @@ static uint8_t advData[]={"AT+ADVDATA=03FF03FF"};
 
 volatile static uint8_t transOngoingFlag;
 volatile static uint8_t bleTransOngoingFlag;
+/****************************************************************************************************
+**
+*Function Name:static void selectLight(uint8_t index)
+*Function: UART to LED  communication protocol
+*Input Ref: dir --driection CCW or CW
+*Return Ref:NO
+*
+****************************************************************************************************/
 
 void cmdInit(void)
 {
@@ -107,8 +115,14 @@ void decode(void)
 		bleRunCmd();
 	}
 }
-
-
+/****************************************************************************************************
+**
+*Function Name:void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t filterIndex)
+*Function: 
+*Input Ref: 
+*Return Ref:NO
+*
+****************************************************************************************************/
 void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t filterIndex)
 {
 
@@ -144,7 +158,14 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t filterIndex)
 //		selectFilter(filterIndex);
 //	}
 //}
-
+/****************************************************************************************************
+**
+*Function Name:static void selectLight(uint8_t index)
+*Function: UART to LED  communication protocol
+*Input Ref: dir --driection CCW or CW
+*Return Ref:NO
+*
+****************************************************************************************************/
 void updateLight(uint8_t lightIndex)
 {
 	if(lightIndex!=currLight)
@@ -159,6 +180,14 @@ void updateLight(uint8_t lightIndex)
 		}
 	}
 }
+/****************************************************************************************************
+**
+*Function Name:uint8_t getLightOnoffState(void)
+*Function: 
+*Input Ref: 
+*Return Ref:
+*
+****************************************************************************************************/
 
 uint8_t getLightOnoffState(void)
 {
@@ -173,6 +202,14 @@ void setCurrentLightOn(void)
 		//nowLightState=NOW_LIGHT_IS_ON;
 	}
 }
+/****************************************************************************************************
+**
+*Function Name:uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_t *revealLight,uint8_t *revealGroup)
+*Function: 
+*Input Ref: 
+*Return Ref:
+*
+****************************************************************************************************/
 
 uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_t *revealLight,uint8_t *revealGroup)
 {
@@ -188,7 +225,14 @@ uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_
 	return CMD_SUCCESS;
 }
 
-
+/************************************************************************************************************
+**
+*Function Name:uint8_t getItemFromUnion(uint8_t unionIndex,uint8_t *filterIndex,uint8_t *lightIndex)
+*Function:
+*Input Ref: unionIndex --smart meun of "item", *fliterIndex --filter "item",*lightIndex --LED "item"
+*Return Ref:NO
+*
+************************************************************************************************************/
 uint8_t getItemFromUnion(uint8_t unionIndex,uint8_t *filterIndex,uint8_t *lightIndex)
 {
 	settingUnion_t settingTable[MAX_UNION_NUMBER]={	{5,6},{4,6},{1,5},{2,5},{2,3},
@@ -203,27 +247,34 @@ uint8_t getItemFromUnion(uint8_t unionIndex,uint8_t *filterIndex,uint8_t *lightI
 	}
 	return CMD_ERROR;
 }
-
+/********************************************************************************
+**
+*Function Name:void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+*Function :UART callback function  for UART interrupt for receive data
+*Input Ref: structure UART_HandleTypeDef pointer
+*Return Ref:NO
+*
+*******************************************************************************/
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-	if(huart==&CMD_LINKER)
+	if(huart==&CMD_LINKER) //control "LED board" and "Motor board"
 	{
 		switch(state)
 		{
 		case STATE_PREAMBLE1:
-			if(inputBuf[0]=='M')
-				state=STATE_PREAMBLE2;
+			if(inputBuf[0]=='M')  //hex :4D - "M" -fixed
+				state=STATE_PREAMBLE2; //=1
 			break;
 		case STATE_PREAMBLE2:
-			if(inputBuf[0]=='X')
+			if(inputBuf[0]=='X') //hex : 58 -'X'  -fixed 
 			{
-				state=STATE_ADDR;
+				state=STATE_ADDR; //hex: 4C -'L'--light board (LED board)  'M'--motor board
 			}
 			else
-				state=STATE_PREAMBLE1;
+				state=STATE_PREAMBLE1; 
 			break;
 		case STATE_ADDR:
-			if(inputBuf[0]==BOARD_ADDR)
+			if(inputBuf[0]==BOARD_ADDR) //hex :43 --'C'--control board
 			{
 				state=STATE_CMD;
 			}
@@ -231,13 +282,13 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 				state=STATE_PREAMBLE1;
 			break;
 		case STATE_CMD:
-			inputCmd[0]=inputBuf[0];
+			inputCmd[0]=inputBuf[0]; //inputBuf[0]= 0x43
 			crcCheck = 0x55 ^ inputCmd[0];
 			//decodeFlag=1;
 			state=STATE_SIZE;
 			break;
 		case STATE_SIZE:
-			cmdSize=inputBuf[0]-0x30;
+			cmdSize=inputBuf[0]-0x30; //forom hexadecimal to decimal of number 0x43-0x30= 0x13
 			if(cmdSize>MAX_CMD_PARA_SIZE)	// out of range
 			{
 				state=STATE_PREAMBLE1;
@@ -264,7 +315,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			cmdSize--;
 			if(cmdSize==0)
 			{
-				decodeFlag=1;
+				decodeFlag=1; //UART receive correct codes flag bit 
 				state=STATE_PREAMBLE1;
 			}
 			break;
@@ -277,11 +328,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			break;
 		default:
 			state=STATE_PREAMBLE1;
-			decodeFlag=0;
+			decodeFlag=0;  //
 		}
-		HAL_UART_Receive_IT(&CMD_LINKER,inputBuf,1);
+		HAL_UART_Receive_IT(&CMD_LINKER,inputBuf,1);//UART receive data interrupt 1 byte
 	}
-	else if(huart==&BLE_USART)
+	else if(huart==&BLE_USART) //蓝牙接收
 	{
 		switch(bleState)
 		{
@@ -349,7 +400,14 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		HAL_UART_Receive_IT(&BLE_USART,bleBuf,1);
 	}
 }
-
+/********************************************************************************
+**
+*Function Name:void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+*Function :UART callback function  for UART interrupt for transmit data
+*Input Ref: structure UART_HandleTypeDef pointer
+*Return Ref:NO
+*
+*******************************************************************************/
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if(huart==&CMD_LINKER)
@@ -361,7 +419,14 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 		bleTransOngoingFlag=0;	// reset busy flag
 	}
 }
-
+/****************************************************************************************************
+**
+*Function Name:static void runCmd(void)
+*Function:
+*Input Ref: 
+*Return Ref:NO
+*
+****************************************************************************************************/
 static void runCmd(void)
 {
 	uint8_t cmdType=inputCmd[0];
@@ -369,7 +434,7 @@ static void runCmd(void)
 
 	switch(cmdType)
 	{
-	case 'R':	// motor board return state
+	case 'R': //HEX:52	// motor board return state
 		ret=inputCmd[2]-0x30;
 		if(ret==1)	// change filter finished
 		{
@@ -381,14 +446,21 @@ static void runCmd(void)
 		}
 
 		break;
-	case 'S':	//
+	case 'S':	//HEX:53
 
 		break;
 	default:
 		break;
 	}
 }
-
+/****************************************************************************************************
+**
+*Function Name:static void bleRunCmd(void)
+*Function: 
+*Input Ref: 
+*Return Ref:
+*
+****************************************************************************************************/
 static void bleRunCmd(void)
 {
 //	uint8_t transfeSize=0;
@@ -447,6 +519,14 @@ static void bleRunCmd(void)
 		break;
 	}
 }
+/****************************************************************************************************
+**
+*Function Name:static void selectLight(uint8_t index)
+*Function: UART to LED  communication protocol
+*Input Ref: dir --driection CCW or CW
+*Return Ref:NO
+*
+****************************************************************************************************/
 
 static void initBtleModule(void)
 {
@@ -489,18 +569,25 @@ static uint8_t checkBleModuleAVDData(void)
 	}
 	return 0;
 }
-
+/****************************************************************************************************
+**
+*Function Name:static void selectLight(uint8_t index)
+*Function: selectFilter
+*Input Ref: dir --driection CCW or CW --4D 58 4D 52 31 32
+*Return Ref:NO
+*
+****************************************************************************************************/
 static void selectFilter(uint8_t index)
 {
 	//uint8_t i,crc;
 
 	//crc=0x55;
-	outputBuf[0]='M';
-	outputBuf[1]='X';
-	outputBuf[2]='M';	// 'M' for motor board
-	outputBuf[3]='R';	// 'R' rotator motor for select filter
-	outputBuf[4]='1';	// one command parameter
-	outputBuf[5]=index+0x30;	// change to ascii number
+	outputBuf[0]='M'; //4D
+	outputBuf[1]='X'; //58
+	outputBuf[2]='M'; //4D	// 'M' for motor board
+	outputBuf[3]='R'; //52	// 'R' rotator motor for select filter
+	outputBuf[4]='1'; //31 // one command parameter
+	outputBuf[5]=index+0x30;	// change to ascii number for decimal number 0~9
 	//for(i=3;i<6;i++) crc ^= outputBuf[i];
 	//outputBuf[i]=crc;
 	transferSize=6;
@@ -511,18 +598,25 @@ static void selectFilter(uint8_t index)
 		HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
 	}
 }
-
+/****************************************************************************************************
+**
+*Function Name:void stopSelectFilter(void)
+*Function: Stop
+*Input Ref:  --4D 58 4D 53 30 --stop
+*Return Ref:NO
+*
+****************************************************************************************************/
 void stopSelectFilter(void)
 {
 	//uint8_t i,crc;
 
 	//crc=0x55;
-	outputBuf[0]='M';
-	outputBuf[1]='X';
-	outputBuf[2]='M';	// 'M' for motor board
-	outputBuf[3]='S';	// 'R' rotator motor for select filter
-	outputBuf[4]='0';	// no command parameter
-	//outputBuf[5]=index+0x30;	// change to ascii number
+	outputBuf[0]='M'; //4D
+	outputBuf[1]='X'; //58
+	outputBuf[2]='M'; //4D	// 'M' for motor board
+	outputBuf[3]='S'; //53	// 'R' rotator motor for select filter
+	outputBuf[4]='0'; //30	// no command parameter
+	//outputBuf[5]=index+0x30;	// change to ascii number 
 	//for(i=3;i<6;i++) crc ^= outputBuf[i];
 	//outputBuf[i]=crc;
 	transferSize=5;
@@ -533,7 +627,14 @@ void stopSelectFilter(void)
 		HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
 	}
 }
-
+/****************************************************************************************************
+**
+*Function Name:static void selectLight(uint8_t index)
+*Function: UART to LED  communication protocol
+*Input Ref: dir --driection CCW or CW
+*Return Ref:NO
+*
+****************************************************************************************************/
 void turnoffAllLight(void)
 {
 	outputBuf[0]='M';
@@ -552,14 +653,21 @@ void turnoffAllLight(void)
 	}
 	nowLightState=NOW_LIGHT_IS_OFF;
 }
-
+/****************************************************************************************************
+**
+*Function Name:static void selectLight(uint8_t index)
+*Function: UART to LED  communication protocol
+*Input Ref: dir --driection CCW or CW
+*Return Ref:NO
+*
+****************************************************************************************************/
 void brightnessAdj(uint8_t dir)
 {
-	outputBuf[0]='M';
-	outputBuf[1]='X';
-	outputBuf[2]='L';	// 'L' for light board
-	outputBuf[3]='A';	// 'S' select light command, 'C' close all light command, 'A' brightness adjust
-	outputBuf[4]='1';	// one command parameter
+	outputBuf[0]='M'; //4D
+	outputBuf[1]='X'; //58
+	outputBuf[2]='L'; //4C// 'L' for light board
+	outputBuf[3]='A'; //41	// 'S' select light command, 'C' close all light command, 'A' brightness adjust
+	outputBuf[4]='1'; //30	// one command parameter
 	if(dir==BRIGHTNESS_ADJ_UP)
 		outputBuf[5]='1';
 	else
@@ -575,14 +683,21 @@ void brightnessAdj(uint8_t dir)
 	}
 }
 
-
+/****************************************************************************************************
+**
+*Function Name:void motionCtrl(uint8_t dir)
+*Function: UART to motor communication protocol
+*Input Ref: dir --driection CCW or CW
+*Return Ref:NO
+*
+****************************************************************************************************/
 void motionCtrl(uint8_t dir)
 {
-	outputBuf[0]='M';
-	outputBuf[1]='X';
-	outputBuf[2]='L';	// 'L' for light board
-	outputBuf[3]='M';	// 'S' select light command, 'C' close all light command, 'A' brightness adjust, 'M' motor ctrl
-	outputBuf[4]='1';	// one command parameter
+	outputBuf[0]='M';   //hex:4D
+	outputBuf[1]='X';   //hex:58
+	outputBuf[2]='L';   //hex:4C 'L' for light board 
+	outputBuf[3]='M';	//hex :4D 'S' select light command, 'C' close all light command, 'A' brightness adjust, 'M' motor ctrl
+	outputBuf[4]='1';	// hex: 1 one command parameter
 	if(dir==MOTION_CW)
 		outputBuf[5]='1';
 	else
@@ -597,26 +712,39 @@ void motionCtrl(uint8_t dir)
 		HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
 	}
 }
-
+/*********************************************************************************************************
+**
+*Function Name:void reportLightStatusChange(void)
+*Function:Blue UART communication protocol
+*
+*
+*********************************************************************************************************/
 void reportLightStatusChange(void)
 {
 	notifyStatusToHost(((nowLightState==NOW_LIGHT_IS_ON) ? currLight : 0xff ),currFilter,currUnion);
 }
-
+/****************************************************************************************************
+**
+*Function Name:static void selectLight(uint8_t index)
+*Function: UART to LED  communication protocol
+*Input Ref: dir --driection CCW or CW
+*Return Ref:NO
+*
+****************************************************************************************************/
 static void selectLight(uint8_t index)
 {
 	//uint8_t i,crc;
 	uint8_t tenNum;
 
-	tenNum=index/10;
+	tenNum=index/10; // remainder
 
 	//crc=0x55;
-	outputBuf[0]='M';
-	outputBuf[1]='X';
-	outputBuf[2]='L';	// 'L' for light board
-	outputBuf[3]='S';	// 'S' select light command, 'C' close all light command
-	outputBuf[4]='2';	// two command parameter
-	outputBuf[5]=tenNum+0x30; // change to ascii number
+	outputBuf[0]='M'; //4D
+	outputBuf[1]='X'; //58
+	outputBuf[2]='L'; //4C	// 'L' for light board
+	outputBuf[3]='S'; //53	// 'S' select light command, 'C' close all light command
+	outputBuf[4]='2'; //2	// two command parameter
+	outputBuf[5]=tenNum+0x30; // change to ascii number ,decimal + 0x30 ->hexadecimal
 	outputBuf[6]=(index-tenNum*10)+0x30;
 	//for(i=3;i<7;i++) crc ^= outputBuf[i];
 	//outputBuf[i]=crc;
@@ -629,17 +757,24 @@ static void selectLight(uint8_t index)
 	}
 	nowLightState=NOW_LIGHT_IS_ON;
 }
-
+/**********************************************************************************************************
+**
+*Function Name:static void notifyStatusToHost(uint8_t lightNum,uint8_t filterNum,uint8_t unionNum)
+*Function : 
+*Input Ref:lightNum--LED ,filterNum -filter number, unionNum - smart menu number
+*Return Ref:NO
+*
+*********************************************************************************************************/
 static void notifyStatusToHost(uint8_t lightNum,uint8_t filterNum,uint8_t unionNum)
 {
 	uint8_t i,crc=0xAA;
 
 	while(bleTransOngoingFlag);
 
-	bleOutputBuf[0]=BOARD_ADDR_BT;
-	bleOutputBuf[1]='L';	// leds status
-	bleOutputBuf[2]=lightNum;
-	bleOutputBuf[3]=filterNum;
+	bleOutputBuf[0]=BOARD_ADDR_BT;  //HEX:42 
+	bleOutputBuf[1]='L'; 	// leds status 'L' -HEX:4C
+	bleOutputBuf[2]=lightNum; //the first group LED number on or off 
+	bleOutputBuf[3]=filterNum; //filter of number 
 	if(unionNum>7)
 	{
 		bleOutputBuf[4]=0xff;
