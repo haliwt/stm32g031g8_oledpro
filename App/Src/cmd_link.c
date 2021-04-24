@@ -38,6 +38,8 @@ typedef struct settingUnion
 extern void startTimeDown(uint8_t en);
 extern void setEchoFilter(uint8_t filterIndex);
 extern void setEchoLight(uint8_t lightIndex);
+static void selectLight_LR(uint8_t lightIndex_LR); //WT.EDIT 2021.04.24
+
 extern void setEchoUnion(uint8_t unionIndex);
 extern void trigParameterUpdateImmediate(void);
 
@@ -147,7 +149,7 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 	else
 	{
 		updateLight(lightIndex);
-		updateLight_LR( lightIndx_LR); //WT.EDIT 2021.04.24
+		updateLight_LR(lightIndx_LR); //WT.EDIT 2021.04.24
 	
 	}
 }
@@ -200,7 +202,7 @@ void updateLight_LR(uint8_t lightIndex_LR)
 		if(powerOnFlag) powerOnFlag=0;	//need not turn on light when power on
 		else
 		{
-			selectLight(lightIndex_LR); //Transmit Interrupt process 
+			selectLight_LR(lightIndex_LR); //Transmit Interrupt process 
 			//nowLightState=NOW_LIGHT_IS_ON;
 		}
 	}
@@ -787,6 +789,45 @@ static void selectLight(uint8_t index)
 	
 
 }
+/****************************************************************************************************
+**
+*Function Name:static void selectLight_LR(uint8_t index)
+*Function: UART2 transmit interrupt process ---
+*Input Ref: SPORT side LED number 
+*Return Ref:NO
+*
+****************************************************************************************************/
+static void selectLight_LR(uint8_t index)
+{
+	
+   //uint8_t i,crc;
+	uint8_t tenNum;
+
+	//tenNum=index/10; // remainder
+	tenNum=index/5; // WT.EDIT 5 group LED number 2021.04.23 remainder
+
+	//crc=0x55;
+	outputBuf[0]='M'; //4D
+	outputBuf[1]='S'; //53
+	outputBuf[2]='L'; //4C	// 'L' for light board
+	//outputBuf[3]='S'; //53	// 'S' select light command, 'C' close all light command
+	outputBuf[3]='2'; //2	// two command parameter
+	outputBuf[4]=tenNum+0x30; // change to ascii number ,decimal + 0x30 ->hexadecimal
+	outputBuf[5]=(index-tenNum*10)+0x30;
+	//for(i=3;i<7;i++) crc ^= outputBuf[i];
+	//outputBuf[i]=crc;
+    transferSize=6;
+	if(transferSize)
+	{
+		while(transOngoingFlag);
+		transOngoingFlag=1;
+		HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
+	}
+	nowLightState=NOW_LIGHT_IS_ON;
+	
+
+}
+
 /**********************************************************************************************************
 **
 *Function Name:static void notifyStatusToHost(uint8_t lightNum,uint8_t filterNum,uint8_t unionNum)
