@@ -280,7 +280,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)	// 2ms
 *******************************************************************************************/
 void handleInput(void)
 {
-   uint8_t buf;
+
 	pKeyStruct pkey=getKey();
 
 	if(_250msFlag)
@@ -307,6 +307,7 @@ void handleInput(void)
 		printSettingInfo_LR_Led(echoUnion,echoFilter,echoLight_LR,BLINK_OFF);
 		//printEchoFilter(echoFilter);
 		updateLight(echoLight);  //LED number turn on or off
+		updateLight_LR(echoLight_LR);
 	}
 
 	if(timeoutFlag) //15 minute 
@@ -402,8 +403,8 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY10))	// auxiliary Menu WT.EDIT 
 		{
-			   buf= 0x45;
-			   HAL_UART_Transmit(&huart2,&buf,1,0);
+			  // buf= 0x45;
+			  // HAL_UART_Transmit(&huart2,&buf,1,0);
 			   
 			   if(echoLight_LR>=MAX_LIGHT_LR_NUMBER-1) echoLight_LR=0;
 				else echoLight_LR++;

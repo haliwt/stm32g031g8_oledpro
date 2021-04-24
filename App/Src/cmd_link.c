@@ -147,6 +147,7 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 	else
 	{
 		updateLight(lightIndex);
+		updateLight_LR( lightIndx_LR); //WT.EDIT 2021.04.24
 	
 	}
 }
@@ -190,6 +191,20 @@ void updateLight(uint8_t lightIndex)
 *Return Ref:NO
 *
 ****************************************************************************************************/
+void updateLight_LR(uint8_t lightIndex_LR)
+{
+	if(lightIndex_LR!=currLight_LR)
+	{
+		currLight_LR=lightIndex_LR;
+		//setEchoLightBlink(ENABLE_BLINK);
+		if(powerOnFlag) powerOnFlag=0;	//need not turn on light when power on
+		else
+		{
+			selectLight(lightIndex_LR); //Transmit Interrupt process 
+			//nowLightState=NOW_LIGHT_IS_ON;
+		}
+	}
+}
 
 
 /****************************************************************************************************
