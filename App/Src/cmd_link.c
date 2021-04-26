@@ -7,6 +7,7 @@
 
 #include "cmd_link.h"
 #include "oled.h"
+#include "handlekey.h"
 
 #define CMD_LINKER	huart2
 #define BLE_USART	huart1
@@ -665,14 +666,15 @@ void stopSelectFilter(void)
 ****************************************************************************************************/
 void turnoffAllLight(void)
 {
-	outputBuf[0]='M';
+	outputBuf[0]='Z';//0x//outputBuf[0]='M';//WT.EDIT
 	outputBuf[1]='X';
 	outputBuf[2]='L';	// 'L' for light board
-	outputBuf[3]='C';	// 'S' select light command, 'C' close all light command
-	outputBuf[4]='0';	// no command parameter
+	outputBuf[3]='C';//0x43	// 'S' select light command, 'C' close all light command
+	outputBuf[4]='1';//0x31	// no command parameter
+	outputBuf[5]='3';//0x33
 	//for(i=3;i<7;i++) crc ^= outputBuf[i];
 	//outputBuf[i]=crc;
-	transferSize=5;
+	transferSize=6;
 	if(transferSize)
 	{
 		while(transOngoingFlag);
@@ -691,7 +693,9 @@ void turnoffAllLight(void)
 ****************************************************************************************************/
 void brightnessAdj(uint8_t dir)
 {
-	outputBuf[0]='M'; //4D
+	if(Auxiliary_Flag==0)
+		outputBuf[0]='M'; //0x4D
+	else outputBuf[0]='V';  //0x56
 	outputBuf[1]='X'; //58
 	outputBuf[2]='L'; //4C// 'L' for light board
 	outputBuf[3]='A'; //41	// 'S' select light command, 'C' close all light command, 'A' brightness adjust
@@ -807,16 +811,17 @@ static void selectLight_LR(uint8_t index)
 	tenNum=index/5; // WT.EDIT 5 group LED number 2021.04.23 remainder
 
 	//crc=0x55;
-	outputBuf[0]='M'; //4D
-	outputBuf[1]='S'; //53
-	outputBuf[2]='L'; //4C	// 'L' for light board
-	//outputBuf[3]='S'; //53	// 'S' select light command, 'C' close all light command
-	outputBuf[3]='2'; //2	// two command parameter
-	outputBuf[4]=tenNum+0x30; // change to ascii number ,decimal + 0x30 ->hexadecimal
-	outputBuf[5]=(index-tenNum*10)+0x30;
+	outputBuf[0]='V'; //0X56
+	outputBuf[1]='X'; //0X58
+	outputBuf[2]='L'; //0X4C	// 'L' for light board
+	outputBuf[3]='S'; //0X53	// 'S' select light command, 'C' close all light command
+	outputBuf[4]='3'; //0X33	// two command parameter
+	outputBuf[5]='3'; //0X33
+	outputBuf[6]=tenNum+0x30; // change to ascii number ,decimal + 0x30 ->hexadecimal
+	outputBuf[7]=(index-tenNum*10)+0x30;
 	//for(i=3;i<7;i++) crc ^= outputBuf[i];
 	//outputBuf[i]=crc;
-    transferSize=6;
+    transferSize=8;
 	if(transferSize)
 	{
 		while(transOngoingFlag);

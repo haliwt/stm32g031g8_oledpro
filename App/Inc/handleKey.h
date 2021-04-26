@@ -8,6 +8,8 @@
 #ifndef HANDLEKEY_H_
 #define HANDLEKEY_H_
 
+extern uint8_t Auxiliary_Flag;
+
 extern void keyInit(void);
 extern void handleInput(void);
 
