@@ -231,6 +231,14 @@ void setCurrentLightOn(void)
 		//nowLightState=NOW_LIGHT_IS_ON;
 	}
 }
+void setCurrentLightOn_LR(void)
+{
+	if(currLight_LR<MAX_LIGHT_LR_NUMBER)
+		{
+			selectLight_LR(currLight_LR);
+			//nowLightState=NOW_LIGHT_IS_ON;
+		}
+}
 /****************************************************************************************************
 **
 *Function Name:uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_t *revealLight,uint8_t *revealGroup)

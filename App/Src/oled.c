@@ -194,13 +194,13 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 	{
 	case ECHO_GROUP_A:
 		i=0;
-		if(tmpLight<10)
+		if(tmpLight<16)//if(tmpLight<10)
 			tmpStr[i++]=tmpLight+0x30; 
 		else
 		{
-			tenNum=tmpLight/10;
+			tenNum=tmpLight/16;//tenNum=tmpLight/10;
 			tmpStr[i++]=tenNum+0x30;
-			tmpLight-= tenNum*10;
+			tmpLight-= tenNum*16;//tmpLight-= tenNum*10;
 			tmpStr[i++]=tmpLight+0x30;
 		}
 		tmpStr[i++]=0;
@@ -326,10 +326,6 @@ void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,tmpStr);
 		}
 		break;
-
-
-		break;
-		
 
 
 	}

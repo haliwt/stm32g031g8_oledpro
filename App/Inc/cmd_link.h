@@ -46,6 +46,7 @@ void stopSelectFilter(void);
 void turnoffAllLight(void);
 uint8_t getLightOnoffState(void);
 void setCurrentLightOn(void);
+void setCurrentLightOn_LR(void);//WT.EDIT 2021.04.27
 void brightnessAdj(uint8_t dir);
 void motionCtrl(uint8_t dir);
 void reportLightStatusChange(void);

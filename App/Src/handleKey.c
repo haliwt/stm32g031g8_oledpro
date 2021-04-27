@@ -390,6 +390,8 @@ void handleInput(void)
 			else
 			{
 				setCurrentLightOn();
+				
+				//setCurrentLightOn_LR();//WT.EDIT 2021.04.27
 			}
 			reportLightStatusChange();
 		}
