@@ -707,7 +707,8 @@ void brightnessAdj(uint8_t dir)
 	outputBuf[1]='X'; //58
 	outputBuf[2]='L'; //4C// 'L' for light board
 	outputBuf[3]='A'; //41	// 'S' select light command, 'C' close all light command, 'A' brightness adjust
-	outputBuf[4]='1'; //30	// one command parameter
+	outputBuf[4]='1'; //31	// paramete  //one command parameter
+
 	if(dir==BRIGHTNESS_ADJ_UP)
 		outputBuf[5]='1';
 	else

@@ -182,10 +182,11 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 	char tmpStr[MAX_UNION_STR_LEN+1];
 	uint8_t tmpUnion,tmpFilter,tmpLight,i,j,tenNum;
 	uint8_t group;
+	
 
 	tmpUnion=unionIndex+1;
 	tmpFilter=filterIndex+1;
-	tmpLight=lightIndex+1;
+	tmpLight=lightIndex+1; //WT.EDIT 
 	group=retrieveEchoGroup();
 
 	printFrame();
@@ -205,10 +206,12 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 		}
 		tmpStr[i++]=0;
 		LedMainNumber = tmpLight;
-		u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
-		printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
-		//printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,tmpStr);
-		printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
+		
+			u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
+			printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[lightIndex]);
+			//printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,tmpStr);
+			printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
+		
         //filter
 		i=0;
 		if(tmpFilter<10) tmpStr[i++]=tmpFilter+0x30;
