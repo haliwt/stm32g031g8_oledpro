@@ -58,7 +58,7 @@ static void notifyStatusToHost(uint8_t lightNum,uint8_t lightNum_LR,uint8_t filt
 //static uint8_t suffBoardStatusToBuffer(void);
 //static void getTargetStatus(uint8_t *pBuf);
 
-static uint8_t currUnion,currLight,currFilter,currLight_LR,tmpLight,tmpLight_LR; //WT.EDIT 
+static uint8_t currUnion,currLight,currFilter,currLight_LR,currLight_AU,tmpLight,tmpLight_LR,tmpLight_AU; //WT.EDIT 
 static uint8_t inputCmd[32],bleInputCmd[32];
 static uint8_t cmdSize,bleCmdSize;
 static uint8_t paraIndex,bleParaIndex;
@@ -130,10 +130,10 @@ void decode(void)
 *Return Ref:NO
 *
 ****************************************************************************************************/
-void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,uint8_t filterIndex)
+void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,uint8_t lightIndx_AU, uint8_t filterIndex)
 {
 
-	if(unionIndex!=currUnion || filterIndex !=currFilter || lightIndex!=currLight || lightIndx_LR != currLight_LR) //currUnion = 0xff,
+	if(unionIndex!=currUnion || filterIndex !=currFilter || lightIndex!=currLight || lightIndx_LR != currLight_LR || lightIndx_AU != currLight_AU)//currUnion = 0xff,
 	{
 		notifyStatusToHost(lightIndex,lightIndx_LR,filterIndex,unionIndex); //Smart Menu update parameter .
 		//for Blue UART Transmit 
@@ -148,6 +148,8 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 		currFilter=filterIndex;
 		tmpLight=lightIndex;
 		tmpLight_LR=lightIndx_LR;
+		tmpLight_AU = lightIndx_AU;
+		
 		setEchoFilterBlink(ENABLE_BLINK);
 		selectFilter(filterIndex); //filter HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
 		startTimeDown(1);
@@ -156,8 +158,8 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 	{
 		
 		updateLight_LR(lightIndx_LR); //WT.EDIT 2021.04.24
-		if(auxiliary_t.AuxiliaryItem==1)
-	    	updateLight_AU(lightIndex); //WT.EDIT 2021.04.28
+		if(auxiliary_t.Auxiliary_flag==1)
+	    	updateLight_AU(lightIndx_AU); //WT.EDIT 2021.04.28
 	    else updateLight(lightIndex);
 	}
 }
@@ -227,7 +229,7 @@ void updateLight_AU(uint8_t lightIndex_AU)
 {
 	if(lightIndex_AU!=currLight)
 	{
-		currLight_LR=lightIndex_AU;
+		currLight_AU=lightIndex_AU;
 		//setEchoLightBlink(ENABLE_BLINK);
 		if(powerOnFlag) powerOnFlag=0;	//need not turn on light when power on
 		else
@@ -268,6 +270,16 @@ void setCurrentLightOn_LR(void)
 			//nowLightState=NOW_LIGHT_IS_ON;
 		}
 }
+
+void setCurrentLightOn_AU(void)
+{
+	if(currLight_AU<MAX_AUXILIARY_NUMBER)
+		{
+			selectLight_AU(currLight_AU);
+			//nowLightState=NOW_LIGHT_IS_ON;
+		}
+}
+
 /****************************************************************************************************
 **
 *Function Name:uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_t *revealLight,uint8_t *revealGroup)
@@ -276,17 +288,19 @@ void setCurrentLightOn_LR(void)
 *Return Ref: 0--success
 *
 ****************************************************************************************************/
-uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_t *revealLight,uint8_t *revealLight_LR,uint8_t *revealGroup)
+uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_t *revealLight,uint8_t *revealLight_LR, uint8_t *revealLight_AU,uint8_t *revealGroup)
 {
 	currUnion=0xff;
 	currFilter=0xff;
 	currLight=0xff;
 	currLight_LR = 0xff;
+	currLight_AU = 0xff;
 
 	*revealUnion=9; //
 	*revealFilter=0;
 	*revealLight=0;
 	*revealLight_LR = 0;
+	*revealLight_AU = 0;
 	*revealGroup=ECHO_GROUP_B;
 
 	return CMD_SUCCESS;

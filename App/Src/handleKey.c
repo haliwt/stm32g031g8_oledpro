@@ -55,6 +55,9 @@ static KeyStruct glKey;				// key for forward/backward
 static uint8_t echoFilter;
 static uint8_t echoLight;
 static uint8_t  echoLight_LR; //WT.EDIT 2021.04.23
+static uint8_t  echoLight_AU; //WT.EDIT 2021.04.28
+
+
 static uint8_t echoUnion;
 static uint8_t echoGroup;
 static uint8_t timerDownFlag;
@@ -111,13 +114,13 @@ void keyInit(void)
 	glKey.status=KEY_STATUS_NOPRESSED;
 	glKey.long_pressed=0;
 	glKey.multi_pressed=0;
-	retrieveSavedParameter(&echoUnion,&echoFilter,&echoLight,&echoLight_LR,&echoGroup);
+	retrieveSavedParameter(&echoUnion,&echoFilter,&echoLight,&echoLight_LR,&echoLight_AU,&echoGroup);
 	//printEchoUnion(echoUnion,echoFilter,echoLight);
 	//printEchoFilter(echoFilter);
 	//printEchoLight(echoLight);
 	printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
 	printSettingInfo_LR_Led(echoUnion,echoFilter,echoLight_LR,BLINK_OFF);
-
+	printSettingInfo_Auxiliary(echoUnion,echoFilter,echoLight_AU,BLINK_OFF);
 	HAL_TIM_Base_Start_IT(&htim17);
 }
 
@@ -295,7 +298,7 @@ void handleInput(void)
 	if(checkParameterFlag) //1s
 	{
 		checkParameterFlag=0;
-		updateParameter(echoUnion,echoLight,echoLight_LR,echoFilter); //blue tooth --USART1
+		updateParameter(echoUnion,echoLight,echoLight_LR,echoLight_AU,echoFilter); //blue tooth --USART1
 		//updateParameter -> UART2,UART1 Transmit interrupt process
 	}
 
@@ -306,6 +309,7 @@ void handleInput(void)
 		setEchoFilterBlink(DISABLE_BLINK);
 		printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
 		printSettingInfo_LR_Led(echoUnion,echoFilter,echoLight_LR,BLINK_OFF);
+		printSettingInfo_Auxiliary(echoUnion,echoFilter,echoLight_AU,BLINK_OFF);
 		//printEchoFilter(echoFilter);
 		updateLight(echoLight);  //LED number turn on or off
 		updateLight_LR(echoLight_LR);
@@ -401,6 +405,7 @@ void handleInput(void)
 				setCurrentLightOn();
 				
 				//setCurrentLightOn_LR();//WT.EDIT 2021.04.27
+				//setCurrentLightOn_AU();//WT.EDIT 2021.04.28
 			}
 			reportLightStatusChange();
 		}

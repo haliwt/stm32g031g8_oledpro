@@ -188,7 +188,7 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 
 	tmpUnion=unionIndex+1;
 	tmpFilter=filterIndex+1;
-	tmpLight=lightIndex+1; //WT.EDIT 
+	tmpLight=lightIndex+1; 
 	group=retrieveEchoGroup();
 
 	printFrame();
