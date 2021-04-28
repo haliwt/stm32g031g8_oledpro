@@ -39,7 +39,7 @@ typedef struct settingUnion
 extern void startTimeDown(uint8_t en);
 extern void setEchoFilter(uint8_t filterIndex);
 extern void setEchoLight(uint8_t lightIndex);
-static void selectLight_LR(uint8_t lightIndex_LR); //WT.EDIT 2021.04.24
+
 
 extern void setEchoUnion(uint8_t unionIndex);
 extern void trigParameterUpdateImmediate(void);
@@ -51,6 +51,9 @@ static void initBtleModule(void);
 static uint8_t checkBleModuleAVDData(void);
 static void selectFilter(uint8_t index);
 static void selectLight(uint8_t index);
+static void selectLight_LR(uint8_t lightIndex_LR); //WT.EDIT 2021.04.24
+static void selectLight_AU(uint8_t lightIndex_AU); //WT.EDIT 2021.04.28
+
 static void notifyStatusToHost(uint8_t lightNum,uint8_t lightNum_LR,uint8_t filterNum,uint8_t unionNum);
 //static uint8_t suffBoardStatusToBuffer(void);
 //static void getTargetStatus(uint8_t *pBuf);
@@ -78,6 +81,8 @@ static uint8_t advData[]={"AT+ADVDATA=03FF03FF"};
 
 volatile static uint8_t transOngoingFlag; //interrupt Transmit flag bit , 1---stop,0--run
 volatile static uint8_t bleTransOngoingFlag;
+
+auxiliary auxiliary_t ; //definition
 /****************************************************************************************************
 **
 *Function Name:void cmdInit(void)
@@ -149,9 +154,11 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 	}
 	else
 	{
-		updateLight(lightIndex);
+		
 		updateLight_LR(lightIndx_LR); //WT.EDIT 2021.04.24
-	
+		if(auxiliary_t.AuxiliaryItem==1)
+	    	updateLight_AU(lightIndex); //WT.EDIT 2021.04.28
+	    else updateLight(lightIndex);
 	}
 }
 
@@ -204,6 +211,28 @@ void updateLight_LR(uint8_t lightIndex_LR)
 		else
 		{
 			selectLight_LR(lightIndex_LR); //Transmit Interrupt process 
+			//nowLightState=NOW_LIGHT_IS_ON;
+		}
+	}
+}
+/****************************************************************************************************
+**
+*Function Name:void updateLight_AU(uint8_t lightIndex_AU)
+*Function:
+*Input Ref: 
+*Return Ref:NO
+*
+****************************************************************************************************/
+void updateLight_AU(uint8_t lightIndex_AU)
+{
+	if(lightIndex_AU!=currLight)
+	{
+		currLight_LR=lightIndex_AU;
+		//setEchoLightBlink(ENABLE_BLINK);
+		if(powerOnFlag) powerOnFlag=0;	//need not turn on light when power on
+		else
+		{
+			selectLight_AU(lightIndex_AU); //Transmit Interrupt process 
 			//nowLightState=NOW_LIGHT_IS_ON;
 		}
 	}
@@ -675,14 +704,16 @@ void stopSelectFilter(void)
 void turnoffAllLight(void)
 {
 	outputBuf[0]='Z';//0x//outputBuf[0]='M';//WT.EDIT
-	outputBuf[1]='X';
-	outputBuf[2]='L';	// 'L' for light board
-	outputBuf[3]='C';//0x43	// 'S' select light command, 'C' close all light command
-	outputBuf[4]='1';//0x31	// no command parameter
-	outputBuf[5]='3';//0x33
+	outputBuf[1]='X'; //0x58
+	outputBuf[2]='L';//0x4C 'L' for light board
+	outputBuf[3]='C';//0x43 inputCmd[0]=outputBuf[3]// 'S' select light command, 'C' close all light command
+	//outputBuf[4]='1';//0x31	// no command parameter
+	outputBuf[4]='2';//0x32    //two command parameter
+	outputBuf[5]='3';//0x33 //ledab.led_LR_id = inputCmd[1] 
+	outputBuf[6]='3';//0x33   //any data  
 	//for(i=3;i<7;i++) crc ^= outputBuf[i];
 	//outputBuf[i]=crc;
-	transferSize=6;
+	transferSize=7;//transferSize=6;
 	if(transferSize)
 	{
 		while(transOngoingFlag);
@@ -701,21 +732,22 @@ void turnoffAllLight(void)
 ****************************************************************************************************/
 void brightnessAdj(uint8_t dir)
 {
-	if(Auxiliary_Flag==0)
+	if(auxiliary_t.Auxiliary_flag==0)
 		outputBuf[0]='M'; //0x4D
 	else outputBuf[0]='V';  //0x56
 	outputBuf[1]='X'; //58
 	outputBuf[2]='L'; //4C// 'L' for light board
-	outputBuf[3]='A'; //41	// 'S' select light command, 'C' close all light command, 'A' brightness adjust
-	outputBuf[4]='1'; //31	// paramete  //one command parameter
-
+	outputBuf[3]='A'; //0x41 --inputCmd[0]= ''// 'S' select light command, 'C' close all light command, 'A' brightness adjust
+	//outputBuf[4]='1'; //0x31    //one command parameter
+	outputBuf[4]='2'; //0x32	//two command parameter //WT.EDIT 2021.04.27
+	outputBuf[5]='3'; //0x33    //inputCmd[1] = ledab.led_LR_id = 3
 	if(dir==BRIGHTNESS_ADJ_UP)
-		outputBuf[5]='1';
+		outputBuf[6]='1';
 	else
-		outputBuf[5]='0';
+		outputBuf[6]='0';
 	//for(i=3;i<7;i++) crc ^= outputBuf[i];
 	//outputBuf[i]=crc;
-	transferSize=6;
+	transferSize=7;
 	if(transferSize)
 	{
 		while(transOngoingFlag);
@@ -806,18 +838,58 @@ static void selectLight(uint8_t index)
 **
 *Function Name:static void selectLight_LR(uint8_t index)
 *Function: UART2 transmit interrupt process ---
-*Input Ref: SPORT side LED number 
+*Input Ref: main Item of name
 *Return Ref:NO
 *
 ****************************************************************************************************/
 static void selectLight_LR(uint8_t index)
 {
 	
-   //uint8_t i,crc;
+	#if 0
+//uint8_t i,crc;
 	uint8_t tenNum;
 
 	//tenNum=index/10; // remainder
 	tenNum=index/5; // WT.EDIT 5 group LED number 2021.04.23 remainder
+
+	//crc=0x55;
+	outputBuf[0]='V'; //0X56
+	outputBuf[1]='X'; //0X58
+	outputBuf[2]='L'; //0X4C	// 'L' for light board
+	outputBuf[3]='S'; //0X53	// 'S' select light command, 'C' close all light command
+	outputBuf[4]='3'; //0X33	// two command parameter
+	outputBuf[5]='3'; //0X33
+	outputBuf[6]=tenNum+0x30; // change to ascii number ,decimal + 0x30 ->hexadecimal
+	outputBuf[7]=(index-tenNum*10)+0x30;
+	//for(i=3;i<7;i++) crc ^= outputBuf[i];
+	//outputBuf[i]=crc;
+    transferSize=8;
+	if(transferSize)
+	{
+		while(transOngoingFlag);
+		transOngoingFlag=1;
+		HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
+	}
+	nowLightState=NOW_LIGHT_IS_ON;
+	#endif
+
+}
+/****************************************************************************************************
+**
+*Function Name:static void selectLight_AU(uint8_t index)
+*Function: UART2 communication order command 
+*Input Ref: subItem switch led number
+*Return Ref:NO
+*
+****************************************************************************************************/
+static void selectLight_AU(uint8_t index)
+{
+	
+   //uint8_t i,crc;
+	uint8_t tenNum;
+
+	//tenNum=index/10; // remainder
+	tenNum=index/9; // WT.EDIT 5 group LED number 2021.04.23 remainder
 
 	//crc=0x55;
 	outputBuf[0]='V'; //0X56

@@ -29,7 +29,7 @@ typedef struct _KeyStruct
 #define KEY_STATUS_FREEZE		5
 #define KEY_STATUS_UP			2
 
-#define NO_KEY				(0x3ff)//(0x1ff) WT.EDIT 2021.04.23
+#define NO_KEY				(0x3ff)//(0x3ff) WT.EDIT 2021.04.23
 #define KEY_CODE_KEY9		(0x0001) //PA0 
 #define KEY_CODE_KEY3		(0x0002)
 #define KEY_CODE_KEY5		(0x0004)
@@ -40,5 +40,6 @@ typedef struct _KeyStruct
 #define KEY_CODE_KEY4		(0x0080)
 #define KEY_CODE_KEY8		(0x0100)
 #define KEY_CODE_KEY10      (0x8000) //WT.EDIT 2021.04.23 PA15
+#define KEY_CODE_KEY11      (0x80000) //WT.EDIT 2021.04.23 PA13--SWDIO
 
 #endif /* INC_KEYDEF_H_ */

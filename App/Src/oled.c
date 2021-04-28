@@ -173,8 +173,10 @@ void oledInit(void)
 ***
 *Function Name:void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex)
 *Function : menu of main board for 16 group
-*Input Ref:
-*Return Ref:
+*
+Input Ref:
+*
+Return Ref:
 *
 *************************************************************************************************************/
 void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex)
@@ -208,7 +210,7 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 		LedMainNumber = tmpLight;
 		
 			u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
-			printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[lightIndex]);
+			printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
 			//printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,tmpStr);
 			printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
 		
@@ -275,10 +277,10 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 }
 /************************************************************************************************************
 ***
-*Function Name:void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex)
-*Function : menu be selected axiliary left or right led board
-*Input Ref:
-*Return Ref:
+	*Function Name:void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex)
+	*Function : menu be selected axiliary left or right led board
+	*Input Ref:
+	*Return Ref:
 *
 *************************************************************************************************************/
 void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex_lr,uint8_t blinkIndex)
@@ -335,7 +337,70 @@ void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 	u8g2_SendBuffer(&u8g2);
 
 }
+/************************************************************************************************************
+***
+	*Function Name:void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex)
+	*Function : Auxiliary board  spot  and linear LED number
+	*Input Ref:
+	*Return Ref:
+*
+*************************************************************************************************************/
+printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex_au,uint8_t blinkIndex) //echoLight = LED Name 
+{
+	char tmpStr[MAX_UNION_STR_LEN+1];
+	uint8_t tmpFilter,tmpLight,i,tenNum;
+	uint8_t group;
 
+
+	tmpFilter=filterIndex+1;
+	tmpLight=lightIndex_au+1;
+	group=retrieveEchoGroup();
+
+	printFrame();
+
+	switch(group)
+	{
+	case ECHO_GROUP_A:
+		i=0;
+		if(tmpLight<9) //auxiliary board has nine LED 
+			tmpStr[i++]=tmpLight+0x30; 
+		else
+		{
+			tenNum=tmpLight/9;
+			tmpStr[i++]=tenNum+0x30;
+			tmpLight-= tenNum*9;//tmpLight-= tenNum*10;
+			tmpStr[i++]=tmpLight+0x30;
+		}
+		tmpStr[i++]=0;
+		//LedSpotNumber = tmpLight;
+		u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
+		printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
+		printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
+
+		i=0;
+		if(tmpFilter<10) tmpStr[i++]=tmpFilter+0x30;
+		else
+		{
+			tenNum=tmpFilter/10;
+			tmpStr[i++]=tenNum+0x30;
+			tmpFilter-= tenNum*10;
+			tmpStr[i++]=tmpFilter+0x30;
+		}
+		tmpStr[i++]=0;
+		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
+		{
+			printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[filterIndex]);
+			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,tmpStr);
+		}
+		break;
+
+
+	}
+	u8g2_SendBuffer(&u8g2);
+
+
+
+}
 void blinkEchoFilter(uint8_t filterIndex)
 {
 	static uint8_t sw=0;

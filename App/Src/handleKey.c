@@ -9,6 +9,7 @@
 
 #include "cmd_link.h"
 #include "oled.h"
+#include "handlekey.h"
 //#include "gpio.h"
 //#include "tim.h"
 //#include "usart.h"
@@ -45,7 +46,7 @@
 
 #define LED_NUMBER 6
 
-uint8_t Auxiliary_Flag;
+
 
 static uint16_t scanKey(void);
 static void displayUnionInfo(uint8_t unionIndex);
@@ -321,19 +322,27 @@ void handleInput(void)
 
 		if(!(pkey->keyCode & KEY_CODE_KEY2))	// change light +  //LED  
 		{
-			Auxiliary_Flag=0;
-			if(echoLight>=MAX_LIGHT_NUMBER-1) echoLight=0;
-			else echoLight++;
-			echoGroup=ECHO_GROUP_A;
-			printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
-			//printEchoLight(echoLight);
-			// turn on cw slowly
-			//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CW);
+			if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board change light + spot and lin
+			    if(echoLight>=MAX_AUXILIARY_NUMBER-1) echoLight=0;
+				else echoLight++;
+				echoGroup=ECHO_GROUP_A;
+				printSettingInfo_Auxiliary(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
+
+			}
+			else{
+				if(echoLight>=MAX_LIGHT_NUMBER-1) echoLight=0;
+				else echoLight++;
+				echoGroup=ECHO_GROUP_A;
+				printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
+				//printEchoLight(echoLight);
+				// turn on cw slowly
+				//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CW);
+			}
 
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY1))	// change light -
 		{
-			Auxiliary_Flag=0;
+		
 			if(echoLight==0) echoLight=MAX_LIGHT_NUMBER-1;
 			else echoLight--;
 			echoGroup=ECHO_GROUP_A;
@@ -409,13 +418,26 @@ void handleInput(void)
 		{
 			  // buf= 0x45;
 			  // HAL_UART_Transmit(&huart2,&buf,1,0);
-			    Auxiliary_Flag=1;
-			   if(echoLight_LR>=MAX_LIGHT_LR_NUMBER-1) echoLight_LR=0;
-				else echoLight_LR++;
+			    auxiliary_t.Auxiliary_flag=1;
+			    if(echoLight_LR>=MAX_LIGHT_LR_NUMBER-1){
+					echoLight_LR=0;
+					auxiliary_t.AuxiliarySubItem=Main;
+			    }
+				else{ 
+					echoLight_LR++;
+					auxiliary_t.AuxiliarySubItem ++;
+				}
 				echoGroup=ECHO_GROUP_A;
 				printSettingInfo_LR_Led(echoUnion,echoFilter,echoLight_LR,BLINK_OFF); //echoLight = LED Name
 			   
 		}
+		#if 0
+		else if(!(pkey->keyCode & KEY_CODE_KEY11)){
+
+
+
+		}
+		#endif 
 	}
 	else if(pkey->status==KEY_STATUS_UP)
 	{

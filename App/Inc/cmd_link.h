@@ -15,6 +15,7 @@
 #define MAX_UNION_NUMBER	20
 
 #define MAX_LIGHT_LR_NUMBER    5 //WT.EDIT 
+#define MAX_AUXILIARY_NUMBER   9 //WT.EDIT 2021.04.27
 
 
 #define CMD_SUCCESS	0
@@ -47,12 +48,17 @@ void turnoffAllLight(void);
 uint8_t getLightOnoffState(void);
 void setCurrentLightOn(void);
 void setCurrentLightOn_LR(void);//WT.EDIT 2021.04.27
+void setCurrentLightOn_AU(void); //WT.EDIT 
+
+
 void brightnessAdj(uint8_t dir);
 void motionCtrl(uint8_t dir);
 void reportLightStatusChange(void);
 uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_t *revealLight,uint8_t *revealLight_LR, uint8_t *revealGroup);
 uint8_t getItemFromUnion(uint8_t unionIndex,uint8_t *filterIndex,uint8_t *lightIndex);
 void updateLight_LR(uint8_t lightIndex_LR);
+void updateLight_AU(uint8_t lightIndex_AU);
+
 
 
 #endif /* CMD_LINK_H_ */
