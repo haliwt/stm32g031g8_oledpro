@@ -108,8 +108,8 @@ void Error_Handler(void);
 #define KEY10_GPIO_Port             GPIOA
 
 
-#define KEY11_Pin				    GPIO_PIN_2   //PF2 --- Smart and Oneself Mode switch "Menu"
-#define KEY11_GPIO_Port			    GPIOF
+
+
 
 
 

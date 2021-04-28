@@ -40,6 +40,6 @@ typedef struct _KeyStruct
 #define KEY_CODE_KEY4		(0x0080)
 #define KEY_CODE_KEY8		(0x0100)
 #define KEY_CODE_KEY10      (0x8000) //WT.EDIT 2021.04.23 PA15
-#define KEY_CODE_KEY11      (0x80000) //WT.EDIT 2021.04.23 PA13--SWDIO
+#define KEY_CODE_KEY11      (0x2000) //WT.EDIT 2021.04.23 PA13--SWDIO
 
 #endif /* INC_KEYDEF_H_ */

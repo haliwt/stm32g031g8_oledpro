@@ -90,17 +90,17 @@ static uint16_t scanKey(void)
 {
 	volatile uint16_t tmpKeycode,portA,portB,portC;
 
-	portA= (GPIOA->IDR & 0x9901);//(GPIOA->IDR & 0x1901); //GPIO port input data register "IDR"
+	portA= (GPIOA->IDR & 0x9901);//9901 //(GPIOA->IDR & 0x1901); //GPIO port input data register "IDR"
 	portB =(GPIOB->IDR & 0x13);
 	portC= (GPIOC->IDR & 0x8040);
-	tmpKeycode =  portA & 0x01;				// Key9 ---PA0 ->          0B    0000  0001
-	tmpKeycode |= ((portA & 0x0100)>>7);	// Key3 --PA8 ->           0B    0000  0010
-	tmpKeycode |= ((portA & 0x1800)>>9);	// Key5,Key6,-->PA11,PA12  0B    0000  1100
-    tmpKeycode |= ((portA & 0x8000)>>6);    //Key10--PA15              0B 10 0000  0000
-	tmpKeycode |= ((portB & 0x0003)<<4);	// Key1,Key2-->PB0 ,PB1 -->0B    0011  0000
-	tmpKeycode |= ((portB & 0x0010)<<2);	// Key7  --PB4->           0B    0100  0000 
-	tmpKeycode |= ((portC & 0x0040)<<1);	// Key4  --PC6->           0B    1000  0000
-	tmpKeycode |= ((portC & 0x8000)>>7);	// Key8 ---->PC15          0B 01 0000  0000
+	tmpKeycode =  portA & 0x01;				// Key9 ---PA0 ->          0B     0000  0001
+	tmpKeycode |= ((portA & 0x0100)>>7);	// Key3 --PA8 ->           0B     0000  0010
+	tmpKeycode |= ((portA & 0x1800)>>9);	// Key5,Key6,-->PA11,PA12  0B     0000  1100
+    tmpKeycode |= ((portA & 0x8000)>>6);    //Key10--PA15              0B  10 0000  0000
+	tmpKeycode |= ((portB & 0x0003)<<4);	// Key1,Key2-->PB0 ,PB1 -->0B     0011  0000
+	tmpKeycode |= ((portB & 0x0010)<<2);	// Key7  --PB4->           0B     0100  0000 
+	tmpKeycode |= ((portC & 0x0040)<<1);	// Key4  --PC6->           0B     1000  0000
+	tmpKeycode |= ((portC & 0x8000)>>7);	// Key8 ---->PC15          0B  01 0000  000
 	tmpKeycode &= NO_KEY;
 
 	return tmpKeycode;
@@ -285,6 +285,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)	// 2ms
 void handleInput(void)
 {
 
+
 	pKeyStruct pkey=getKey();
 
 	if(_250msFlag)
@@ -428,7 +429,7 @@ void handleInput(void)
 			brightnessAdj(BRIGHTNESS_ADJ_UP);
 			//motionCtrl(MOTION_CW);
 		}
-		else if(!(pkey->keyCode & KEY_CODE_KEY10))	// auxiliary Menu WT.EDIT 
+	    else if(!(pkey->keyCode & KEY_CODE_KEY10))	// auxiliary Menu button WT.EDIT 
 		{
 			  // buf= 0x45;
 			  // HAL_UART_Transmit(&huart2,&buf,1,0);
@@ -445,13 +446,7 @@ void handleInput(void)
 				printSettingInfo_LR_Led(echoUnion,echoFilter,echoLight_LR,BLINK_OFF); //echoLight = LED Name
 			   
 		}
-		#if 0
-		else if(!(pkey->keyCode & KEY_CODE_KEY11)){
-
-
-
-		}
-		#endif 
+		
 	}
 	else if(pkey->status==KEY_STATUS_UP)
 	{
