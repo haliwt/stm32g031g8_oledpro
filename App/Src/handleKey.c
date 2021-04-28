@@ -347,13 +347,22 @@ void handleInput(void)
 		else if(!(pkey->keyCode & KEY_CODE_KEY1))	// change light -
 		{
 		
-			if(echoLight==0) echoLight=MAX_LIGHT_NUMBER-1;
-			else echoLight--;
-			echoGroup=ECHO_GROUP_A;
-			printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
-			//printEchoLight(echoLight);
-			// turn on cw quickly
-			//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_HIGH,MOTOR_DIR_CW);
+			if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board change light + spot and lin
+			    if(echoLight_AU==0) echoLight_AU=MAX_AUXILIARY_NUMBER-1;
+				else echoLight_AU--;
+				echoGroup=ECHO_GROUP_A;
+				printSettingInfo_Auxiliary(echoUnion,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
+
+			}
+			else{
+				if(echoLight==0) echoLight=MAX_LIGHT_NUMBER-1;
+				else echoLight--;
+				echoGroup=ECHO_GROUP_A;
+				printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
+				//printEchoLight(echoLight);
+				// turn on cw quickly
+				//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_HIGH,MOTOR_DIR_CW);
+			}
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY4))	// change filter +  
 		{
