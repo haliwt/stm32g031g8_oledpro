@@ -50,6 +50,8 @@
 
 static uint16_t scanKey(void);
 static void displayUnionInfo(uint8_t unionIndex);
+static void displayUnionInfo_Manual(uint8_t unionIndex);
+
 
 static KeyStruct glKey;				// key for forward/backward
 static uint8_t echoFilter;
@@ -352,7 +354,7 @@ void handleInput(void)
 			// turn on ccw slowly
 			//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CCW);
 		}
-		else if(!(pkey->keyCode & KEY_CODE_KEY5))	// change union + //smart button +
+		else if(!(pkey->keyCode & KEY_CODE_KEY5))	// change union + //
 		{
 			 auxiliary_t.SmartKey = 0;
 			if(echoUnion>=MAX_UNION_NUMBER-1) echoUnion=0;
@@ -362,7 +364,7 @@ void handleInput(void)
 			// turn on ccw slowly
 			//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CCW);
 		}
-		else if(!(pkey->keyCode & KEY_CODE_KEY6))	// change union - //smart button-
+		else if(!(pkey->keyCode & KEY_CODE_KEY6))	// change union - //
 		{
 			 auxiliary_t.SmartKey = 0;
 			if(echoUnion==0) echoUnion=MAX_UNION_NUMBER-1;
@@ -402,7 +404,7 @@ void handleInput(void)
 		}
 	    else if(!(pkey->keyCode & KEY_CODE_KEY10))	// auxiliary Menu button WT.EDIT 
 		{
-
+             //smart mode
 			  if(pkey->long_pressed ==1 && auxiliary_t.SmartKey !=1){
 			  	   
 		        	keySmartflag = keySmartflag ^ 0x1;
@@ -414,11 +416,16 @@ void handleInput(void)
 					else {
  						 auxiliary_t.SmartMenuItem =0;
 					     auxiliary_t.SmartKey = 1;
-						
+					     auxiliary_t.SmartKey = 0;
+						 //manual "menu"
+						  if(echoUnion>=MAX_UNION_NUMBER-1) echoUnion=0;
+						  else echoUnion++;
+
+						  displayUnionInfo(echoUnion);
 					}
 			        
               }
-			  else{
+			  else{ //manual mode 
 			    auxiliary_t.Auxiliary_flag=1;
 			    if(echoLight_LR>=MAX_LIGHT_LR_NUMBER-1){
 					echoLight_LR=0;
@@ -514,6 +521,23 @@ static void displayUnionInfo(uint8_t unionIndex)
 	//printEchoFilter(echoFilter);
 	//printEchoLight(echoLight);
 }
+
+/*****************************************************************************************************
+**
+*Function Name:void displayUnionInfo_Menu(uint8_t unionIndex)
+*Function : display auxiliary "menu" --LED 
+*
+*
+*
+******************************************************************************************************/
+static void displayUnionInfo_Manual(uint8_t unionIndex)
+{
+	echoGroup=ECHO_GROUP_B;
+	getItemFromUnion(unionIndex,&echoFilter,&echoLight);
+	printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
+	
+}
+
 /*****************************************************************************************************
 **
 *Function Name:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)

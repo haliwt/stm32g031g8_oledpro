@@ -7,6 +7,7 @@
 
 #include "oled.h"
 #include "posDefine.h"
+#include "handlekey.h"
 
 #define ENABLE_VCC_LEVEL	GPIO_PIN_RESET
 #define DISABLE_VCC_LEVEL	GPIO_PIN_SET
@@ -17,6 +18,8 @@ extern uint8_t retrieveEchoUnion(void);
 extern uint8_t retrieveEchoGroup(void);
 
 static void printFrame(void);
+static void printFrame_Manual(void);
+
 static void printLogo(u8g2_t *pU8g2);
 static void printWithFmt(u8g2_t *pU8g2,uint8_t frmOrigX,uint8_t frmOrigY,uint8_t frmWidth,uint8_t frmHeight,uint8_t fmtCode,const char* pStr);
 
@@ -191,7 +194,10 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 	tmpLight=lightIndex+1; 
 	group=retrieveEchoGroup();
 
-	printFrame();
+	if(auxiliary_t.SmartMenuItem ==1)
+		printFrame_Manual();
+	else
+	   printFrame();
 
 	switch(group)
 	{
@@ -238,14 +244,14 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 		if(tmpUnion<10) tmpStr[i++]=tmpUnion+0x30;
 		else
 		{
-			tenNum=tmpUnion/10;
+			tenNum=tmpUnion/10;  //filter has ten 
 			tmpStr[i++]=tenNum+0x30;
 			tmpUnion-= tenNum*10;
 			tmpStr[i++]=tmpUnion+0x30;
 		}
 		tmpStr[i++]=' ';
 
-		j=0;
+		j=0; //LED number 
 		while(lightStr[lightIndex][j]!=0)
 		{
 			tmpStr[i++]=lightStr[lightIndex][j];
@@ -345,7 +351,7 @@ void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 	*Return Ref:
 *
 *************************************************************************************************************/
-printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex_au,uint8_t blinkIndex) //echoLight = LED Name 
+void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex_au,uint8_t blinkIndex) //echoLight = LED Name
 {
 	char tmpStr[MAX_UNION_STR_LEN+1];
 	uint8_t tmpFilter,tmpLight,i,tenNum;
@@ -450,7 +456,13 @@ uint8_t getEchoLightBlink(void)
 {
 	return enableBlinkEchoLight;
 }
-
+/*****************************************************************************************
+**
+*Function Name:static void printFrame(void)
+*Function: diplay title words " SmartButton"
+*
+*
+******************************************************************************************/
 static void printFrame(void)
 {
 	u8g2_ClearBuffer(&u8g2);
@@ -469,6 +481,32 @@ static void printFrame(void)
 	printWithFmt(&u8g2,TITLE_LIGHT_X,TITLE_LIGHT_Y,WIDTH_LIGHT,TITLE_LIGHT_HEIGHT,ALIGN_MID_ALL,"Light");
 	printWithFmt(&u8g2,TITLE_FILTER_X,TITLE_FILTER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,"Filter");
 	printWithFmt(&u8g2,TITLE_UNION_X,TITLE_UNION_Y,WIDTH_UNION,TITLE_UNION_HEIGHT,ALIGN_MID_ALL,"SmartButton");
+}
+/*****************************************************************************************
+**
+*Function Name:static void printFrame(void)
+*Function: diplay title words  manual " ManualButton"
+*
+*
+******************************************************************************************/
+static void printFrame_Manual(void)
+{
+	u8g2_ClearBuffer(&u8g2);
+	u8g2_DrawFrame(&u8g2,0,0,256,64);
+
+	u8g2_DrawVLine(&u8g2,VLINE1_X,0,63);
+	u8g2_DrawVLine(&u8g2,VLINE2_X,0,63);
+
+	u8g2_DrawHLine(&u8g2,HLINE1_X,HLINE1_Y,255);
+	u8g2_DrawHLine(&u8g2,HLINE2_X,HLINE2_Y,HLINE_LEN);
+	u8g2_DrawHLine(&u8g2,HLINE3_X,HLINE3_Y,HLINE_LEN);
+
+	u8g2_SetFontMode(&u8g2, 1);
+	u8g2_SetFontDirection(&u8g2, 0);
+	u8g2_SetFont(&u8g2, u8g2_font_7x13_tr);
+	printWithFmt(&u8g2,TITLE_LIGHT_X,TITLE_LIGHT_Y,WIDTH_LIGHT,TITLE_LIGHT_HEIGHT,ALIGN_MID_ALL,"Light");
+	printWithFmt(&u8g2,TITLE_FILTER_X,TITLE_FILTER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,"Filter");
+	printWithFmt(&u8g2,TITLE_UNION_X,TITLE_UNION_Y,WIDTH_UNION,TITLE_UNION_HEIGHT,ALIGN_MID_ALL,"ManualtButton");
 }
 
 static void printLogo(u8g2_t *pU8g2)
