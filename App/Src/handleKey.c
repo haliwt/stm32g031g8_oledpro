@@ -206,7 +206,7 @@ void updateKeyStatus(void)
 				  }
 				  glKey.multi_pressed=1;
 			  }
-			  if(keyDownCount>KEY_LONG_DELAY)//3000 * 2ms 
+			  if(keyDownCount>KEY_LONG_DELAY && keyDownCount < KEY_MAX_LONG_DELAY )//3000 * 2ms 
 			  {
 				  glKey.long_pressed=1;
 				  keyDownCount--;
@@ -239,8 +239,7 @@ void updateKeyStatus(void)
 *******************************************************************************************/
 void handleInput(void)
 {
- 
-    uint8_t buf;
+	static uint8_t keySmartflag;
 	pKeyStruct pkey=getKey();
 
 	if(_250msFlag)
@@ -280,8 +279,18 @@ void handleInput(void)
 	{
 		pkey->status=KEY_STATUS_FREEZE;
 
-		if(!(pkey->keyCode & KEY_CODE_KEY2))	// change light +  //LED  
+		
+
+        if(!(pkey->keyCode & KEY_CODE_KEY2) && !(pkey->keyCode & KEY_CODE_KEY1)){
+				 if(pkey->multi_pressed==1){
+					 auxiliary_t.Auxiliary_flag=0;
+					 auxiliary_t.SmartKey = 0;
+				 }
+
+		}
+		else if(!(pkey->keyCode & KEY_CODE_KEY2))	// change light +  //LED  
 		{
+			 auxiliary_t.SmartKey = 0;
 			if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board change light + spot and lin
 			    if(echoLight_AU>=MAX_AUXILIARY_NUMBER-1) echoLight_AU=0;
 				else echoLight_AU++;
@@ -302,7 +311,7 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY1))	// change light -
 		{
-		
+			 auxiliary_t.SmartKey = 0;
 			if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board change light + spot and lin
 			    if(echoLight_AU==0) echoLight_AU=MAX_AUXILIARY_NUMBER-1;
 				else echoLight_AU--;
@@ -322,6 +331,7 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY4))	// change filter +  
 		{
+			 auxiliary_t.SmartKey = 0;
 			if(echoFilter>=MAX_FILTER_NUMBER-1) echoFilter=0;
 			else echoFilter++;
 			echoGroup=ECHO_GROUP_A;
@@ -333,6 +343,7 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY3))	// change filter -
 		{
+			 auxiliary_t.SmartKey = 0;
 			if(echoFilter==0) echoFilter=MAX_FILTER_NUMBER-1;
 			else echoFilter--;
 			echoGroup=ECHO_GROUP_A;
@@ -343,6 +354,7 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY5))	// change union + //smart button +
 		{
+			 auxiliary_t.SmartKey = 0;
 			if(echoUnion>=MAX_UNION_NUMBER-1) echoUnion=0;
 			else echoUnion++;
 
@@ -352,6 +364,7 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY6))	// change union - //smart button-
 		{
+			 auxiliary_t.SmartKey = 0;
 			if(echoUnion==0) echoUnion=MAX_UNION_NUMBER-1;
 			else echoUnion--;
 
@@ -361,6 +374,7 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY7))	// turn off light
 		{
+			 auxiliary_t.SmartKey = 0;
 			if(getLightOnoffState()==NOW_LIGHT_IS_ON)
 			{
 				turnoffAllLight();
@@ -376,22 +390,34 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY8))	// brightness adj -
 		{
+			 auxiliary_t.SmartKey = 0;
 			brightnessAdj(BRIGHTNESS_ADJ_DOWN);
 			//motionCtrl(MOTION_CCW);
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY9))	// brightness adj +
 		{
+			 auxiliary_t.SmartKey = 0;
 			brightnessAdj(BRIGHTNESS_ADJ_UP);
 			//motionCtrl(MOTION_CW);
 		}
 	    else if(!(pkey->keyCode & KEY_CODE_KEY10))	// auxiliary Menu button WT.EDIT 
 		{
 
-			  if(pkey->long_pressed ==1){
-		        	buf= 0x45;
-			   		HAL_UART_Transmit(&huart2,&buf,1,0);
-
-			  }
+			  if(pkey->long_pressed ==1 && auxiliary_t.SmartKey !=1){
+			  	   
+		        	keySmartflag = keySmartflag ^ 0x1;
+					HAL_UART_Transmit(&huart2,&keySmartflag ,1,0);
+					if(keySmartflag ==1 ){
+						auxiliary_t.SmartMenuItem =1;
+					    auxiliary_t.SmartKey =1;
+					}
+					else {
+ 						 auxiliary_t.SmartMenuItem =0;
+					     auxiliary_t.SmartKey = 1;
+						
+					}
+			        
+              }
 			  else{
 			    auxiliary_t.Auxiliary_flag=1;
 			    if(echoLight_LR>=MAX_LIGHT_LR_NUMBER-1){

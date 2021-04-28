@@ -19,8 +19,9 @@ typedef struct _auxiliary_
 	uint8_t AuxiliaryLed_id;
 	uint8_t AuxiliarySubItem;
 	uint8_t Auxiliary_flag;
-    uint8_t SmartMuenFlag;
-
+    uint8_t SmartMenuFlag;
+    uint8_t SmartMenuItem;
+    uint8_t SmartKey;
 }auxiliary;
 
 extern auxiliary auxiliary_t;

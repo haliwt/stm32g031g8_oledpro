@@ -20,7 +20,8 @@ typedef struct _KeyStruct
 
 #define KEY_JITTER_DELAY	10		// jitter timeout when the key pressed
 #define KEY_MULTI_DELAY		400		// indicate multiple key pressed
-#define KEY_LONG_DELAY		3000	// indicate the key pressed for a long time
+#define KEY_LONG_DELAY		2500	// indicate the key pressed for a long time
+#define KEY_MAX_LONG_DELAY  3000
 #define KEY_USEFUL_DELAY	10		// key up status useful-life
 #define KEY_TYPEMATIC_RATE	150		// typematic rate
 
