@@ -206,7 +206,7 @@ void updateKeyStatus(void)
 				  }
 				  glKey.multi_pressed=1;
 			  }
-			  if(keyDownCount>KEY_LONG_DELAY)
+			  if(keyDownCount>KEY_LONG_DELAY)//3000 * 2ms 
 			  {
 				  glKey.long_pressed=1;
 				  keyDownCount--;
@@ -228,52 +228,7 @@ void updateKeyStatus(void)
 }
 
 
-/*****************************************************************************************************
-**
-*Function Name:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-*Function : timer of callback function ,timer of times is 2ms
-*
-*
-*
-******************************************************************************************************/
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)	// 2ms
-{
-	static uint8_t tick_250ms=0;
 
-	tick_250ms++;
-	counter_ActionDelay++;
-	counter_15m++;
-
-	if(tick_250ms>125)
-	{
-		_250msFlag=1;
-		tick_250ms=0;
-	}
-	if(counter_ActionDelay>500)//500 * 2ms = 1000ms =1s
-	{
-		counter_ActionDelay=0;
-		checkParameterFlag=1;
-	}
-	if(counter_15m >= (uint32_t)450000L) //15 minute 
-	{
-		timeoutFlag=1;
-		counter_15m=(uint32_t)0L;
-	}
-	if(timerDownFlag)
-	{
-		counter_Waitingtime++;
-		if(counter_Waitingtime>=60000) //2ms * 60000=120s 
-		{
-			timerDownFlag=0;
-			waitingTimeoutFlag=1;
-		}
-	}
-	else
-	{
-		counter_Waitingtime=0;
-	}
-	updateKeyStatus(); //key scan every 2ms be detect
-}
 /*****************************************************************************************
 ***
 *Function Name:void handleInput(void)
@@ -284,8 +239,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)	// 2ms
 *******************************************************************************************/
 void handleInput(void)
 {
-
-
+ 
+    uint8_t buf;
 	pKeyStruct pkey=getKey();
 
 	if(_250msFlag)
@@ -431,8 +386,13 @@ void handleInput(void)
 		}
 	    else if(!(pkey->keyCode & KEY_CODE_KEY10))	// auxiliary Menu button WT.EDIT 
 		{
-			  // buf= 0x45;
-			  // HAL_UART_Transmit(&huart2,&buf,1,0);
+
+			  if(pkey->long_pressed ==1){
+		        	buf= 0x45;
+			   		HAL_UART_Transmit(&huart2,&buf,1,0);
+
+			  }
+			  else{
 			    auxiliary_t.Auxiliary_flag=1;
 			    if(echoLight_LR>=MAX_LIGHT_LR_NUMBER-1){
 					echoLight_LR=0;
@@ -445,7 +405,8 @@ void handleInput(void)
 				echoGroup=ECHO_GROUP_A;
 				printSettingInfo_LR_Led(echoUnion,echoFilter,echoLight_LR,BLINK_OFF); //echoLight = LED Name
 			   
-		}
+		       }
+	    }
 		
 	}
 	else if(pkey->status==KEY_STATUS_UP)
@@ -527,3 +488,50 @@ static void displayUnionInfo(uint8_t unionIndex)
 	//printEchoFilter(echoFilter);
 	//printEchoLight(echoLight);
 }
+/*****************************************************************************************************
+**
+*Function Name:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+*Function : timer of callback function ,timer of times is 2ms
+*
+*
+*
+******************************************************************************************************/
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)	// 2ms
+{
+	static uint8_t tick_250ms=0;
+
+	tick_250ms++;
+	counter_ActionDelay++;
+	counter_15m++;
+
+	if(tick_250ms>125)
+	{
+		_250msFlag=1;
+		tick_250ms=0;
+	}
+	if(counter_ActionDelay>500)//500 * 2ms = 1000ms =1s
+	{
+		counter_ActionDelay=0;
+		checkParameterFlag=1;
+	}
+	if(counter_15m >= (uint32_t)450000L) //15 minute 
+	{
+		timeoutFlag=1;
+		counter_15m=(uint32_t)0L;
+	}
+	if(timerDownFlag)
+	{
+		counter_Waitingtime++;
+		if(counter_Waitingtime>=60000) //2ms * 60000=120s 
+		{
+			timerDownFlag=0;
+			waitingTimeoutFlag=1;
+		}
+	}
+	else
+	{
+		counter_Waitingtime=0;
+	}
+	updateKeyStatus(); //key scan every 2ms be detect
+}
+

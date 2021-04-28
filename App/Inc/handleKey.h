@@ -19,7 +19,7 @@ typedef struct _auxiliary_
 	uint8_t AuxiliaryLed_id;
 	uint8_t AuxiliarySubItem;
 	uint8_t Auxiliary_flag;
-
+    uint8_t SmartMuenFlag;
 
 }auxiliary;
 
