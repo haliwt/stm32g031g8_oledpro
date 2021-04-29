@@ -22,6 +22,8 @@ typedef struct _auxiliary_
     uint8_t SmartMenuFlag;
     uint8_t SmartMenuItem;
     uint8_t SmartKey;
+	uint8_t SmartMode;
+	uint8_t ManualMode;
 }auxiliary;
 
 extern auxiliary auxiliary_t;

@@ -194,10 +194,7 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 	tmpLight=lightIndex+1; 
 	group=retrieveEchoGroup();
 
-	if(auxiliary_t.SmartMenuItem ==1)
-		printFrame_Manual();
-	else
-	   printFrame();
+	printFrame();
 
 	switch(group)
 	{
@@ -300,7 +297,7 @@ void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 	tmpLight=lightIndex_lr+1;
 	group=retrieveEchoGroup();
 
-	printFrame();
+	printFrame_Manual();//printFrame();
 
 	switch(group)
 	{
@@ -362,7 +359,7 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 	tmpLight=lightIndex_au+1;
 	group=retrieveEchoGroup();
 
-	printFrame();
+	printFrame_Manual();
 
 	switch(group)
 	{

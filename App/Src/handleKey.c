@@ -61,6 +61,7 @@ static uint8_t  echoLight_AU; //WT.EDIT 2021.04.28
 
 
 static uint8_t echoUnion;
+static uint8_t  echoUnion_manual; //WT.EDIT 2021.04.28
 static uint8_t echoGroup;
 static uint8_t timerDownFlag;
 static uint32_t counter_15m;
@@ -208,7 +209,7 @@ void updateKeyStatus(void)
 				  }
 				  glKey.multi_pressed=1;
 			  }
-			  if(keyDownCount>KEY_LONG_DELAY && keyDownCount < KEY_MAX_LONG_DELAY )//3000 * 2ms 
+			  if(keyDownCount>KEY_LONG_DELAY)//2500 * 2ms 
 			  {
 				  glKey.long_pressed=1;
 				  keyDownCount--;
@@ -252,7 +253,7 @@ void handleInput(void)
 		//blinkLed();
 	}
 
-	if(checkParameterFlag) //1s
+	if(checkParameterFlag) //1s--update UART1 and UART2 data
 	{
 		checkParameterFlag=0;
 		updateParameter(echoUnion,echoLight,echoLight_LR,echoLight_AU,echoFilter); //blue tooth --USART1
@@ -265,8 +266,8 @@ void handleInput(void)
 		stopSelectFilter(); //UART_Transmit_IT--5 byte //4D 58 4D 53 30 
 		setEchoFilterBlink(DISABLE_BLINK);
 		printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
-		printSettingInfo_LR_Led(echoUnion,echoFilter,echoLight_LR,BLINK_OFF);
-		printSettingInfo_Auxiliary(echoUnion,echoFilter,echoLight_AU,BLINK_OFF);
+		printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
+		printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
 		//printEchoFilter(echoFilter);
 		updateLight(echoLight);  //LED number turn on or off
 		updateLight_LR(echoLight_LR);
@@ -297,8 +298,8 @@ void handleInput(void)
 			    if(echoLight_AU>=MAX_AUXILIARY_NUMBER-1) echoLight_AU=0;
 				else echoLight_AU++;
 				echoGroup=ECHO_GROUP_A;
-				printSettingInfo_Auxiliary(echoUnion,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
-
+				printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
+               // displayUnionInfo_Manual();
 			}
 			else{
 				if(echoLight>=MAX_LIGHT_NUMBER-1) echoLight=0;
@@ -318,7 +319,7 @@ void handleInput(void)
 			    if(echoLight_AU==0) echoLight_AU=MAX_AUXILIARY_NUMBER-1;
 				else echoLight_AU--;
 				echoGroup=ECHO_GROUP_A;
-				printSettingInfo_Auxiliary(echoUnion,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
+				printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
 
 			}
 			else{
@@ -376,7 +377,7 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY7))	// turn off light
 		{
-			 auxiliary_t.SmartKey = 0;
+			auxiliary_t.SmartKey = 0;
 			if(getLightOnoffState()==NOW_LIGHT_IS_ON)
 			{
 				turnoffAllLight();
@@ -409,24 +410,33 @@ void handleInput(void)
 			  	   
 		        	keySmartflag = keySmartflag ^ 0x1;
 					HAL_UART_Transmit(&huart2,&keySmartflag ,1,0);
-					if(keySmartflag ==1 ){
+					if(keySmartflag ==1 ){ //ManualMode
 						auxiliary_t.SmartMenuItem =1;
 					    auxiliary_t.SmartKey =1;
+					    auxiliary_t.SmartMode =1;
+						auxiliary_t.ManualMode =1;
+						 //manual "menu"
+						if(echoUnion_manual>=MAX_UNION_NUMBER-1) echoUnion_manual=0;
+						else echoUnion_manual++;
+
+						displayUnionInfo_Manual(echoUnion_manual);
+						HAL_Delay(1000);
+						HAL_Delay(1000);
 					}
 					else {
- 						 auxiliary_t.SmartMenuItem =0;
+ 						 auxiliary_t.SmartMenuItem =0; //default "Smart Mode "
 					     auxiliary_t.SmartKey = 1;
-					     auxiliary_t.SmartKey = 0;
-						 //manual "menu"
-						  if(echoUnion>=MAX_UNION_NUMBER-1) echoUnion=0;
-						  else echoUnion++;
-
-						  displayUnionInfo(echoUnion);
+					     auxiliary_t.ManualMode=0;
+						 displayUnionInfo_Manual(echoUnion);
+						 HAL_Delay(1000);
+						 HAL_Delay(1000);
+						
 					}
 			        
               }
-			  else{ //manual mode 
-			    auxiliary_t.Auxiliary_flag=1;
+			  if(auxiliary_t.ManualMode ==1){ //manual mode
+			      auxiliary_t.Auxiliary_flag=1;
+				  auxiliary_t.SmartKey = 0;
 			    if(echoLight_LR>=MAX_LIGHT_LR_NUMBER-1){
 					echoLight_LR=0;
 					auxiliary_t.AuxiliarySubItem=Main;
@@ -436,9 +446,15 @@ void handleInput(void)
 					auxiliary_t.AuxiliarySubItem ++;
 				}
 				echoGroup=ECHO_GROUP_A;
-				printSettingInfo_LR_Led(echoUnion,echoFilter,echoLight_LR,BLINK_OFF); //echoLight = LED Name
-			   
-		       }
+				printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF); //echoLight = LED Name
+			  
+		     }
+			 else{
+				auxiliary_t.Auxiliary_flag=0; //
+				auxiliary_t.SmartKey = 0;
+			    auxiliary_t.SmartMode =0;
+				//auxiliary_t.SmartMenuItem =0;
+			 }
 	    }
 		
 	}
@@ -534,7 +550,7 @@ static void displayUnionInfo_Manual(uint8_t unionIndex)
 {
 	echoGroup=ECHO_GROUP_B;
 	getItemFromUnion(unionIndex,&echoFilter,&echoLight);
-	printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
+	printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight,BLINK_OFF);
 	
 }
 

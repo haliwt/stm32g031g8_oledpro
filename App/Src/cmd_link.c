@@ -147,8 +147,8 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 	{
 		currFilter=filterIndex;
 		tmpLight=lightIndex;
-		tmpLight_LR=lightIndx_LR;
-		tmpLight_AU = lightIndx_AU;
+		tmpLight_LR=lightIndx_LR;//mainItem
+		tmpLight_AU = lightIndx_AU;//subItem
 		
 		setEchoFilterBlink(ENABLE_BLINK);
 		selectFilter(filterIndex); //filter HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
@@ -157,9 +157,9 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 	else
 	{
 		
-		updateLight_LR(lightIndx_LR); //WT.EDIT 2021.04.24
+		updateLight_LR(lightIndx_LR); //WT.EDIT 2021.04.24 //
 		if(auxiliary_t.Auxiliary_flag==1)
-	    	updateLight_AU(lightIndx_AU); //WT.EDIT 2021.04.28
+	    	updateLight_AU(lightIndx_AU); //WT.EDIT 2021.04.28 //subItem
 	    else updateLight(lightIndex);
 	}
 }
@@ -262,6 +262,7 @@ void setCurrentLightOn(void)
 		//nowLightState=NOW_LIGHT_IS_ON;
 	}
 }
+//mainItem Item 
 void setCurrentLightOn_LR(void)
 {
 	if(currLight_LR<MAX_LIGHT_LR_NUMBER)
@@ -270,7 +271,7 @@ void setCurrentLightOn_LR(void)
 			//nowLightState=NOW_LIGHT_IS_ON;
 		}
 }
-
+//subItem led
 void setCurrentLightOn_AU(void)
 {
 	if(currLight_AU<MAX_AUXILIARY_NUMBER)
