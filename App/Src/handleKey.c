@@ -247,7 +247,7 @@ void AuxiliaryWhichOneLed_Plus(uint8_t wled)
    break;
 
 	case Spot:
-		  if(echoLight_AU>=MAX_SPOT_NUMBER-1) echoLight_AU=0;
+		  if(echoLight_AU>=MAX_SPOT_NUMBER) echoLight_AU=0;
 			else echoLight_AU++;
 			echoGroup=ECHO_GROUP_A;
 		//	printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
@@ -302,8 +302,8 @@ void AuxiliaryWhichOneLed_Reduce(uint8_t wled)
    case Spot: //01
 		  temp =0xa1;
           HAL_UART_Transmit(&CMD_LINKER,&temp,1,2);
-		  if(echoLight_AU==0) echoLight_AU=MAX_SPOT_NUMBER-1;
-			else echoLight_AU--;
+		  if(echoLight_AU==0) echoLight_AU=MAX_SPOT_NUMBER;
+		  else echoLight_AU--;
 			echoGroup=ECHO_GROUP_A;
 		//	printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
          
