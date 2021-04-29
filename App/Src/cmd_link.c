@@ -661,7 +661,10 @@ static uint8_t checkBleModuleAVDData(void)
 static void selectFilter(uint8_t index)
 {
 	//uint8_t i,crc;
-
+    if( auxiliary_t.AuxiliarySubItem > 4){
+	
+	   auxiliary_t.AuxiliarySubItem =0;
+    }
 	//crc=0x55;
 	outputBuf[0]='M'; //4D
 	outputBuf[1]='X'; //58

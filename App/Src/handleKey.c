@@ -299,7 +299,7 @@ void AuxiliaryWhichOneLed_Reduce(uint8_t wled)
           
    break;
 
-   case Spot: //000
+   case Spot: //01
 		  temp =0xa1;
           HAL_UART_Transmit(&CMD_LINKER,&temp,1,2);
 		  if(echoLight_AU==0) echoLight_AU=MAX_SPOT_NUMBER-1;
@@ -406,6 +406,7 @@ void handleInput(void)
 		else if(!(pkey->keyCode & KEY_CODE_KEY2))	// change light +  //LED  
 		{
 			 auxiliary_t.SmartKey = 0;
+		
 			if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board change light + spot and lin
 			    AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
 				printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
@@ -425,6 +426,7 @@ void handleInput(void)
 		else if(!(pkey->keyCode & KEY_CODE_KEY1))	// change light -
 		{
 			 auxiliary_t.SmartKey = 0;
+			
 			if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board change light + spot and lin
 			    AuxiliaryWhichOneLed_Reduce(auxiliary_t.AuxiliarySubItem);
 				printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
@@ -545,16 +547,20 @@ void handleInput(void)
 			  if(auxiliary_t.ManualMode ==1){ //manual mode
 			      auxiliary_t.Auxiliary_flag=1;
 				  auxiliary_t.SmartKey = 0;
-			    if(echoLight_LR>=MAX_LIGHT_LR_NUMBER-1){
-					echoLight_LR=0;
+			
+			    if(auxiliary_t.AuxiliarySubItem>=MAX_LIGHT_LR_NUMBER-1){
 					auxiliary_t.AuxiliarySubItem=0;
+					HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
 			    }
 				else{ 
-					echoLight_LR++;
+					
 					auxiliary_t.AuxiliarySubItem ++;
+				
+					HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
 				}
+				
 				echoGroup=ECHO_GROUP_A;
-				printSettingInfo_LR_Led(echoLight_LR,echoFilter,echoLight_LR,BLINK_OFF); //echoLight = LED Name
+				printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); //echoLight = LED Name
 			  
 		     }
 			 else{

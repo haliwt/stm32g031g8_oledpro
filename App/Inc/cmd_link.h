@@ -19,7 +19,7 @@
 #define MAX_UNION_NUMBER	20
 
 #define MAX_LIGHT_LR_NUMBER    5 //WT.EDIT 
-#define MAX_AUXILIARY_NUMBER   9 //WT.EDIT 2021.04.27
+#define MAX_AUXILIARY_NUMBER   5 //WT.EDIT 2021.04.27
 
 //Auxiliary Sub Item number LED 
 #define MAX_SPOT_NUMBER     1     //WT.EDIT 2021.04.29

@@ -34,7 +34,7 @@ const char lightStr[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"White\0","UV365\0","
 
 /***************************************************************/
 /*LED name axuiliary WT.EDIT */
-const char lightStr_LR[MAX_LIGHT_LR_INDEX][MAX_LIGHT_STR_LR_LEN+1]={"Main\0","Spot\0","Side\0","Left\0","Right\0"};													 
+const char lightStr_LR[MAX_LIGHT_LR_INDEX][MAX_LIGHT_STR_LR_LEN+1]={"Right\0","Main\0","Spot\0","Side\0","Left\0"};													 
 
 
 /***************************************************************************************************************************************/

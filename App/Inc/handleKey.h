@@ -30,7 +30,7 @@ typedef struct _auxiliary_
 
 extern auxiliary auxiliary_t;
 
-enum _aux_{Spot,Side,Left,Right,Main};
+enum _aux_{Main,Spot,Side,Left,Right};
 
 
 #endif /* HANDLEKEY_H_ */
