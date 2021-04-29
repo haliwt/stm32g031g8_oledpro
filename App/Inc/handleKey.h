@@ -12,6 +12,8 @@
 
 extern void keyInit(void);
 extern void handleInput(void);
+void AuxiliaryWhichOneLed_Plus(uint8_t wled);
+void AuxiliaryWhichOneLed_Reduce(uint8_t wled);
 
 typedef struct _auxiliary_
 {
@@ -28,7 +30,7 @@ typedef struct _auxiliary_
 
 extern auxiliary auxiliary_t;
 
-enum _aux_{Main,Spot,Side,Left,Right};
+enum _aux_{Spot,Side,Left,Right,Main};
 
 
 #endif /* HANDLEKEY_H_ */

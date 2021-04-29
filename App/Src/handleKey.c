@@ -230,8 +230,119 @@ void updateKeyStatus(void)
   }
 }
 
+/*****************************************************************************************
+***
+*Function Name:void AuxiliaryWhichOneLed(void)
+*Function : auxiliary board execute which sub item which one led 
+*Input Ref:NO
+*Return Ref:NO
+*
+*******************************************************************************************/
+void AuxiliaryWhichOneLed_Plus(uint8_t wled)
+{
+   switch(wled){
+
+	case Main:
+          
+   break;
+
+	case Spot:
+		  if(echoLight_AU>=MAX_SPOT_NUMBER-1) echoLight_AU=0;
+			else echoLight_AU++;
+			echoGroup=ECHO_GROUP_A;
+		//	printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
+         
+	break;
+
+	case Side:
+		if(echoLight_AU>=MAX_SIDE_NUMBER-1) echoLight_AU=0;
+		else echoLight_AU++;
+		echoGroup=ECHO_GROUP_A;
+	break;
+
+	case Left:
+		if(echoLight_AU>=MAX_LEFT_NUMBER-1) echoLight_AU=0;
+		else echoLight_AU++;
+		echoGroup=ECHO_GROUP_A;
+	break;
+
+	case Right:
+		if(echoLight_AU>=MAX_RIGHT_NUMBER-1) echoLight_AU=0;
+		else echoLight_AU++;
+		echoGroup=ECHO_GROUP_A;
+
+	break;
+
+	default :
+	  
+
+	break;
+  }
+
+}
+/*****************************************************************************************
+***
+*Function Name:void AuxiliaryWhichOneLed(void)
+*Function : auxiliary board execute which sub item which one led 
+*Input Ref:NO
+*Return Ref:NO
+*
+*******************************************************************************************/
+void AuxiliaryWhichOneLed_Reduce(uint8_t wled)
+{
+	uint8_t temp;
+	switch(wled){
+
+	case Main:
+		 temp =0xa0;
+         HAL_UART_Transmit(&CMD_LINKER,&temp,1,2);
+          
+   break;
+
+   case Spot: //000
+		  temp =0xa1;
+          HAL_UART_Transmit(&CMD_LINKER,&temp,1,2);
+		  if(echoLight_AU==0) echoLight_AU=MAX_SPOT_NUMBER-1;
+			else echoLight_AU--;
+			echoGroup=ECHO_GROUP_A;
+		//	printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
+         
+	break;
+
+	case Side: //02
+		 temp =0xa2;
+          HAL_UART_Transmit(&CMD_LINKER,&temp,1,2);
+		if(echoLight_AU==0) echoLight_AU=MAX_SIDE_NUMBER-1;
+		else echoLight_AU--;
+		echoGroup=ECHO_GROUP_A;
+	break;
+
+	case Left: //03
+		 temp =0xa3;
+          HAL_UART_Transmit(&CMD_LINKER,&temp,1,2);
+		if(echoLight_AU ==0) echoLight_AU=MAX_LEFT_NUMBER-1;
+		else echoLight_AU--;
+		echoGroup=ECHO_GROUP_A;
+	break;
+
+	case Right://04
+		 temp =0xa4;
+         HAL_UART_Transmit(&CMD_LINKER,&temp,1,2);
+		if(echoLight_AU == 0) echoLight_AU=MAX_RIGHT_NUMBER-1;
+		else echoLight_AU--;
+		echoGroup=ECHO_GROUP_A;
+
+	break;
+
+	default :
+	  
+
+	break;
+  }
 
 
+
+}
 /*****************************************************************************************
 ***
 *Function Name:void handleInput(void)
@@ -296,9 +407,7 @@ void handleInput(void)
 		{
 			 auxiliary_t.SmartKey = 0;
 			if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board change light + spot and lin
-			    if(echoLight_AU>=MAX_AUXILIARY_NUMBER-1) echoLight_AU=0;
-				else echoLight_AU++;
-				echoGroup=ECHO_GROUP_A;
+			    AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
 				printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
                // displayUnionInfo_Manual();
 			}
@@ -317,9 +426,7 @@ void handleInput(void)
 		{
 			 auxiliary_t.SmartKey = 0;
 			if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board change light + spot and lin
-			    if(echoLight_AU==0) echoLight_AU=MAX_AUXILIARY_NUMBER-1;
-				else echoLight_AU--;
-				echoGroup=ECHO_GROUP_A;
+			    AuxiliaryWhichOneLed_Reduce(auxiliary_t.AuxiliarySubItem);
 				printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
 
 			}
@@ -416,20 +523,20 @@ void handleInput(void)
 					    auxiliary_t.SmartKey =1;
 					    auxiliary_t.SmartMode =1;
 						auxiliary_t.ManualMode =1;
+						auxiliary_t.AuxiliarySubItem=Main;
 						 //manual "menu"
-						if(echoUnion_manual>=MAX_UNION_NUMBER-1) echoUnion_manual=0;
-						else echoUnion_manual++;
+						//if(echoUnion_manual>=MAX_UNION_NUMBER-1) echoUnion_manual=0;
+						//else echoUnion_manual++;
 
 						displayUnionInfo_Manual(echoUnion_manual);
 						HAL_Delay(1000);
-						HAL_Delay(1000);
+						
 					}
 					else {
  						 auxiliary_t.SmartMenuItem =0; //default "Smart Mode "
 					     auxiliary_t.SmartKey = 1;
 					     auxiliary_t.ManualMode=0;
-						 displayUnionInfo_Manual(echoUnion);
-						 HAL_Delay(1000);
+						 displayUnionInfo(echoUnion);
 						 HAL_Delay(1000);
 						
 					}
@@ -440,14 +547,14 @@ void handleInput(void)
 				  auxiliary_t.SmartKey = 0;
 			    if(echoLight_LR>=MAX_LIGHT_LR_NUMBER-1){
 					echoLight_LR=0;
-					auxiliary_t.AuxiliarySubItem=Main;
+					auxiliary_t.AuxiliarySubItem=0;
 			    }
 				else{ 
 					echoLight_LR++;
 					auxiliary_t.AuxiliarySubItem ++;
 				}
 				echoGroup=ECHO_GROUP_A;
-				printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF); //echoLight = LED Name
+				printSettingInfo_LR_Led(echoLight_LR,echoFilter,echoLight_LR,BLINK_OFF); //echoLight = LED Name
 			  
 		     }
 			 else{

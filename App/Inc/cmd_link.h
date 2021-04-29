@@ -10,6 +10,10 @@
 
 #include "usart.h"
 
+#define CMD_LINKER	huart2
+#define BLE_USART	huart1
+
+
 #define MAX_FILTER_NUMBER	10
 #define MAX_LIGHT_NUMBER	16 //WT.EDIT 2021.04.22//10
 #define MAX_UNION_NUMBER	20
@@ -17,6 +21,11 @@
 #define MAX_LIGHT_LR_NUMBER    5 //WT.EDIT 
 #define MAX_AUXILIARY_NUMBER   9 //WT.EDIT 2021.04.27
 
+//Auxiliary Sub Item number LED 
+#define MAX_SPOT_NUMBER     1     //WT.EDIT 2021.04.29
+#define MAX_SIDE_NUMBER     4
+#define MAX_LEFT_NUMBER     4
+#define MAX_RIGHT_NUMBER    4
 
 #define CMD_SUCCESS	0
 #define CMD_ERROR	1

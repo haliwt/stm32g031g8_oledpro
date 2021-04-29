@@ -9,8 +9,8 @@
 #include "oled.h"
 #include "handlekey.h"
 
-#define CMD_LINKER	huart2
-#define BLE_USART	huart1
+//#define CMD_LINKER	huart2
+//#define BLE_USART	huart1
 #define USART_RX_TIMEOUT	5000	// 2s
 #define USART_TX_TIMEOUT	5000	// 1s
 
@@ -903,27 +903,110 @@ static void selectLight_AU(uint8_t index)
    //uint8_t i,crc;
 	uint8_t tenNum;
 
-	//tenNum=index/10; // remainder
-	tenNum=index/9; // WT.EDIT 5 group LED number 2021.04.23 remainder
+	
+    if(auxiliary_t.AuxiliarySubItem ==Main){
 
-	//crc=0x55;
-	outputBuf[0]='V'; //0X56
-	outputBuf[1]='X'; //0X58
-	outputBuf[2]='L'; //0X4C	// 'L' for light board
-	outputBuf[3]='S'; //0X53	// 'S' select light command, 'C' close all light command
-	outputBuf[4]='3'; //0X33	// two command parameter
-	outputBuf[5]='3'; //0X33
-	outputBuf[6]=tenNum+0x30; // change to ascii number ,decimal + 0x30 ->hexadecimal
-	outputBuf[7]=(index-tenNum*10)+0x30;
-	//for(i=3;i<7;i++) crc ^= outputBuf[i];
-	//outputBuf[i]=crc;
-    transferSize=8;
-	if(transferSize)
-	{
-		while(transOngoingFlag);
-		transOngoingFlag=1;
-		HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
+
 	}
+	else if(auxiliary_t.AuxiliarySubItem ==Spot){
+			//tenNum=index/10; // remainder
+			//tenNum=index/1; // WT.EDIT 5 group LED number 2021.04.23 remainder
+
+			//crc=0x55;
+			outputBuf[0]='V'; //0X56
+			outputBuf[1]='X'; //0X58
+			outputBuf[2]='L'; //0X4C	// 'L' for light board
+			outputBuf[3]='O'; //0X4F	// 'O' -SOPT mode  'S' select light command, 'C' close all light command
+			outputBuf[4]='0'; //0X30	// zero command parameter
+			 
+			
+			//for(i=3;i<7;i++) crc ^= outputBuf[i];
+			//outputBuf[i]=crc;
+		    transferSize=5;
+			if(transferSize)
+			{
+				while(transOngoingFlag);
+				transOngoingFlag=1;
+				HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
+			}
+
+	}
+	else if(auxiliary_t.AuxiliarySubItem ==Side){
+		//tenNum=index/10; // remainder
+			tenNum=index/4; // WT.EDIT 5 group LED number 2021.04.23 remainder
+
+			//crc=0x55;
+			outputBuf[0]='V'; //0X56
+			outputBuf[1]='X'; //0X58
+			outputBuf[2]='L'; //0X4C	// 'L' for light board
+			outputBuf[3]='S'; //0X53	// 'S' select light command, 'C' close all light command
+			outputBuf[4]='3'; //0X31	// three command parameter
+			outputBuf[5]='3'; //0X33   //ledab.led_lr_id = 3 --left and right the same time On
+			outputBuf[6]=tenNum+0x30; // change to ascii number ,decimal + 0x30 ->hexadecimal
+			outputBuf[7]=(index-tenNum*10)+0x30;
+			//for(i=3;i<7;i++) crc ^= outputBuf[i];
+			//outputBuf[i]=crc;
+		    transferSize=8;
+			if(transferSize)
+			{
+				while(transOngoingFlag);
+				transOngoingFlag=1;
+				HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
+			}
+
+
+	}
+	else if(auxiliary_t.AuxiliarySubItem ==Left){
+		//tenNum=index/10; // remainder
+			tenNum=index/4; // WT.EDIT 5 group LED number 2021.04.23 remainder
+
+			//crc=0x55;
+			outputBuf[0]='V'; //0X56
+			outputBuf[1]='X'; //0X58
+			outputBuf[2]='L'; //0X4C	// 'L' for light board
+			outputBuf[3]='S'; //0X53	// 'S' select light command, 'C' close all light command
+			outputBuf[4]='3'; //0X33	// one command parameter
+			outputBuf[5]='1'; //0X31    // ledab.led_lr_id =[5] =1 left led
+			outputBuf[6]=tenNum+0x30; // change to ascii number ,decimal + 0x30 ->hexadecimal
+			outputBuf[7]=(index-tenNum*10)+0x30;
+			//for(i=3;i<7;i++) crc ^= outputBuf[i];
+			//outputBuf[i]=crc;
+		    transferSize=8;
+			if(transferSize)
+			{
+				while(transOngoingFlag);
+				transOngoingFlag=1;
+				HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
+			}
+
+
+	}
+	else if(auxiliary_t.AuxiliarySubItem ==Right){
+		//tenNum=index/10; // remainder
+			tenNum=index/4; // WT.EDIT 5 group LED number 2021.04.23 remainder
+
+			//crc=0x55;
+			outputBuf[0]='V'; //0X56
+			outputBuf[1]='X'; //0X58
+			outputBuf[2]='L'; //0X4C	// 'L' for light board
+			outputBuf[3]='S'; //0X53	// 'S' select light command, 'C' close all light command
+			outputBuf[4]='3'; //0X33	// three command parameter
+			outputBuf[5]='2'; //0X33   //  ledab.led_lr_ir=[5] 2  right led 
+			outputBuf[6]=tenNum+0x30; // change to ascii number ,decimal + 0x30 ->hexadecimal
+			outputBuf[7]=(index-tenNum*10)+0x30;
+			//for(i=3;i<7;i++) crc ^= outputBuf[i];
+			//outputBuf[i]=crc;
+		    transferSize=8;
+			if(transferSize)
+			{
+				while(transOngoingFlag);
+				transOngoingFlag=1;
+				HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
+			}
+
+
+	}
+   
 	nowLightState=NOW_LIGHT_IS_ON;
 	
 
