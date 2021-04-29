@@ -248,7 +248,8 @@ void handleInput(void)
 	if(_250msFlag)
 	{
 		_250msFlag=0;
-		if(getEchoFilterBlink()==ENABLE_BLINK) blinkEchoFilter(echoFilter);
+		if(auxiliary_t.Auxiliary_flag==0)
+		       if(getEchoFilterBlink()==ENABLE_BLINK) blinkEchoFilter(echoFilter);
 		//else	;
 		//blinkLed();
 	}
