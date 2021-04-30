@@ -396,51 +396,49 @@ void handleInput(void)
 
 		
 
-        if(!(pkey->keyCode & KEY_CODE_KEY2) && !(pkey->keyCode & KEY_CODE_KEY1)){
-				 if(pkey->multi_pressed==1){
-					 auxiliary_t.Auxiliary_flag=0;
-					 auxiliary_t.SmartKey = 0;
-				 }
-
-		}
-		else if(!(pkey->keyCode & KEY_CODE_KEY2))	// change light +  //LED  
+     
+		if(!(pkey->keyCode & KEY_CODE_KEY2))	// change light +  //LED  
 		{
 			 auxiliary_t.SmartKey = 0;
 		
 			if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board change light + spot and lin
-			    AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
-				printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
-               // displayUnionInfo_Manual();
-			}
-			else{
-				if(echoLight>=MAX_LIGHT_NUMBER-1) echoLight=0;
-				else echoLight++;
-				echoGroup=ECHO_GROUP_A;
-				printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
-				//printEchoLight(echoLight);
-				// turn on cw slowly
-				//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CW);
+	                if(auxiliary_t.mainLedKey == 1){
+					AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
+					printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
+	               // displayUnionInfo_Manual();
+				}
+				else{
+					if(echoLight>=MAX_LIGHT_NUMBER-1) echoLight=0;
+					else echoLight++;
+					echoGroup=ECHO_GROUP_A;
+					printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
+					//printEchoLight(echoLight);
+					// turn on cw slowly
+					//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CW);
+				}
 			}
 
 		}
-		else if(!(pkey->keyCode & KEY_CODE_KEY1))	// change light -
+		else if(!(pkey->keyCode & KEY_CODE_KEY1))	// change light - //LED
 		{
 			 auxiliary_t.SmartKey = 0;
 			
 			if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board change light + spot and lin
-			    AuxiliaryWhichOneLed_Reduce(auxiliary_t.AuxiliarySubItem);
-				printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
 
-			}
-			else{
-				if(echoLight==0) echoLight=MAX_LIGHT_NUMBER-1;
-				else echoLight--;
-				echoGroup=ECHO_GROUP_A;
-				printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
-				//printEchoLight(echoLight);
-				// turn on cw quickly
-				//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_HIGH,MOTOR_DIR_CW);
-			}
+				if(auxiliary_t.mainLedKey == 1){
+					AuxiliaryWhichOneLed_Reduce(auxiliary_t.AuxiliarySubItem);
+					printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
+				}
+			   else{
+					if(echoLight==0) echoLight=MAX_LIGHT_NUMBER-1;
+					else echoLight--;
+					echoGroup=ECHO_GROUP_A;
+					printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
+					//printEchoLight(echoLight);
+					// turn on cw quickly
+					//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_HIGH,MOTOR_DIR_CW);
+			   }
+		   }
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY4))	// change filter +  
 		{
@@ -559,7 +557,8 @@ void handleInput(void)
 				else{ 
 					
 					auxiliary_t.AuxiliarySubItem ++;
-				
+				    if(auxiliary_t.AuxiliarySubItem == 1) auxiliary_t.mainLedKey = 0;
+					else auxiliary_t.mainLedKey = 1;
 					HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
 				}
 				

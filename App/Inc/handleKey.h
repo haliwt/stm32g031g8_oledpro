@@ -26,6 +26,7 @@ typedef struct _auxiliary_
     uint8_t SmartKey;
 	uint8_t SmartMode;
 	uint8_t ManualMode;
+	uint8_t mainLedKey;
 }auxiliary;
 
 extern auxiliary auxiliary_t;
