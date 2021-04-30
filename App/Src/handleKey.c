@@ -504,13 +504,17 @@ void handleInput(void)
 		else if(!(pkey->keyCode & KEY_CODE_KEY8))	// brightness adj -
 		{
 			 auxiliary_t.SmartKey = 0;
-			brightnessAdj(BRIGHTNESS_ADJ_DOWN);
+			 if(auxiliary_t.Auxiliary_flag==0)
+			    brightnessAdj(BRIGHTNESS_ADJ_DOWN);
+			 else  brightnessAdj_AuxiliaryLed(BRIGHTNESS_ADJ_DOWN);
 			//motionCtrl(MOTION_CCW);
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY9))	// brightness adj +
 		{
 			 auxiliary_t.SmartKey = 0;
-			brightnessAdj(BRIGHTNESS_ADJ_UP);
+			 if(auxiliary_t.Auxiliary_flag==0)
+			       brightnessAdj(BRIGHTNESS_ADJ_UP);
+			 else  brightnessAdj_AuxiliaryLed(BRIGHTNESS_ADJ_UP);
 			//motionCtrl(MOTION_CW);
 		}
 	    else if(!(pkey->keyCode & KEY_CODE_KEY10))	// auxiliary Menu button WT.EDIT 

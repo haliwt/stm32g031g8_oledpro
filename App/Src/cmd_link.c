@@ -721,17 +721,16 @@ void stopSelectFilter(void)
 ****************************************************************************************************/
 void turnoffAllLight(void)
 {
-	outputBuf[0]='Z';//0x//outputBuf[0]='M';//WT.EDIT
+	outputBuf[0]='Z';//0x5A//outputBuf[0]='M';//WT.EDIT
 	outputBuf[1]='X'; //0x58
 	outputBuf[2]='L';//0x4C 'L' for light board
 	outputBuf[3]='C';//0x43 inputCmd[0]=outputBuf[3]// 'S' select light command, 'C' close all light command
 	//outputBuf[4]='1';//0x31	// no command parameter
-	outputBuf[4]='2';//0x32    //two command parameter
-	outputBuf[5]='3';//0x33 //ledab.led_LR_id = inputCmd[1] 
-	outputBuf[6]='3';//0x33   //any data  
+	outputBuf[4]='0';//0x30    //two command parameter
+	
 	//for(i=3;i<7;i++) crc ^= outputBuf[i];
 	//outputBuf[i]=crc;
-	transferSize=7;//transferSize=6;
+	transferSize=5;//transferSize=6;
 	if(transferSize)
 	{
 		while(transOngoingFlag);
@@ -750,22 +749,51 @@ void turnoffAllLight(void)
 ****************************************************************************************************/
 void brightnessAdj(uint8_t dir)
 {
-	if(auxiliary_t.Auxiliary_flag==0)
-		outputBuf[0]='M'; //0x4D
-	else outputBuf[0]='V';  //0x56
+	
+	outputBuf[0]='M'; //0x4D
 	outputBuf[1]='X'; //58
 	outputBuf[2]='L'; //4C// 'L' for light board
 	outputBuf[3]='A'; //0x41 --inputCmd[0]= ''// 'S' select light command, 'C' close all light command, 'A' brightness adjust
 	//outputBuf[4]='1'; //0x31    //one command parameter
-	outputBuf[4]='2'; //0x32	//two command parameter //WT.EDIT 2021.04.27
-	outputBuf[5]='3'; //0x33    //inputCmd[1] = ledab.led_LR_id = 3
+	outputBuf[4]='1'; //0x32	//two command parameter //WT.EDIT 2021.04.27
 	if(dir==BRIGHTNESS_ADJ_UP)
-		outputBuf[6]='1';
+		outputBuf[5]='1';
 	else
-		outputBuf[6]='0';
+		outputBuf[5]='0';
 	//for(i=3;i<7;i++) crc ^= outputBuf[i];
 	//outputBuf[i]=crc;
-	transferSize=7;
+	transferSize=6;
+	if(transferSize)
+	{
+		while(transOngoingFlag);
+		transOngoingFlag=1;
+		HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
+	}
+}
+/****************************************************************************************************
+**
+*Function Name:void brightnessAdj_AuxiliaryLed(uint8_t dir)
+*Function: 
+*Input Ref: dir
+*Return Ref:NO
+*
+****************************************************************************************************/
+void brightnessAdj_AuxiliaryLed(uint8_t dir)
+{
+
+	outputBuf[0]='V';  //0x56
+	outputBuf[1]='X'; //58
+	outputBuf[2]='L'; //4C// 'L' for light board
+	outputBuf[3]='A'; //0x41 --inputCmd[0]= ''// 'S' select light command, 'C' close all light command, 'A' brightness adjust
+	//outputBuf[4]='1'; //0x31    //one command parameter
+	outputBuf[4]='1'; //0x31	//two command parameter //WT.EDIT 2021.04.27
+	if(dir==BRIGHTNESS_ADJ_UP)
+		outputBuf[5]='1';
+	else
+		outputBuf[5]='0';
+	//for(i=3;i<7;i++) crc ^= outputBuf[i];
+	//outputBuf[i]=crc;
+	transferSize=6;
 	if(transferSize)
 	{
 		while(transOngoingFlag);
@@ -943,8 +971,8 @@ static void selectLight_AU(uint8_t index)
 			outputBuf[1]='X'; //0X58
 			outputBuf[2]='L'; //0X4C	// 'L' for light board
 			outputBuf[3]='S'; //0X53	// 'S' select light command, 'C' close all light command
-			outputBuf[4]='3'; //0X31	// three command parameter
-			outputBuf[5]='3'; //0X33   //ledab.led_lr_id = 3 --left and right the same time On
+			outputBuf[4]='3'; //0X31	//has  three command parameter
+			outputBuf[5]='3'; //0X33   //the first = ledab.led_lr_id = 3 --left and right the same time On
 			outputBuf[6]=tenNum+0x30; // change to ascii number ,decimal + 0x30 ->hexadecimal
 			outputBuf[7]=(index-tenNum*10)+0x30;
 			//for(i=3;i<7;i++) crc ^= outputBuf[i];
