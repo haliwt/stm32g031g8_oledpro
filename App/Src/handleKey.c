@@ -397,14 +397,11 @@ void handleInput(void)
 	{
 		pkey->status=KEY_STATUS_FREEZE;
 
-		
-
-     
 		if(!(pkey->keyCode & KEY_CODE_KEY2))	// change light +  //LED  
 		{
 			 auxiliary_t.SmartKey = 0;
 		
-			if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board change light + spot and lin
+			if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board 
 	                if(auxiliary_t.mainLedKey == 1){
 					AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
 					printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
@@ -446,45 +443,63 @@ void handleInput(void)
 		else if(!(pkey->keyCode & KEY_CODE_KEY4))	// change filter +  
 		{
 			 auxiliary_t.SmartKey = 0;
-			if(echoFilter>=MAX_FILTER_NUMBER-1) echoFilter=0;
-			else echoFilter++;
-			echoGroup=ECHO_GROUP_A;
-			printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
-			//printEchoFilter(echoFilter);
-			// turn on ccw quickly
-			//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_HIGH,MOTOR_DIR_CCW);
-
+			 if (auxiliary_t.Auxiliary_flag == 1){//The "manualMenu"
+				 if (echoFilter >= MAX_FILTER_NUMBER - 1)
+					 echoFilter = 0;
+				 else
+					 echoFilter++;
+				 echoGroup = ECHO_GROUP_A;
+				 printSettingInfo(echoUnion, echoFilter, echoLight, BLINK_OFF);
+				 //printEchoFilter(echoFilter);
+				 // turn on ccw quickly
+				 //sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_HIGH,MOTOR_DIR_CCW);
+			 }
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY3))	// change filter -
 		{
 			 auxiliary_t.SmartKey = 0;
-			if(echoFilter==0) echoFilter=MAX_FILTER_NUMBER-1;
-			else echoFilter--;
-			echoGroup=ECHO_GROUP_A;
-			printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
-			//printEchoFilter(echoFilter);
-			// turn on ccw slowly
-			//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CCW);
+			 if (auxiliary_t.Auxiliary_flag == 1)
+			 {
+				 if (echoFilter == 0)
+					 echoFilter = MAX_FILTER_NUMBER - 1;
+				 else
+					 echoFilter--;
+				 echoGroup = ECHO_GROUP_A;
+				 printSettingInfo(echoUnion, echoFilter, echoLight, BLINK_OFF);
+				 //printEchoFilter(echoFilter);
+				 // turn on ccw slowly
+				 //sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CCW);
+			 }
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY5))	// change union + //
 		{
 			 auxiliary_t.SmartKey = 0;
-			if(echoUnion>=MAX_UNION_NUMBER-1) echoUnion=0;
-			else echoUnion++;
+			 if (auxiliary_t.Auxiliary_flag == 0)
+			 {
+				 if (echoUnion >= MAX_UNION_NUMBER - 1)
+					 echoUnion = 0;
+				 else
+					 echoUnion++;
 
-			displayUnionInfo(echoUnion);
-			// turn on ccw slowly
-			//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CCW);
+				 displayUnionInfo(echoUnion);
+				 // turn on ccw slowly
+				 //sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CCW);
+			 }
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY6))	// change union - //
 		{
 			 auxiliary_t.SmartKey = 0;
-			if(echoUnion==0) echoUnion=MAX_UNION_NUMBER-1;
-			else echoUnion--;
+			 if (auxiliary_t.Auxiliary_flag == 0)
+			 {
+				 if (echoUnion == 0)
+					 echoUnion = MAX_UNION_NUMBER - 1;
+				 else
+					 echoUnion--;
 
-			displayUnionInfo(echoUnion);
-			// turn on ccw slowly
-			//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CCW);
+				 displayUnionInfo(echoUnion);
+				 // turn on ccw slowly
+				 //sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CCW);
+			 }
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY7))	// turn off light
 		{
@@ -530,7 +545,7 @@ void handleInput(void)
 					    auxiliary_t.SmartKey =1;
 					    auxiliary_t.SmartMode =1;
 						auxiliary_t.ManualMode =1;
-						auxiliary_t.AuxiliarySubItem=Main;
+						auxiliary_t.AuxiliarySubItem=Main -1;
 						 //manual "menu"
 						//if(echoUnion_manual>=MAX_UNION_NUMBER-1) echoUnion_manual=0;
 						//else echoUnion_manual++;
@@ -567,8 +582,9 @@ void handleInput(void)
 				
 				echoGroup=ECHO_GROUP_A;
 				printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); //echoLight = LED Name
-			  
-		     }
+				selectLight_AU(auxiliary_t.AuxiliarySubItem);
+				;
+			 }
 			 else{
 				auxiliary_t.Auxiliary_flag=0; //
 				auxiliary_t.SmartKey = 0;

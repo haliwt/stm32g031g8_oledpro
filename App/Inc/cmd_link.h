@@ -69,7 +69,6 @@ uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_
 uint8_t getItemFromUnion(uint8_t unionIndex,uint8_t *filterIndex,uint8_t *lightIndex);
 void updateLight_LR(uint8_t lightIndex_LR);
 void updateLight_AU(uint8_t lightIndex_AU);
-
-
+void selectLight_AU(uint8_t index);
 
 #endif /* CMD_LINK_H_ */

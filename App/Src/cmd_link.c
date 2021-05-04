@@ -52,7 +52,7 @@ static uint8_t checkBleModuleAVDData(void);
 static void selectFilter(uint8_t index);
 static void selectLight(uint8_t index);
 static void selectLight_LR(uint8_t lightIndex_LR); //WT.EDIT 2021.04.24
-static void selectLight_AU(uint8_t lightIndex_AU); //WT.EDIT 2021.04.28
+//static void selectLight_AU(uint8_t lightIndex_AU); //WT.EDIT 2021.04.28
 
 static void notifyStatusToHost(uint8_t lightNum,uint8_t lightNum_LR,uint8_t filterNum,uint8_t unionNum);
 //static uint8_t suffBoardStatusToBuffer(void);
@@ -159,7 +159,7 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 		
 		
 		if(auxiliary_t.Auxiliary_flag==1){
-			updateLight_LR(lightIndx_LR); //WT.EDIT 2021.04.24 //
+			updateLight_LR(lightIndx_LR); //WT.EDIT 2021.04.24 //mainLed Item
 			updateLight_AU(lightIndx_AU); //WT.EDIT 2021.04.28 //subItem
 		}
 	    else updateLight(lightIndex);
@@ -229,7 +229,7 @@ void updateLight_LR(uint8_t lightIndex_LR)
 ****************************************************************************************************/
 void updateLight_AU(uint8_t lightIndex_AU)
 {
-	if(lightIndex_AU!=currLight_AU)
+	if (lightIndex_AU != currLight_AU)
 	{
 		currLight_AU=lightIndex_AU;
 		//setEchoLightBlink(ENABLE_BLINK);
@@ -931,7 +931,7 @@ static void selectLight_LR(uint8_t index)
 *Return Ref:NO
 *
 ****************************************************************************************************/
-static void selectLight_AU(uint8_t index)
+void selectLight_AU(uint8_t index)
 {
 	
    //uint8_t i,crc;
