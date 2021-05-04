@@ -194,7 +194,9 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 	tmpLight=lightIndex+1; 
 	group=retrieveEchoGroup();
 
-	printFrame_Manual();//printFrame();
+	if (auxiliary_t.Auxiliary_flag == 1)
+		printFrame_Manual();//
+	else printFrame();
 
 	switch(group)
 	{

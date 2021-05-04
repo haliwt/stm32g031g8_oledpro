@@ -157,9 +157,11 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 	else
 	{
 		
-		updateLight_LR(lightIndx_LR); //WT.EDIT 2021.04.24 //
-		if(auxiliary_t.Auxiliary_flag==1)
-	    	updateLight_AU(lightIndx_AU); //WT.EDIT 2021.04.28 //subItem
+		
+		if(auxiliary_t.Auxiliary_flag==1){
+			updateLight_LR(lightIndx_LR); //WT.EDIT 2021.04.24 //
+			updateLight_AU(lightIndx_AU); //WT.EDIT 2021.04.28 //subItem
+		}
 	    else updateLight(lightIndex);
 	}
 }
@@ -234,7 +236,7 @@ void updateLight_AU(uint8_t lightIndex_AU)
 		if(powerOnFlag) powerOnFlag=0;	//need not turn on light when power on
 		else
 		{
-			selectLight_AU(lightIndex_AU); //Transmit Interrupt process 
+			selectLight_AU(lightIndex_AU); //Transmit Interrupt process subItem
 			//nowLightState=NOW_LIGHT_IS_ON;
 		}
 	}
@@ -833,7 +835,8 @@ void motionCtrl(uint8_t dir)
 }
 /*********************************************************************************************************
 **
-*Function Name:void reportLightStatusChange(void)
+*
+Function Name:void reportLightStatusChange(void)
 *Function:Blue UART communication protocol
 *
 *
@@ -940,20 +943,19 @@ static void selectLight_AU(uint8_t index)
 
 	}
 	else if(auxiliary_t.AuxiliarySubItem ==Spot){
-			//tenNum=index/10; // remainder
-			//tenNum=index/1; // WT.EDIT 5 group LED number 2021.04.23 remainder
-
-			//crc=0x55;
+			tenNum=index/6; // WT.EDIT 5 group LED number 2021.04.23 remainder
 			outputBuf[0]='V'; //0X56
 			outputBuf[1]='X'; //0X58
 			outputBuf[2]='L'; //0X4C	// 'L' for light board
 			outputBuf[3]='O'; //0X4F	// 'O' -SOPT mode  'S' select light command, 'C' close all light command
-			outputBuf[4]='0'; //0X30	// zero command parameter
-			 
+			outputBuf[4]='3'; //0X33   //has three parameter
+			outputBuf[5]='3'; //0X33   //the first = ledab.led_lr_id = 3 --left and right the same time On
+			outputBuf[6]=tenNum+0x30; // change to ascii number ,decimal + 0x30 ->hexadecimal
+			outputBuf[7]=(index-tenNum*10)+0x30;
 			
 			//for(i=3;i<7;i++) crc ^= outputBuf[i];
 			//outputBuf[i]=crc;
-		    transferSize=5;
+		    transferSize=8;
 			if(transferSize)
 			{
 				while(transOngoingFlag);

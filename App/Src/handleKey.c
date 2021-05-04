@@ -381,8 +381,11 @@ void handleInput(void)
 		printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
 		printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
 		//printEchoFilter(echoFilter);
-		updateLight(echoLight);  //LED number turn on or off
-		updateLight_LR(echoLight_LR);
+		
+		if (auxiliary_t.Auxiliary_flag == 1)
+			   updateLight_LR(echoLight_LR);
+		else
+			updateLight(echoLight); //LED number turn on or off
 	}
 
 	if(timeoutFlag) //15 minute 
