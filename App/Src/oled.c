@@ -48,6 +48,21 @@ const char unionInfo2[MAX_UNION_INDEX][MAX_UNION_INFO2_STR_LEN+1]={"FingerPrint\
 																"DochExam,IR FingerPrint\0","DochExam,FingerPrint\0","FingerPrint\0","*\0","FingerPrint\0",
 																"FingerPrint\0","FingerPrint\0","FingerPrint\0","FingerPrint\0","DochExam\0"};
 
+
+/********************************************************************************************************************
+ * *
+ *Name :
+ *
+ *
+ *
+ *
+********************************************************************************************************************/
+const char unionInfoAU[MAX_UNION_INDEX][MAX_UNION_INFO1_STR_LEN + 1] = {"Spot,IR640\0", "Spot,IR750\0", "Fibers&Hair,Bruises&Bite\0", "Bruises&Bite,BodyFluids\0", "Bruises&Bite,BodyFluids\0",
+																	   "BodyFluids,Bruises&Bite\0", "BodyFluids,Tooth&Bone\0", "BodyFluids\0", "BodyFluids\0", "General Research\0",
+																	   "Blood,GSR\0", "Blood,GSR\0", "Blood\0", "Blood\0", "Blood\0",
+																	   "GSR,TraceDrugs\0", "GSR,Oil\0", "TraceDrugs,DochExam\0", "DochExam\0", "Blood\0"};
+
+/******************************************************************************************************/
 uint8_t enableBlinkEchoFilter,enableBlinkEchoLight;
 
 uint8_t u8g2_gpio_and_delay_stm32(U8X8_UNUSED u8x8_t *u8x8, U8X8_UNUSED uint8_t msg, U8X8_UNUSED uint8_t arg_int, U8X8_UNUSED void *arg_ptr)
@@ -291,10 +306,10 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex_lr,uint8_t blinkIndex)
 {
 	char tmpStr[MAX_UNION_STR_LEN+1];
-	uint8_t tmpFilter,tmpLight,i,tenNum;
+	uint8_t tmpUnion, tmpFilter, tmpLight, i,j, tenNum;
 	uint8_t group;
 
-
+	tmpUnion = unionIndex + 1;
 	tmpFilter=filterIndex+1;
 	tmpLight=lightIndex_lr+1;
 	group=retrieveEchoGroup();
@@ -339,7 +354,46 @@ void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 		}
 		break;
 
+	case ECHO_GROUP_B:
+		i = 0;
+		tmpStr[i++] = '#';
+		if (tmpUnion < 10)
+			tmpStr[i++] = tmpUnion + 0x30;
+		else
+		{
+			tenNum = tmpUnion / 10; //filter has ten
+			tmpStr[i++] = tenNum + 0x30;
+			tmpUnion -= tenNum * 10;
+			tmpStr[i++] = tmpUnion + 0x30;
+		}
+		tmpStr[i++] = ' ';
 
+		j = 0; //LED number
+		while (lightStr[lightIndex_lr][j] != 0)
+		{
+			tmpStr[i++] = lightStr[lightIndex_lr][j];
+			j++;
+		}
+		tmpStr[i++] = '+';
+
+		j = 0;
+		while (filterStr[filterIndex][j] != 0)
+		{
+			tmpStr[i++] = filterStr[filterIndex][j];
+			j++;
+		}
+		tmpStr[i++] = 0;
+		u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
+		printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU[LedSpotNumber]);
+		printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfo2[unionIndex]);
+		 if (blinkIndex != BLINK_ALL && blinkIndex != BLINK_FILTER)
+		 {
+		 	u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
+		 	printWithFmt(&u8g2, UNION_INFO3_X, UNION_INFO3_Y, WIDTH_UNION, UNION_INFO3_HEIGHT, ALIGN_MID_ALL, tmpStr);
+		 }
+		break;
+		default:
+		break;
 	}
 	u8g2_SendBuffer(&u8g2);
 
@@ -355,10 +409,10 @@ void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex_au,uint8_t blinkIndex) //echoLight = LED Name
 {
 	char tmpStr[MAX_UNION_STR_LEN+1];
-	uint8_t tmpFilter,tmpLight,i,tenNum;
+	uint8_t tmpUnion, tmpFilter, tmpLight, i,j,z,tenNum;
 	uint8_t group;
 
-
+	tmpUnion = unionIndex + 1;
 	tmpFilter=filterIndex+1;
 	tmpLight=lightIndex_au+1;
 	group=retrieveEchoGroup();
@@ -399,9 +453,52 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 			printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[filterIndex]);
 			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,tmpStr);
 		}
+		//break;
+
+	//case ECHO_GROUP_B:
+		z = 0;
+		tmpStr[z++] = '#';
+		if (tmpUnion < 10)
+			tmpStr[i++] = tmpUnion + 0x30;
+		else
+		{
+			tenNum = tmpUnion / 10; //filter has ten
+			tmpStr[z++] = tenNum + 0x30;
+			tmpUnion -= tenNum * 10;
+			tmpStr[z++] = tmpUnion + 0x30;
+		}
+		tmpStr[z++] = ' ';
+
+		j = 0; //LED number
+		while (lightStr[lightIndex_au][j] != 0)
+		{
+			tmpStr[z++] = lightStr[lightIndex_au][j];
+			j++;
+		}
+		tmpStr[i++] = '+';
+
+		j = 0;
+		while (filterStr[filterIndex][j] != 0)
+		{
+			tmpStr[z++] = filterStr[filterIndex][j];
+			j++;
+		}
+		tmpStr[z++] = 0;
+		u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
+		printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU[unionIndex]);
+		printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfo2[unionIndex]);
+
+		u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
+		printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
+		printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
+		 if (blinkIndex != BLINK_ALL && blinkIndex != BLINK_FILTER)
+		 {
+		 	u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
+		 	printWithFmt(&u8g2, UNION_INFO3_X, UNION_INFO3_Y, WIDTH_UNION, UNION_INFO3_HEIGHT, ALIGN_MID_ALL, tmpStr);
+		 }
 		break;
-
-
+		default:
+		break;
 	}
 	u8g2_SendBuffer(&u8g2);
 

@@ -401,13 +401,15 @@ void handleInput(void)
 		{
 			 auxiliary_t.SmartKey = 0;
 		
-			if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board 
+			  if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board 
 	                if(auxiliary_t.mainLedKey == 1){
 					AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
+					getItemFromUnion_AU(echoUnion,&echoFilter,&echoLight);
 					printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
-	               // displayUnionInfo_Manual();
+	               // displayUnionInfo_Manual(auxiliary_t.AuxiliarySubItem);
+					
 				}
-				else{
+				else{ //MainLed switch
 					if(echoLight>=MAX_LIGHT_NUMBER-1) echoLight=0;
 					else echoLight++;
 					echoGroup=ECHO_GROUP_A;
@@ -427,9 +429,11 @@ void handleInput(void)
 
 				if(auxiliary_t.mainLedKey == 1){
 					AuxiliaryWhichOneLed_Reduce(auxiliary_t.AuxiliarySubItem);
-					printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
+					getItemFromUnion_AU(echoUnion,&echoFilter,&echoLight);
+				    printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
+					//displayUnionInfo_Manual(auxiliary_t.AuxiliarySubItem);
 				}
-			   else{
+			   else{ //mainLed switch
 					if(echoLight==0) echoLight=MAX_LIGHT_NUMBER-1;
 					else echoLight--;
 					echoGroup=ECHO_GROUP_A;
@@ -583,7 +587,7 @@ void handleInput(void)
 				echoGroup=ECHO_GROUP_A;
 				printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); //echoLight = LED Name
 				selectLight_AU(auxiliary_t.AuxiliarySubItem);
-				;
+				
 			 }
 			 else{
 				auxiliary_t.Auxiliary_flag=0; //
@@ -673,7 +677,6 @@ static void displayUnionInfo(uint8_t unionIndex)
 	//printEchoFilter(echoFilter);
 	//printEchoLight(echoLight);
 }
-
 /*****************************************************************************************************
 **
 *Function Name:void displayUnionInfo_Menu(uint8_t unionIndex)
@@ -685,9 +688,9 @@ static void displayUnionInfo(uint8_t unionIndex)
 static void displayUnionInfo_Manual(uint8_t unionIndex)
 {
 	echoGroup=ECHO_GROUP_B;
-	getItemFromUnion(unionIndex,&echoFilter,&echoLight);
+	getItemFromUnion_AU(unionIndex,&echoFilter,&echoLight);
 	printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight,BLINK_OFF);
-	
+	//printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight,BLINK_OFF);
 }
 
 /*****************************************************************************************************

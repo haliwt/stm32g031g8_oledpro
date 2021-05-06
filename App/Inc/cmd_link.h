@@ -67,6 +67,9 @@ void motionCtrl(uint8_t dir);
 void reportLightStatusChange(void);
 uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_t *revealLight,uint8_t *revealLight_LR,uint8_t *revealLight_AU, uint8_t *revealGroup);
 uint8_t getItemFromUnion(uint8_t unionIndex,uint8_t *filterIndex,uint8_t *lightIndex);
+uint8_t getItemFromUnion_AU(uint8_t unionIndex,uint8_t *filterIndex,uint8_t *lightIndex);
+
+
 void updateLight_LR(uint8_t lightIndex_LR);
 void updateLight_AU(uint8_t lightIndex_AU);
 void selectLight_AU(uint8_t index);

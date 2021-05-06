@@ -161,6 +161,7 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 		if(auxiliary_t.Auxiliary_flag==1){
 			updateLight_LR(lightIndx_LR); //WT.EDIT 2021.04.24 //mainLed Item
 			updateLight_AU(lightIndx_AU); //WT.EDIT 2021.04.28 //subItem
+			
 		}
 	    else updateLight(lightIndex);
 	}
@@ -331,6 +332,29 @@ uint8_t getItemFromUnion(uint8_t unionIndex,uint8_t *filterIndex,uint8_t *lightI
 	}
 	return CMD_ERROR;
 }
+/************************************************************************************************************
+**
+*Function Name:uint8_t getItemFromUnion(uint8_t unionIndex,uint8_t *filterIndex,uint8_t *lightIndex)
+*Function:
+*Input Ref: unionIndex --smart meun of "item", *fliterIndex --filter "item",*lightIndex --LED "item"
+*Return Ref:NO
+*
+************************************************************************************************************/
+uint8_t getItemFromUnion_AU(uint8_t unionIndex,uint8_t *filterIndex,uint8_t *lightIndex)
+{
+	settingUnion_t settingTable[MAX_UNION_NUMBER]={	{5,6},{4,6},{1,5},{2,5},{2,3},
+												  	{1,2},{3,4},{3,3},{3,6},{0,0},
+													{9,9},{2,4},{1,2},{2,1},{3,3},
+													{4,6},{3,4},{1,0},{3,8},{8,9}};
+	if(unionIndex<MAX_UNION_NUMBER)
+	{
+		*filterIndex=settingTable[unionIndex].filter;
+		*lightIndex=settingTable[unionIndex].light;
+		return CMD_SUCCESS;
+	}
+	return CMD_ERROR;
+}
+
 /********************************************************************************
 **
 *Function Name:void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
