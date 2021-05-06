@@ -61,8 +61,8 @@ const char unionInfo2[MAX_UNION_INDEX][MAX_UNION_INFO2_STR_LEN+1]={"FingerPrint\
  *
  *
 ********************************************************************************************************************/
-const char unionInfoAU1[MAX_UNION_INDEX][MAX_UNION_INFO1_STR_LEN + 1] = {"Spot,IR640\0", "Spot,IR750\0", "Fibers&Hair,Bruises&Bite\0", "Bruises&Bite,BodyFluids\0", "Bruises&Bite,BodyFluids\0",
-																	   "BodyFluids,Bruises&Bite\0", "BodyFluids,Tooth&Bone\0", "BodyFluids\0", "BodyFluids\0", "General Research\0"};
+const char unionInfoAU1[MAX_UNION_INDEX][MAX_UNION_INFO1_STR_LEN + 1] = {"Spot,Board\0", "Side,Board\0", "Left,Board\0", "Right,Bord\0"};
+																	 
 																	   
 																	
 
@@ -493,9 +493,22 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 		}
 		tmpStr[z++] = 0;
 		u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
-		printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[unionIndex]); //The one rows
-		printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[unionIndex]);  //The two rows
-
+		if(auxiliary_t.AuxiliarySubItem ==Spot){
+			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[0]); //The one rows
+			printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[0]);  //The two rows
+		}
+		if(auxiliary_t.AuxiliarySubItem ==Side){
+			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[1]); //The one rows
+			printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[1]);  //The two rows
+		}
+		if(auxiliary_t.AuxiliarySubItem ==Left){
+			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[2]); //The one rows
+			printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[2]);  //The two rows
+		}
+		if(auxiliary_t.AuxiliarySubItem ==Right){
+			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[3]); //The one rows
+			printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[3]);  //The two rows
+		}
 
 		 if (blinkIndex != BLINK_ALL && blinkIndex != BLINK_FILTER)
 		 {
