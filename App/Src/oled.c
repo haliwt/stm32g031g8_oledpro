@@ -413,7 +413,7 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 	uint8_t tmpUnion, tmpFilter, tmpLight, i,j,z,tenNum;
 	uint8_t group;
 
-	tmpUnion = unionIndex + 1;
+	tmpUnion = lightIndex_au+1;//unionIndex + 1;
 	tmpFilter=filterIndex+1;
 	tmpLight=lightIndex_au+1;
 	group=retrieveEchoGroup();
