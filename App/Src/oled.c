@@ -273,12 +273,12 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 		}
 		tmpStr[i++]='+';
 
-		j=0;
-		while(filterStr[filterIndex][j]!=0)
+		j=0;while(filterStr[filterIndex][j]!=0)
 		{
 			tmpStr[i++]=filterStr[filterIndex][j];
 			j++;
 		}
+		
 		tmpStr[i++]=0;
 		u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
 		printWithFmt(&u8g2,UNION_INFO1_X,UNION_INFO1_Y,WIDTH_UNION,UNION_INFO1_HEIGHT,ALIGN_MID_ALL,unionInfo1[unionIndex]);
@@ -386,7 +386,8 @@ void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 		u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
 		printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU[LedSpotNumber]);
 		printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfo2[unionIndex]);
-		 if (blinkIndex != BLINK_ALL && blinkIndex != BLINK_FILTER)
+
+		if (blinkIndex != BLINK_ALL && blinkIndex != BLINK_FILTER)
 		 {
 		 	u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 		 	printWithFmt(&u8g2, UNION_INFO3_X, UNION_INFO3_Y, WIDTH_UNION, UNION_INFO3_HEIGHT, ALIGN_MID_ALL, tmpStr);
@@ -459,7 +460,7 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 		z = 0;
 		tmpStr[z++] = '#';
 		if (tmpUnion < 10)
-			tmpStr[i++] = tmpUnion + 0x30;
+			tmpStr[z++] = tmpUnion + 0x30;
 		else
 		{
 			tenNum = tmpUnion / 10; //filter has ten
@@ -475,7 +476,7 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 			tmpStr[z++] = lightStr[lightIndex_au][j];
 			j++;
 		}
-		tmpStr[i++] = '+';
+		tmpStr[z++] = '+';
 
 		j = 0;
 		while (filterStr[filterIndex][j] != 0)
@@ -485,12 +486,10 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 		}
 		tmpStr[z++] = 0;
 		u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
-		printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU[unionIndex]);
-		printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfo2[unionIndex]);
+		printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU[unionIndex]); //The one rows
+		printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfo2[unionIndex]);  //The two rows
 
-		u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
-		printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
-		printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
+
 		 if (blinkIndex != BLINK_ALL && blinkIndex != BLINK_FILTER)
 		 {
 		 	u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);

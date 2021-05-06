@@ -247,7 +247,7 @@ void AuxiliaryWhichOneLed_Plus(uint8_t wled)
    break;
 
 	case Spot:
-		  if(echoLight_AU>=MAX_SPOT_NUMBER) echoLight_AU=0;
+		  if(echoLight_AU>=MAX_SPOT_NUMBER-1) echoLight_AU=0;
 			else echoLight_AU++;
 			echoGroup=ECHO_GROUP_A;
 		//	printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
@@ -302,7 +302,7 @@ void AuxiliaryWhichOneLed_Reduce(uint8_t wled)
    case Spot: //01
 		  temp =0xa1;
           HAL_UART_Transmit(&CMD_LINKER,&temp,1,2);
-		  if(echoLight_AU==0) echoLight_AU=MAX_SPOT_NUMBER;
+		  if(echoLight_AU==0) echoLight_AU=MAX_SPOT_NUMBER-1;
 		  else echoLight_AU--;
 			echoGroup=ECHO_GROUP_A;
 		//	printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
@@ -402,22 +402,23 @@ void handleInput(void)
 			 auxiliary_t.SmartKey = 0;
 		
 			  if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board 
-	                if(auxiliary_t.mainLedKey == 1){
-					AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
-					getItemFromUnion_AU(echoUnion,&echoFilter,&echoLight);
-					printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
-	               // displayUnionInfo_Manual(auxiliary_t.AuxiliarySubItem);
-					
-				}
-				else{ //MainLed switch
-					if(echoLight>=MAX_LIGHT_NUMBER-1) echoLight=0;
-					else echoLight++;
-					echoGroup=ECHO_GROUP_A;
-					printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
-					//printEchoLight(echoLight);
-					// turn on cw slowly
-					//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CW);
-				}
+		             if(auxiliary_t.mainLedKey == 1){
+							
+						AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
+						getItemFromUnion_AU(echoUnion,&echoFilter,&echoLight);
+						printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
+		               // displayUnionInfo_Manual(auxiliary_t.AuxiliarySubItem);
+						
+					}
+					else{ //MainLed switch
+						if(echoLight>=MAX_LIGHT_NUMBER-1) echoLight=0;
+						else echoLight++;
+						echoGroup=ECHO_GROUP_A;
+						printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
+						//printEchoLight(echoLight);
+						// turn on cw slowly
+						//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CW);
+					}
 			}
 
 		}
@@ -428,6 +429,8 @@ void handleInput(void)
 			if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board change light + spot and lin
 
 				if(auxiliary_t.mainLedKey == 1){
+
+				    
 					AuxiliaryWhichOneLed_Reduce(auxiliary_t.AuxiliarySubItem);
 					getItemFromUnion_AU(echoUnion,&echoFilter,&echoLight);
 				    printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
