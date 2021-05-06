@@ -31,8 +31,12 @@ const char filterStr[MAX_FILTER_INDEX][MAX_FILTER_STR_LEN+1]={"VIS\0","BPS32\0",
 /*LED name Modify */
 const char lightStr[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"White\0","UV365\0","Violet\0","Blue1\0","Blue2\0","Cyan\0",
 													 "Green\0","Orange\0","Red\0","640\0","690\0","720\0","750\0","770\0","840\0","930\0"};
+/*******************************************************************************************************************/
+/*Auxiliary Board LED Name*/
+const char lightStr_AU[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"Green\0","Blue\0","UV310\0","UV275\0","White\0","Red\0"};
+													
 
-/***************************************************************/
+/***************************************************************************************************************************************/
 /*LED name axuiliary WT.EDIT */
 const char lightStr_LR[MAX_LIGHT_LR_INDEX][MAX_LIGHT_STR_LR_LEN+1]={"Right\0","Main\0","Spot\0","Side\0","Left\0"};													 
 
@@ -57,10 +61,13 @@ const char unionInfo2[MAX_UNION_INDEX][MAX_UNION_INFO2_STR_LEN+1]={"FingerPrint\
  *
  *
 ********************************************************************************************************************/
-const char unionInfoAU[MAX_UNION_INDEX][MAX_UNION_INFO1_STR_LEN + 1] = {"Spot,IR640\0", "Spot,IR750\0", "Fibers&Hair,Bruises&Bite\0", "Bruises&Bite,BodyFluids\0", "Bruises&Bite,BodyFluids\0",
-																	   "BodyFluids,Bruises&Bite\0", "BodyFluids,Tooth&Bone\0", "BodyFluids\0", "BodyFluids\0", "General Research\0",
-																	   "Blood,GSR\0", "Blood,GSR\0", "Blood\0", "Blood\0", "Blood\0",
-																	   "GSR,TraceDrugs\0", "GSR,Oil\0", "TraceDrugs,DochExam\0", "DochExam\0", "Blood\0"};
+const char unionInfoAU1[MAX_UNION_INDEX][MAX_UNION_INFO1_STR_LEN + 1] = {"Spot,IR640\0", "Spot,IR750\0", "Fibers&Hair,Bruises&Bite\0", "Bruises&Bite,BodyFluids\0", "Bruises&Bite,BodyFluids\0",
+																	   "BodyFluids,Bruises&Bite\0", "BodyFluids,Tooth&Bone\0", "BodyFluids\0", "BodyFluids\0", "General Research\0"};
+																	   
+																	
+
+const char unionInfoAU2[MAX_UNION_INDEX][MAX_UNION_INFO1_STR_LEN + 1] = {"Spot,IR640\0", "Spot,IR750\0", "Fibers&Hair,Bruises&Bite\0", "Bruises&Bite,BodyFluids\0", "Bruises&Bite,BodyFluids\0"};
+																	  
 
 /******************************************************************************************************/
 uint8_t enableBlinkEchoFilter,enableBlinkEchoLight;
@@ -384,7 +391,7 @@ void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 		}
 		tmpStr[i++] = 0;
 		u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
-		printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU[LedSpotNumber]);
+		printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[LedSpotNumber]);
 		printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfo2[unionIndex]);
 
 		if (blinkIndex != BLINK_ALL && blinkIndex != BLINK_FILTER)
@@ -471,9 +478,9 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 		tmpStr[z++] = ' ';
 
 		j = 0; //LED number
-		while (lightStr[lightIndex_au][j] != 0)
+		while (lightStr_AU[lightIndex_au][j] != 0)
 		{
-			tmpStr[z++] = lightStr[lightIndex_au][j];
+			tmpStr[z++] = lightStr_AU[lightIndex_au][j];
 			j++;
 		}
 		tmpStr[z++] = '+';
@@ -486,8 +493,8 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 		}
 		tmpStr[z++] = 0;
 		u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
-		printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU[unionIndex]); //The one rows
-		printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfo2[unionIndex]);  //The two rows
+		printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[unionIndex]); //The one rows
+		printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[unionIndex]);  //The two rows
 
 
 		 if (blinkIndex != BLINK_ALL && blinkIndex != BLINK_FILTER)
