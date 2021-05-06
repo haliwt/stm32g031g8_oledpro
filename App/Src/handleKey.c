@@ -381,7 +381,7 @@ void handleInput(void)
 		
 		//printEchoFilter(echoFilter);
 		
-		if (auxiliary_t.mainLedKey == 1){
+		if (auxiliary_t.mainLedKey == 1 && auxiliary_t.AuxiliarySubItem !=0){
 			   updateLight_AU(echoLight_LR);
 			   printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
 		       printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
