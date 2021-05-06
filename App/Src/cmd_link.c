@@ -158,7 +158,7 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 	{
 		
 		
-		if(auxiliary_t.Auxiliary_flag==1){
+		if(auxiliary_t.mainLedKey == 1){
 			//updateLight_LR(lightIndx_LR); //WT.EDIT 2021.04.24 //mainLed Item
 			updateLight_AU(lightIndx_AU); //WT.EDIT 2021.04.28 //subItem
 			

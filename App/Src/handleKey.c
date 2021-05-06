@@ -304,7 +304,7 @@ void AuxiliaryWhichOneLed_Reduce(uint8_t wled)
           HAL_UART_Transmit(&CMD_LINKER,&temp,1,2);
 		  if(echoLight_AU==0) echoLight_AU=MAX_SPOT_NUMBER-1;
 		  else echoLight_AU--;
-			echoGroup=ECHO_GROUP_A;
+		  echoGroup=ECHO_GROUP_A;
 		//	printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
          
 	break;
@@ -378,12 +378,14 @@ void handleInput(void)
 		stopSelectFilter(); //UART_Transmit_IT--5 byte //4D 58 4D 53 30 
 		setEchoFilterBlink(DISABLE_BLINK);
 		printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
-		printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
-		printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
+		
 		//printEchoFilter(echoFilter);
 		
-		if (auxiliary_t.Auxiliary_flag == 1)
-			   updateLight_LR(echoLight_LR);
+		if (auxiliary_t.mainLedKey == 1){
+			   updateLight_AU(echoLight_LR);
+			   printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
+		       printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
+		}
 		else
 			updateLight(echoLight); //LED number turn on or off
 	}
@@ -407,7 +409,7 @@ void handleInput(void)
 						AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
 						getItemFromUnion_AU(echoUnion,&echoFilter,&echoLight);
 						printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
-		               // displayUnionInfo_Manual(auxiliary_t.AuxiliarySubItem);
+		               
 						
 					}
 					else{ //MainLed switch
@@ -434,7 +436,7 @@ void handleInput(void)
 					AuxiliaryWhichOneLed_Reduce(auxiliary_t.AuxiliarySubItem);
 					getItemFromUnion_AU(echoUnion,&echoFilter,&echoLight);
 				    printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
-					//displayUnionInfo_Manual(auxiliary_t.AuxiliarySubItem);
+					
 				}
 			   else{ //mainLed switch
 					if(echoLight==0) echoLight=MAX_LIGHT_NUMBER-1;
@@ -546,7 +548,7 @@ void handleInput(void)
 			  if(pkey->long_pressed ==1 && auxiliary_t.SmartKey !=1){
 			  	   
 		        	keySmartflag = keySmartflag ^ 0x1;
-					HAL_UART_Transmit(&huart2,&keySmartflag ,1,0);
+					HAL_UART_Transmit(&huart2,&keySmartflag ,1,0); //debug information
 					if(keySmartflag ==1 ){ //ManualMode
 						auxiliary_t.SmartMenuItem =1;
 					    auxiliary_t.SmartKey =1;
@@ -561,7 +563,7 @@ void handleInput(void)
 						HAL_Delay(1000);
 						
 					}
-					else {
+					else { //
  						 auxiliary_t.SmartMenuItem =0; //default "Smart Mode "
 					     auxiliary_t.SmartKey = 1;
 					     auxiliary_t.ManualMode=0;
@@ -571,7 +573,7 @@ void handleInput(void)
 					}
 			        
               }
-			  if(auxiliary_t.ManualMode ==1){ //manual mode
+			  if(auxiliary_t.ManualMode ==1){ //manual mode "SPOT" "SIDE" "LEFT" "RIGHT"
 			      auxiliary_t.Auxiliary_flag=1;
 				  auxiliary_t.SmartKey = 0;
 			
@@ -582,17 +584,25 @@ void handleInput(void)
 				else{ 
 					
 					auxiliary_t.AuxiliarySubItem ++;
-				    if(auxiliary_t.AuxiliarySubItem == 1) auxiliary_t.mainLedKey = 0;
-					else auxiliary_t.mainLedKey = 1;
+				    //if(auxiliary_t.AuxiliarySubItem == 1) auxiliary_t.mainLedKey = 0;
+					//else auxiliary_t.mainLedKey = 1;
 					HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
 				}
 				
 				echoGroup=ECHO_GROUP_A;
-				printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); //echoLight = LED Name
-				selectLight_AU(auxiliary_t.AuxiliarySubItem);
+				//echoLight = LED Name
+				    if(auxiliary_t.AuxiliarySubItem==0)
+					      printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
+			        else{
+						 printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
+						AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
+						getItemFromUnion_AU(echoUnion,&echoFilter,&echoLight);
+						printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
+						selectLight_AU(auxiliary_t.AuxiliarySubItem);
 				
+			        	}
 			 }
-			 else{
+			 else{  //defalut value is "smartButton"
 				auxiliary_t.Auxiliary_flag=0; //
 				auxiliary_t.SmartKey = 0;
 			    auxiliary_t.SmartMode =0;
@@ -692,8 +702,8 @@ static void displayUnionInfo_Manual(uint8_t unionIndex)
 {
 	echoGroup=ECHO_GROUP_B;
 	getItemFromUnion_AU(unionIndex,&echoFilter,&echoLight);
-	printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight,BLINK_OFF);
-	//printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight,BLINK_OFF);
+	//printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight,BLINK_OFF);
+	printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight,BLINK_OFF);
 }
 
 /*****************************************************************************************************

@@ -315,10 +315,10 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex_lr,uint8_t blinkIndex)
 {
 	char tmpStr[MAX_UNION_STR_LEN+1];
-	uint8_t tmpUnion, tmpFilter, tmpLight, i,j, tenNum;
+	uint8_t tmpFilter, tmpLight, i, tenNum;
 	uint8_t group;
 
-	tmpUnion = unionIndex + 1;
+
 	tmpFilter=filterIndex+1;
 	tmpLight=lightIndex_lr+1;
 	group=retrieveEchoGroup();
@@ -363,45 +363,6 @@ void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 		}
 		break;
 
-	case ECHO_GROUP_B:
-		i = 0;
-		tmpStr[i++] = '#';
-		if (tmpUnion < 10)
-			tmpStr[i++] = tmpUnion + 0x30;
-		else
-		{
-			tenNum = tmpUnion / 10; //filter has ten
-			tmpStr[i++] = tenNum + 0x30;
-			tmpUnion -= tenNum * 10;
-			tmpStr[i++] = tmpUnion + 0x30;
-		}
-		tmpStr[i++] = ' ';
-
-		j = 0; //LED number
-		while (lightStr[lightIndex_lr][j] != 0)
-		{
-			tmpStr[i++] = lightStr[lightIndex_lr][j];
-			j++;
-		}
-		tmpStr[i++] = '+';
-
-		j = 0;
-		while (filterStr[filterIndex][j] != 0)
-		{
-			tmpStr[i++] = filterStr[filterIndex][j];
-			j++;
-		}
-		tmpStr[i++] = 0;
-		u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
-		printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[LedSpotNumber]);
-		printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfo2[unionIndex]);
-
-		if (blinkIndex != BLINK_ALL && blinkIndex != BLINK_FILTER)
-		 {
-		 	u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
-		 	printWithFmt(&u8g2, UNION_INFO3_X, UNION_INFO3_Y, WIDTH_UNION, UNION_INFO3_HEIGHT, ALIGN_MID_ALL, tmpStr);
-		 }
-		break;
 		default:
 		break;
 	}
