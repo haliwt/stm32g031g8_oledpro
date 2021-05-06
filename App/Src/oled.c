@@ -32,9 +32,11 @@ const char filterStr[MAX_FILTER_INDEX][MAX_FILTER_STR_LEN+1]={"VIS\0","BPS32\0",
 const char lightStr[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"White\0","UV365\0","Violet\0","Blue1\0","Blue2\0","Cyan\0",
 													 "Green\0","Orange\0","Red\0","640\0","690\0","720\0","750\0","770\0","840\0","930\0"};
 /*******************************************************************************************************************/
-/*Auxiliary Board LED Name*/
+/*Auxiliary Board SPOT LED Name*/
 const char lightStr_AU[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"Green\0","Blue\0","UV310\0","UV275\0","White\0","Red\0"};
-													
+
+/*Auxiliary Board linear LED Name*/													
+const char lightStr_LN[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"IR730\0","IR850\0","IR940\0","White\0"};
 
 /***************************************************************************************************************************************/
 /*LED name axuiliary WT.EDIT */
@@ -478,20 +480,39 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 		tmpStr[z++] = ' ';
 
 		j = 0; //LED number
-		while (lightStr_AU[lightIndex_au][j] != 0)
-		{
-			tmpStr[z++] = lightStr_AU[lightIndex_au][j];
-			j++;
-		}
-		tmpStr[z++] = '+';
+		if(auxiliary_t.AuxiliarySubItem ==Spot){
+			while (lightStr_AU[lightIndex_au][j] != 0)
+			{
+				tmpStr[z++] = lightStr_AU[lightIndex_au][j];
+				j++;
+			}
+			tmpStr[z++] = '+';
 
-		j = 0;
-		while (filterStr[filterIndex][j] != 0)
-		{
-			tmpStr[z++] = filterStr[filterIndex][j];
-			j++;
+			j = 0;
+			while (filterStr[filterIndex][j] != 0)
+			{
+				tmpStr[z++] = filterStr[filterIndex][j];
+				j++;
+			}
+			tmpStr[z++] = 0;
 		}
-		tmpStr[z++] = 0;
+		else{
+			while (lightStr_LN[lightIndex_au][j] != 0)
+			{
+				tmpStr[z++] = lightStr_LN[lightIndex_au][j];
+				j++;
+			}
+			tmpStr[z++] = '+';
+
+			j = 0;
+			while (filterStr[filterIndex][j] != 0)
+			{
+				tmpStr[z++] = filterStr[filterIndex][j];
+				j++;
+			}
+			tmpStr[z++] = 0;
+
+		}
 		u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
 		if(auxiliary_t.AuxiliarySubItem ==Spot){
 			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[0]); //The one rows
