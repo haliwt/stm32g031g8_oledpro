@@ -486,15 +486,15 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 				tmpStr[z++] = lightStr_AU[lightIndex_au][j];
 				j++;
 			}
-			tmpStr[z++] = '+';
-
-			j = 0;
-			while (filterStr[filterIndex][j] != 0)
-			{
-				tmpStr[z++] = filterStr[filterIndex][j];
-				j++;
-			}
-			tmpStr[z++] = 0;
+//			tmpStr[z++] = '+';
+//
+//			j = 0;
+//			while (filterStr[filterIndex][j] != 0)
+//			{
+//				tmpStr[z++] = filterStr[filterIndex][j];
+//				j++;
+//			}
+//			tmpStr[z++] = 0;
 		}
 		else{
 			while (lightStr_LN[lightIndex_au][j] != 0)
@@ -502,33 +502,33 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 				tmpStr[z++] = lightStr_LN[lightIndex_au][j];
 				j++;
 			}
-			tmpStr[z++] = '+';
-
-			j = 0;
-			while (filterStr[filterIndex][j] != 0)
-			{
-				tmpStr[z++] = filterStr[filterIndex][j];
-				j++;
-			}
-			tmpStr[z++] = 0;
+//			tmpStr[z++] = '+';
+//
+//			j = 0;
+//			while (filterStr[filterIndex][j] != 0)
+//			{
+//				tmpStr[z++] = filterStr[filterIndex][j];
+//				j++;
+//			}
+//			tmpStr[z++] = 0;
 
 		}
 		u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
 		if(auxiliary_t.AuxiliarySubItem ==Spot){
 			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[0]); //The one rows
-			printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[0]);  //The two rows
+			//printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[0]);  //The two rows
 		}
 		if(auxiliary_t.AuxiliarySubItem ==Side){
 			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[1]); //The one rows
-			printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[1]);  //The two rows
+			//printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[1]);  //The two rows
 		}
 		if(auxiliary_t.AuxiliarySubItem ==Left){
 			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[2]); //The one rows
-			printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[2]);  //The two rows
+			//printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[2]);  //The two rows
 		}
 		if(auxiliary_t.AuxiliarySubItem ==Right){
 			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[3]); //The one rows
-			printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[3]);  //The two rows
+			//printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[3]);  //The two rows
 		}
 
 		 if (blinkIndex != BLINK_ALL && blinkIndex != BLINK_FILTER)
