@@ -29,7 +29,16 @@ typedef struct _auxiliary_
 	uint8_t mainLedKey;
 }auxiliary;
 
+typedef struct _mainLed_
+{
+   uint8_t ledoff_flag;
+
+}mainled;
+
+
 extern auxiliary auxiliary_t;
+
+extern mainled  mainled_t;
 
 enum _aux_{Main,Spot,Side,Left,Right};
 

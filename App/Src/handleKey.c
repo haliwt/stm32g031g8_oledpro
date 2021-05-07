@@ -71,6 +71,8 @@ static uint8_t  waitingTimeoutFlag;
 static uint8_t  timeoutFlag;
 static uint8_t checkParameterFlag;
 static uint8_t	_250msFlag;
+static uint8_t _500msFlag;
+
 
 
 
@@ -491,6 +493,11 @@ void handleInput(void)
 					 echoUnion++;
 
 				 displayUnionInfo(echoUnion);
+				 if(_500msFlag >2){
+					_500msFlag =0;
+					updateLight(echoLight);
+
+				 }
 				 // turn on ccw slowly
 				 //sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CCW);
 			 }
@@ -506,6 +513,11 @@ void handleInput(void)
 					 echoUnion--;
 
 				 displayUnionInfo(echoUnion);
+				 if(_500msFlag >2){
+					_500msFlag =0;
+					updateLight(echoLight);
+
+				 }
 				 // turn on ccw slowly
 				 //sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CCW);
 			 }
@@ -516,10 +528,12 @@ void handleInput(void)
 			if(getLightOnoffState()==NOW_LIGHT_IS_ON)
 			{
 				turnoffAllLight();
+				mainled_t.ledoff_flag =1;
 			}
 			else
 			{
-				setCurrentLightOn();
+                if(auxiliary_t.Auxiliary_flag==1)
+				     setCurrentLightOn(); //default "0"
 				
 				//setCurrentLightOn_LR();//WT.EDIT 2021.04.27
 				//setCurrentLightOn_AU();//WT.EDIT 2021.04.28
@@ -717,6 +731,7 @@ static void displayUnionInfo_Manual(uint8_t unionIndex)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)	// 2ms
 {
 	static uint8_t tick_250ms=0;
+	
 
 	tick_250ms++;
 	counter_ActionDelay++;
@@ -726,6 +741,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)	// 2ms
 	{
 		_250msFlag=1;
 		tick_250ms=0;
+		_500msFlag++;
+		
 	}
 	if(counter_ActionDelay>500)//500 * 2ms = 1000ms =1s
 	{

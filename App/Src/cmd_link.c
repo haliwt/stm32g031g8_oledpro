@@ -83,6 +83,8 @@ volatile static uint8_t transOngoingFlag; //interrupt Transmit flag bit , 1---st
 volatile static uint8_t bleTransOngoingFlag;
 
 auxiliary auxiliary_t ; //definition
+mainled  mainled_t;
+
 /****************************************************************************************************
 **
 *Function Name:void cmdInit(void)
@@ -262,6 +264,7 @@ void setCurrentLightOn(void)
 	if(currLight<MAX_LIGHT_NUMBER)
 	{
 		selectLight(currLight);
+		
 		//nowLightState=NOW_LIGHT_IS_ON;
 	}
 }
