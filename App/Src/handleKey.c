@@ -532,7 +532,7 @@ void handleInput(void)
 			}
 			else
 			{
-                if(auxiliary_t.Auxiliary_flag==1)
+               // if(auxiliary_t.Auxiliary_flag==1)
 				     setCurrentLightOn(); //default "0"
 				
 				//setCurrentLightOn_LR();//WT.EDIT 2021.04.27
