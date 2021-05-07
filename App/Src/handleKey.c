@@ -568,7 +568,10 @@ void handleInput(void)
 					    auxiliary_t.SmartKey =1;
 					    auxiliary_t.SmartMode =1;
 						auxiliary_t.ManualMode =1;
-						auxiliary_t.AuxiliarySubItem=Main -1;
+						auxiliary_t.AuxiliarySubItem=Main ;
+						auxiliary_t.mainLedKey =0;
+						auxiliary_t.Auxiliary_flag=1;
+						
 						 //manual "menu"
 						//if(echoUnion_manual>=MAX_UNION_NUMBER-1) echoUnion_manual=0;
 						//else echoUnion_manual++;
@@ -581,6 +584,7 @@ void handleInput(void)
  						 auxiliary_t.SmartMenuItem =0; //default "Smart Mode "
 					     auxiliary_t.SmartKey = 1;
 					     auxiliary_t.ManualMode=0;
+						  auxiliary_t.Auxiliary_flag=0;
 						 displayUnionInfo(echoUnion);
 						 HAL_Delay(1000);
 						
@@ -588,15 +592,16 @@ void handleInput(void)
 			        
               }
 			  if(auxiliary_t.ManualMode ==1){ //manual mode "SPOT" "SIDE" "LEFT" "RIGHT"
-			      auxiliary_t.Auxiliary_flag=1;
+			     
 				  auxiliary_t.SmartKey = 0;
 			
 			    if(auxiliary_t.AuxiliarySubItem>=MAX_LIGHT_LR_NUMBER-1){
 					auxiliary_t.AuxiliarySubItem=0;
+					auxiliary_t.mainLedKey =0;
 					HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
 			    }
 				else{ 
-					
+					auxiliary_t.mainLedKey =1;
 					auxiliary_t.AuxiliarySubItem ++;
 				    //if(auxiliary_t.AuxiliarySubItem == 1) auxiliary_t.mainLedKey = 0;
 					//else auxiliary_t.mainLedKey = 1;

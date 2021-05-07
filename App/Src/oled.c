@@ -31,6 +31,12 @@ const char filterStr[MAX_FILTER_INDEX][MAX_FILTER_STR_LEN+1]={"VIS\0","BPS32\0",
 /*LED name Modify */
 const char lightStr[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"White\0","UV365\0","Violet\0","Blue1\0","Blue2\0","Cyan\0",
 													 "Green\0","Orange\0","Red\0","640\0","690\0","720\0","750\0","770\0","840\0","930\0"};
+
+/*LED name Modify--Manual Button */
+
+const char lightStr_ML[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"930\0","White\0","UV365\0","Violet\0","Blue1\0","Blue2\0","Cyan\0",
+													 "Green\0","Orange\0","Red\0","640\0","690\0","720\0","750\0","770\0","840\0"};
+
 /*******************************************************************************************************************/
 /*Auxiliary Board SPOT LED Name*/
 const char lightStr_AU[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"Green\0","Blue\0","UV310\0","UV275\0","White\0","Red\0"};
@@ -239,7 +245,12 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 		LedMainNumber = tmpLight ;
 		
 			u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
-			printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
+			if (auxiliary_t.Auxiliary_flag == 1)
+			    printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr_ML[LedMainNumber]);
+			else 
+				 printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
+
+			//printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,tmpStr);
 			//printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,tmpStr);
            if (auxiliary_t.Auxiliary_flag == 1)
 			   printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
@@ -341,8 +352,7 @@ void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 		}
 		tmpStr[i++]=0;
 		LedSpotNumber = tmpLight;
-		if(LedSpotNumber ==1) auxiliary_t.mainLedKey =0;
-		if(LedSpotNumber ==2) auxiliary_t.mainLedKey =1;
+
 		u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 		printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
 		printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
