@@ -107,6 +107,9 @@ void Error_Handler(void);
 #define KEY10_Pin                   GPIO_PIN_15  //PA15  ---Spot board Mode switch 
 #define KEY10_GPIO_Port             GPIOA
 
+//#define KEY11_Pin                   GPIO_PIN_13  //PA13  ---SWDIO update Soft GPIO
+//#define KEY11_GPIO_Port             GPIOA
+
 
 
 

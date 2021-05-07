@@ -109,6 +109,8 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(BT_MRDY_GPIO_Port, &GPIO_InitStruct);
 
+ // GPIO_InitStruct.Alternate = GPIO_AF0_USART1;
+
  }
 
 /* USER CODE BEGIN 2 */
