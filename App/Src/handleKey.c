@@ -127,6 +127,7 @@ void keyInit(void)
 	printSettingInfo_LR_Led(echoUnion,echoFilter,echoLight_LR,BLINK_OFF);
 	printSettingInfo_Auxiliary(echoUnion,echoFilter,echoLight_AU,BLINK_OFF);
 	HAL_TIM_Base_Start_IT(&htim17);
+	
 }
 
 pKeyStruct getKey(void)
@@ -356,7 +357,7 @@ void AuxiliaryWhichOneLed_Reduce(uint8_t wled)
 void handleInput(void)
 {
 	static uint8_t keySmartflag;
-	static uint8_t temp;
+	static uint8_t temp,power=0;
 	pKeyStruct pkey=getKey();
 
 	if(_250msFlag)
@@ -373,6 +374,12 @@ void handleInput(void)
 		checkParameterFlag=0;
 		updateParameter(echoUnion,echoLight,echoLight_LR,echoLight_AU,echoFilter); //blue tooth --USART1
 		//updateParameter -> UART2,UART1 Transmit interrupt process
+		if(power < 6){
+			 power++;
+		     if(power==5)
+		       setCurrentLightOn(); //WT.EDIT 2021.05.08
+		    
+		}
 	}
 
 	if(waitingTimeoutFlag)	//120s  the motor board timeout
@@ -503,17 +510,16 @@ void handleInput(void)
 						temp =4;
 					    mainled_t.ledoff_flag=19;
 						turnoffAllLight();
-					   updateLight_Union(4);
-					    auxiliary_t.AuxiliarySubItem =Side;
-					   selectLight_AU(temp);
+					    selectLight_Union(temp);
+					   
 					}
 					else if(echoUnion== 20){
 					    mainled_t.ledoff_flag=20;
 						temp=2;
 						turnoffAllLight();
-					   updateLight_Union(2);
-					    auxiliary_t.AuxiliarySubItem =Side;
-					   selectLight_AU(temp);
+					     selectLight_Union(temp);
+					   // auxiliary_t.AuxiliarySubItem =Side;
+					  // selectLight_AU(temp);
 
 					}
 					else{
@@ -544,22 +550,22 @@ void handleInput(void)
 				 }
 				 displayUnionInfo(echoUnion);
 				 if(_500msFlag >2){
-					_500msFlag =0;
+					 _500msFlag =0;
 					if( echoUnion==19){
 						temp = 4;
 						turnoffAllLight();
 					  mainled_t.ledoff_flag=19;
-					   updateLight_Union(temp);
-					   auxiliary_t.AuxiliarySubItem =Side;
-					   selectLight_AU(temp);
+					   selectLight_Union(temp);
+					   //auxiliary_t.AuxiliarySubItem =Side;
+					  // selectLight_AU(temp);
 					}
 					else if( echoUnion== 20){
 						temp =2;
 						turnoffAllLight();
 						mainled_t.ledoff_flag=20;
-					   updateLight_Union(2);
-					    auxiliary_t.AuxiliarySubItem =Side;
-					   selectLight_AU(temp);
+					    selectLight_Union(temp);
+					    //auxiliary_t.AuxiliarySubItem =Side;
+					   //selectLight_AU(temp);
 
 					}
 					else{

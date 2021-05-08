@@ -18,5 +18,6 @@ void user_main(void)
 	{
 		handleInput();
 		decode();
+		
 	}
 }

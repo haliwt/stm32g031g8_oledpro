@@ -53,7 +53,7 @@ static uint8_t checkBleModuleAVDData(void);
 static void selectFilter(uint8_t index);
 static void selectLight(uint8_t index);
 static void selectLight_LR(uint8_t lightIndex_LR); //WT.EDIT 2021.04.24
-static void selectLight_Union(uint8_t index);
+
 
 //static void selectLight_AU(uint8_t lightIndex_AU); //WT.EDIT 2021.04.28
 
@@ -171,10 +171,10 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 	    else{ 
 
 			if(mainled_t.ledoff_flag ==19){
-					   updateLight_Union(4);
+					   selectLight_Union(4);
 					}
 					else if(mainled_t.ledoff_flag ==20){
-					   updateLight_Union(2);
+					   selectLight_Union(2);//updateLight_Union(2);
 
 					}
 					else{
@@ -345,7 +345,7 @@ uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_
 	currLight_LR = 0xff;
 	currLight_AU = 0xff;
 
-	*revealUnion=9; //
+	*revealUnion=10; //9
 	*revealFilter=0;
 	*revealLight=0;
 	*revealLight_LR = 0;
@@ -965,7 +965,7 @@ static void selectLight(uint8_t index)
 *Return Ref:NO
 *
 ****************************************************************************************************/
-static void selectLight_Union(uint8_t index)
+void selectLight_Union(uint8_t index)
 {
 	
        uint8_t tenNum;
