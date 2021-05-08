@@ -356,6 +356,7 @@ void AuxiliaryWhichOneLed_Reduce(uint8_t wled)
 void handleInput(void)
 {
 	static uint8_t keySmartflag;
+	static uint8_t temp;
 	pKeyStruct pkey=getKey();
 
 	if(_250msFlag)
@@ -388,8 +389,8 @@ void handleInput(void)
 			   printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
 		       printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
 		}
-		else
-			updateLight(echoLight); //LED number turn on or off
+		//else
+			//updateLight(echoLight); //LED number turn on or off
 	}
 
 	if(timeoutFlag) //15 minute 
@@ -487,15 +488,40 @@ void handleInput(void)
 			 auxiliary_t.SmartKey = 0;
 			 if (auxiliary_t.Auxiliary_flag == 0)
 			 {
-				 if (echoUnion >= MAX_UNION_NUMBER - 1)
+				 if (echoUnion >= MAX_UNION_NUMBER - 1){
 					 echoUnion = 0;
-				 else
+					  mainled_t.ledoff_flag =0;
+				 }
+				 else{
 					 echoUnion++;
-
+					 mainled_t.ledoff_flag++;
+				 }
 				 displayUnionInfo(echoUnion);
 				 if(_500msFlag >2){
 					_500msFlag =0;
-					updateLight(echoLight);
+					if(echoUnion ==19){
+						temp =4;
+					    mainled_t.ledoff_flag=19;
+						turnoffAllLight();
+					   updateLight_Union(4);
+					    auxiliary_t.AuxiliarySubItem =Side;
+					   selectLight_AU(temp);
+					}
+					else if(echoUnion== 20){
+					    mainled_t.ledoff_flag=20;
+						temp=2;
+						turnoffAllLight();
+					   updateLight_Union(2);
+					    auxiliary_t.AuxiliarySubItem =Side;
+					   selectLight_AU(temp);
+
+					}
+					else{
+				
+					  updateLight(echoLight);
+
+					}
+					
 
 				 }
 				 // turn on ccw slowly
@@ -507,15 +533,40 @@ void handleInput(void)
 			 auxiliary_t.SmartKey = 0;
 			 if (auxiliary_t.Auxiliary_flag == 0)
 			 {
-				 if (echoUnion == 0)
+				 if (echoUnion == 0){
 					 echoUnion = MAX_UNION_NUMBER - 1;
-				 else
-					 echoUnion--;
+					 mainled_t.ledoff_flag =MAX_UNION_NUMBER - 1;
 
+				 }
+				 else{
+					 echoUnion--;
+					  mainled_t.ledoff_flag--;
+				 }
 				 displayUnionInfo(echoUnion);
 				 if(_500msFlag >2){
 					_500msFlag =0;
-					updateLight(echoLight);
+					if( echoUnion==19){
+						temp = 4;
+						turnoffAllLight();
+					  mainled_t.ledoff_flag=19;
+					   updateLight_Union(temp);
+					   auxiliary_t.AuxiliarySubItem =Side;
+					   selectLight_AU(temp);
+					}
+					else if( echoUnion== 20){
+						temp =2;
+						turnoffAllLight();
+						mainled_t.ledoff_flag=20;
+					   updateLight_Union(2);
+					    auxiliary_t.AuxiliarySubItem =Side;
+					   selectLight_AU(temp);
+
+					}
+					else{
+						
+					    updateLight(echoLight);
+
+					}
 
 				 }
 				 // turn on ccw slowly
@@ -528,7 +579,7 @@ void handleInput(void)
 			if(getLightOnoffState()==NOW_LIGHT_IS_ON)
 			{
 				turnoffAllLight();
-				mainled_t.ledoff_flag =1;
+				
 			}
 			else
 			{
@@ -545,7 +596,14 @@ void handleInput(void)
 			 auxiliary_t.SmartKey = 0;
 			 if(auxiliary_t.Auxiliary_flag==0)
 			    brightnessAdj(BRIGHTNESS_ADJ_DOWN);
-			 else  brightnessAdj_AuxiliaryLed(BRIGHTNESS_ADJ_DOWN);
+			 else{
+				 
+				if(auxiliary_t.mainLedKey == 1)
+				   brightnessAdj_AuxiliaryLed(BRIGHTNESS_ADJ_DOWN);
+				else  
+					brightnessAdj(BRIGHTNESS_ADJ_DOWN);
+
+			 }
 			//motionCtrl(MOTION_CCW);
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY9))	// brightness adj +
@@ -553,7 +611,14 @@ void handleInput(void)
 			 auxiliary_t.SmartKey = 0;
 			 if(auxiliary_t.Auxiliary_flag==0)
 			       brightnessAdj(BRIGHTNESS_ADJ_UP);
-			 else  brightnessAdj_AuxiliaryLed(BRIGHTNESS_ADJ_UP);
+			 else {
+
+				 if(auxiliary_t.mainLedKey == 1)
+					 brightnessAdj_AuxiliaryLed(BRIGHTNESS_ADJ_UP);
+				 else 
+				 	brightnessAdj(BRIGHTNESS_ADJ_UP);
+
+			 }
 			//motionCtrl(MOTION_CW);
 		}
 	    else if(!(pkey->keyCode & KEY_CODE_KEY10))	// auxiliary Menu button WT.EDIT 

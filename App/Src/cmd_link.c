@@ -29,6 +29,7 @@
 #define STATE_SIZE		4	// length of command parameter
 #define STATE_PARA		5	// parameter
 #define STATE_CRC		6	// checksum
+mainled mainled_t;
 
 typedef struct settingUnion
 {
@@ -52,6 +53,8 @@ static uint8_t checkBleModuleAVDData(void);
 static void selectFilter(uint8_t index);
 static void selectLight(uint8_t index);
 static void selectLight_LR(uint8_t lightIndex_LR); //WT.EDIT 2021.04.24
+static void selectLight_Union(uint8_t index);
+
 //static void selectLight_AU(uint8_t lightIndex_AU); //WT.EDIT 2021.04.28
 
 static void notifyStatusToHost(uint8_t lightNum,uint8_t lightNum_LR,uint8_t filterNum,uint8_t unionNum);
@@ -165,7 +168,23 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 			updateLight_AU(lightIndx_AU); //WT.EDIT 2021.04.28 //subItem
 			
 		}
-	    else updateLight(lightIndex);
+	    else{ 
+
+			if(mainled_t.ledoff_flag ==19){
+					   updateLight_Union(4);
+					}
+					else if(mainled_t.ledoff_flag ==20){
+					   updateLight_Union(2);
+
+					}
+					else{
+					
+					  updateLight(lightIndex);
+
+					}
+
+
+	    }
 	}
 }
 
@@ -200,6 +219,29 @@ void updateLight(uint8_t lightIndex)
 		}
 	}
 }
+/****************************************************************************************************
+**
+*Function Name:void updateLight(uint8_t lightIndex)
+*Function: Union UART to Side Board data
+*Input Ref: 
+*Return Ref:NO
+*
+****************************************************************************************************/
+void updateLight_Union(uint8_t lightIndex)
+{
+	if(lightIndex!=currLight)
+	{
+		currLight=lightIndex;
+		//setEchoLightBlink(ENABLE_BLINK);
+		if(powerOnFlag) powerOnFlag=0;	//need not turn on light when power on
+		else
+		{
+			selectLight_Union(lightIndex); //Transmit Interrupt process 
+			//nowLightState=NOW_LIGHT_IS_ON;
+		}
+	}
+}
+
 /****************************************************************************************************
 **
 *Function Name:void updateLight(uint8_t lightIndex)
@@ -917,6 +959,43 @@ static void selectLight(uint8_t index)
 }
 /****************************************************************************************************
 **
+*Function Name:void selectLight_Union(uint8_t index)
+*Function: UART2 transmit interrupt process ---4D 58 4C 53 32 30 32 
+*Input Ref: LED number 
+*Return Ref:NO
+*
+****************************************************************************************************/
+static void selectLight_Union(uint8_t index)
+{
+	
+       uint8_t tenNum;
+       tenNum=index/5; // WT.EDIT 5 group LED number 2021.04.23 remainder
+
+		//crc=0x55;
+		outputBuf[0]='V'; //0X56
+		outputBuf[1]='X'; //0X58
+		outputBuf[2]='L'; //0X4C	// 'L' for light board
+		outputBuf[3]='S'; //0X53	// 'S' select light command, 'C' close all light command
+		outputBuf[4]='3'; //0X31	//has  three command parameter
+		outputBuf[5]='3'; //0X33   //the first = ledab.led_lr_id = 3 --left and right the same time On
+		outputBuf[6]=tenNum+0x30; // change to ascii number ,decimal + 0x30 ->hexadecimal
+		outputBuf[7]=(index-tenNum*10)+0x30;
+		//for(i=3;i<7;i++) crc ^= outputBuf[i];
+		//outputBuf[i]=crc;
+		transferSize=8;
+		if(transferSize)
+		{
+			while(transOngoingFlag);
+			transOngoingFlag=1;
+			HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
+		}
+	
+	 nowLightState=NOW_LIGHT_IS_ON;
+
+}
+
+/****************************************************************************************************
+**
 *Function Name:static void selectLight_LR(uint8_t index)
 *Function: UART2 transmit interrupt process ---
 *Input Ref: main Item of name
@@ -998,7 +1077,7 @@ void selectLight_AU(uint8_t index)
 	}
 	else if(auxiliary_t.AuxiliarySubItem ==Side){
 		//tenNum=index/10; // remainder
-			tenNum=index/4; // WT.EDIT 5 group LED number 2021.04.23 remainder
+			tenNum=index/5; // WT.EDIT 5 group LED number 2021.04.23 remainder
 
 			//crc=0x55;
 			outputBuf[0]='V'; //0X56
