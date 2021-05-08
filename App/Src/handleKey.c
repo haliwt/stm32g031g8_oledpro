@@ -387,17 +387,17 @@ void handleInput(void)
 		waitingTimeoutFlag=0;
 		stopSelectFilter(); //UART_Transmit_IT--5 byte //4D 58 4D 53 30 
 		setEchoFilterBlink(DISABLE_BLINK);
-		printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
+		
 		
 		//printEchoFilter(echoFilter);
 		
-		if (auxiliary_t.mainLedKey == 1 && auxiliary_t.AuxiliarySubItem !=0){
-			   updateLight_AU(echoLight_LR);
-			   printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
-		       printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
+		if (auxiliary_t.Auxiliary_flag==1){
+			  updateLight_AU(echoLight_LR);
+			//  printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
+		      printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
 		}
-		//else
-			//updateLight(echoLight); //LED number turn on or off
+		else
+			printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
 	}
 
 	if(timeoutFlag) //15 minute 
@@ -469,9 +469,10 @@ void handleInput(void)
 					 echoFilter++;
 				 echoGroup = ECHO_GROUP_A;
 				 printSettingInfo(echoUnion, echoFilter, echoLight, BLINK_OFF);
-				 //printEchoFilter(echoFilter);
-				 // turn on ccw quickly
-				 //sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_HIGH,MOTOR_DIR_CCW);
+				  updateLight_AU(echoLight_LR);
+			    //  printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
+		           printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
+				
 			 }
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY3))	// change filter -
@@ -484,10 +485,11 @@ void handleInput(void)
 				 else
 					 echoFilter--;
 				 echoGroup = ECHO_GROUP_A;
-				 printSettingInfo(echoUnion, echoFilter, echoLight, BLINK_OFF);
-				 //printEchoFilter(echoFilter);
-				 // turn on ccw slowly
-				 //sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CCW);
+				  printSettingInfo(echoUnion, echoFilter, echoLight, BLINK_OFF);
+				  updateLight_AU(echoLight_LR);
+			//  printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
+		          printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
+				 
 			 }
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY5))	// change union + //
