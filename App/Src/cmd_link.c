@@ -327,10 +327,11 @@ uint8_t getItemFromUnion(uint8_t unionIndex,uint8_t *filterIndex,uint8_t *lightI
 //												  	{1,2},{3,4},{3,3},{3,6},{0,0},
 //													{9,9},{2,4},{1,2},{2,1},{3,3},
 //													{4,6},{3,4},{1,0},{3,8},{8,9}};
-    settingUnion_t settingTable[MAX_UNION_NUMBER]={	{12,7},{11,6},{6,4},{6,5},{2,0},
-												  	{1,0},{15,8},{14,8},{13,8},{1,0},
-													{0,0},{14,9},{13,8},{12,7},{10,6},
-													{9,5},{4,8},{8,5},{0,0},{14,9}};
+    settingUnion_t settingTable[MAX_UNION_NUMBER]={	{12,7},{11,6}, {6,4}, {6,5}, {2,0},
+												  	{1,0}, {15,8}, {14,8},{13,8},{1,0},
+													{0,0}, {14,9}, {13,8},{12,7},{11,7},
+													{10,6}, {9,5},  {4,8}, {8,4}, {0,0},
+													{14,9}};
 	if(unionIndex<MAX_UNION_NUMBER)
 	{
 		*filterIndex=settingTable[unionIndex].filter;

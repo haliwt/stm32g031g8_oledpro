@@ -211,7 +211,7 @@ void updateKeyStatus(void)
 				  }
 				  glKey.multi_pressed=1;
 			  }
-			  if(keyDownCount>KEY_LONG_DELAY)//2500 * 2ms 
+			  if(keyDownCount>KEY_LONG_DELAY)//1500 * 2ms 
 			  {
 				  glKey.long_pressed=1;
 				  keyDownCount--;
