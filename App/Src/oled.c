@@ -320,6 +320,72 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 }
 /************************************************************************************************************
 ***
+*Function Name:void printSettingInfo_filter(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex)
+*Function : menu of main board for 16 group
+*
+Input Ref:
+*
+Return Ref:
+*
+*************************************************************************************************************/
+void printSettingInfo_filter(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex)
+{
+	char tmpStr[MAX_UNION_STR_LEN+1];
+	uint8_t tmpUnion,tmpFilter,tmpLight,i,j,tenNum;
+	uint8_t group;
+	
+
+	tmpUnion=unionIndex+1;
+	tmpFilter=filterIndex+1;
+	tmpLight=lightIndex+1;
+	group=retrieveEchoGroup();
+
+	if (auxiliary_t.Auxiliary_flag == 1)
+		printFrame_Manual();//
+	else printFrame();
+
+	switch(group)
+	{
+	case ECHO_GROUP_A:
+	
+		
+			u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
+			if (auxiliary_t.Auxiliary_flag == 1)
+			     printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr_ML[LedMainNumber]);
+			else 
+				 printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
+
+	
+           if (auxiliary_t.Auxiliary_flag == 1)
+			   printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
+		   else printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,tmpStr); //display number
+        //filter
+		i=0;
+		if(tmpFilter<10) gtmpStr[i++]=tmpFilter+0x30;
+		else
+		{
+			tenNum=tmpFilter/10;
+			gtmpStr[i++]=tenNum+0x30;
+			tmpFilter-= tenNum*10;
+			gtmpStr[i++]=tmpFilter+0x30;
+		}
+		gtmpStr[i++]=0;
+		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
+		{
+			printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[filterIndex]);
+			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,gtmpStr);
+		}
+		break;
+		
+	default:
+		break;
+	}
+	u8g2_SendBuffer(&u8g2);
+
+}
+
+/************************************************************************************************************
+***
 	*Function Name:void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex)
 	*Function : menu be selected axiliary left or right led board
 	*Input Ref:
@@ -403,6 +469,7 @@ void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 	u8g2_SendBuffer(&u8g2);
 
 }
+
 /************************************************************************************************************
 ***
 	*Function Name:void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex)

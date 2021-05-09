@@ -468,7 +468,7 @@ void handleInput(void)
 				 else
 					 echoFilter++;
 				 echoGroup = ECHO_GROUP_A;
-				   printSettingInfo(echoUnion, echoFilter, echoLight, BLINK_OFF);
+				   printSettingInfo_filter(echoUnion, echoFilter, echoLight, BLINK_OFF);
 				 // updateLight_AU(echoLight_LR);
 			    //  printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
 			    if(auxiliary_t.AuxiliarySubItem!=Main)
@@ -486,7 +486,7 @@ void handleInput(void)
 				 else
 					 echoFilter--;
 				 echoGroup = ECHO_GROUP_A;
-				  printSettingInfo(echoUnion, echoFilter, echoLight, BLINK_OFF);
+				  printSettingInfo_filter(echoUnion, echoFilter, echoLight, BLINK_OFF);
 				 // updateLight_AU(echoLight_LR);
 			     //  printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
 				 if(auxiliary_t.AuxiliarySubItem!=Main)
