@@ -427,49 +427,30 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 	switch(group)
 	{
 	case ECHO_GROUP_A:
-		i=0;
-		if(tmpLight<9) //auxiliary board has nine LED 
-			tmpStr[i++]=tmpLight+0x30; 
-		else
-		{
-			tenNum=tmpLight/9;
-			tmpStr[i++]=tenNum+0x30;
-			tmpLight-= tenNum*9;//tmpLight-= tenNum*10;
-			tmpStr[i++]=tmpLight+0x30;
-		}
-		tmpStr[i++]=0;
+		
 		//LedSpotNumber = tmpLight;
 		u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 		printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
 		printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
 
-		i=0;
-		if(tmpFilter<10) tmpStr[i++]=tmpFilter+0x30;
-		else
-		{
-			tenNum=tmpFilter/10;
-			tmpStr[i++]=tenNum+0x30;
-			tmpFilter-= tenNum*10;
-			tmpStr[i++]=tmpFilter+0x30;
-		}
-		tmpStr[i++]=0;
+		
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
 			printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[filterIndex]);
-			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,tmpStr);
+			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,gtmpStr);
 		}
 		//break;
 
 	//case ECHO_GROUP_B:
 		z = 0;
 		tmpStr[z++] = '#';
-		if (tmpUnion < 10)
+		if (tmpUnion < 7)
 			tmpStr[z++] = tmpUnion + 0x30;
 		else
 		{
-			tenNum = tmpUnion / 10; //filter has ten
+			tenNum = tmpUnion / 6; //filter has ten
 			tmpStr[z++] = tenNum + 0x30;
-			tmpUnion -= tenNum * 10;
+			tmpUnion -= tenNum * 6;
 			tmpStr[z++] = tmpUnion + 0x30;
 		}
 		tmpStr[z++] = ' ';
@@ -509,20 +490,24 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 
 		}
 		u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
-		if(auxiliary_t.AuxiliarySubItem ==Spot){
+		if(auxiliary_t.AuxiliarySubItem ==Main){
 			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[0]); //The one rows
 			//printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[0]);  //The two rows
 		}
-		if(auxiliary_t.AuxiliarySubItem ==Side){
+		if(auxiliary_t.AuxiliarySubItem ==Spot){
 			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[1]); //The one rows
+			//printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[0]);  //The two rows
+		}
+		if(auxiliary_t.AuxiliarySubItem ==Side){
+			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[2]); //The one rows
 			//printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[1]);  //The two rows
 		}
 		if(auxiliary_t.AuxiliarySubItem ==Left){
-			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[2]); //The one rows
+			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[3]); //The one rows
 			//printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[2]);  //The two rows
 		}
 		if(auxiliary_t.AuxiliarySubItem ==Right){
-			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[3]); //The one rows
+			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[4]); //The one rows
 			//printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[3]);  //The two rows
 		}
 
