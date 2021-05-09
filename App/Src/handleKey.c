@@ -683,16 +683,14 @@ void handleInput(void)
 				
 				echoGroup=ECHO_GROUP_A;
 				//echoLight = LED Name
-				    if(auxiliary_t.AuxiliarySubItem==0)
-					      printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
-			        else{
-						 printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
-						AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
-						getItemFromUnion_AU(echoUnion,&echoFilter,&echoLight);
-						printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
-						selectLight_AU(auxiliary_t.AuxiliarySubItem);
+				  
+						printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
+						//AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
+						//getItemFromUnion_AU(echoUnion,&echoFilter,&echoLight);
+						//printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
+						//selectLight_AU(auxiliary_t.AuxiliarySubItem);
 				
-			        	}
+			        	
 			 }
 			 else{  //defalut value is "smartButton"
 				auxiliary_t.Auxiliary_flag=0; //
