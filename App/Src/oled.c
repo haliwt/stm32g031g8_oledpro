@@ -406,7 +406,7 @@ void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 /************************************************************************************************************
 ***
 	*Function Name:void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex)
-	*Function : Auxiliary board  spot  and linear LED number
+	*Function : Auxiliary board  spot  and linear of sub which is  LED number turn ON ?
 	*Input Ref:
 	*Return Ref:
 *

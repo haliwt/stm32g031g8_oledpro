@@ -417,7 +417,7 @@ void handleInput(void)
 		             if(auxiliary_t.mainLedKey == 1){
 							
 						AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
-						getItemFromUnion_AU(echoUnion,&echoFilter,&echoLight);
+						//getItemFromUnion_AU(echoUnion,&echoFilter,&echoLight);
 						printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
 		               
 						
@@ -444,7 +444,7 @@ void handleInput(void)
 
 				    
 					AuxiliaryWhichOneLed_Reduce(auxiliary_t.AuxiliarySubItem);
-					getItemFromUnion_AU(echoUnion,&echoFilter,&echoLight);
+					//getItemFromUnion_AU(echoUnion,&echoFilter,&echoLight);
 				    printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
 					
 				}
@@ -468,10 +468,11 @@ void handleInput(void)
 				 else
 					 echoFilter++;
 				 echoGroup = ECHO_GROUP_A;
-				 printSettingInfo(echoUnion, echoFilter, echoLight, BLINK_OFF);
-				  updateLight_AU(echoLight_LR);
+				   printSettingInfo(echoUnion, echoFilter, echoLight, BLINK_OFF);
+				 // updateLight_AU(echoLight_LR);
 			    //  printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
-		           printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
+			    if(auxiliary_t.AuxiliarySubItem!=Main)
+		            printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
 				
 			 }
 		}
@@ -486,9 +487,10 @@ void handleInput(void)
 					 echoFilter--;
 				 echoGroup = ECHO_GROUP_A;
 				  printSettingInfo(echoUnion, echoFilter, echoLight, BLINK_OFF);
-				  updateLight_AU(echoLight_LR);
-			//  printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
-		          printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
+				 // updateLight_AU(echoLight_LR);
+			     //  printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
+				 if(auxiliary_t.AuxiliarySubItem!=Main)
+						printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
 				 
 			 }
 		}
@@ -685,10 +687,7 @@ void handleInput(void)
 				//echoLight = LED Name
 				  
 						printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
-						//AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
-						//getItemFromUnion_AU(echoUnion,&echoFilter,&echoLight);
-						//printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
-						//selectLight_AU(auxiliary_t.AuxiliarySubItem);
+						
 				
 			        	
 			 }
