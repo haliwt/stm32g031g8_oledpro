@@ -250,7 +250,7 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 		
 			u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 			if (auxiliary_t.Auxiliary_flag == 1)
-			     printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr_ML[LedMainNumber]);
+			     printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr_ML[LedMainNumber+1]);
 			else 
 				 printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
 
@@ -336,9 +336,8 @@ void printSettingInfo_filter(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 	uint8_t group;
 	
 
-	tmpUnion=unionIndex+1;
+
 	tmpFilter=filterIndex+1;
-	tmpLight=lightIndex+1;
 	group=retrieveEchoGroup();
 
 	if (auxiliary_t.Auxiliary_flag == 1)
@@ -351,15 +350,10 @@ void printSettingInfo_filter(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 	
 		
 			u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
-			if (auxiliary_t.Auxiliary_flag == 1)
-			     printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
-			else 
-				 printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
-
-	
-           if (auxiliary_t.Auxiliary_flag == 1)
-			   printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
-		   else printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,tmpStr); //display number
+			
+			printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
+			printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
+		 
         //filter
 		i=0;
 		if(tmpFilter<10) gtmpStr[i++]=tmpFilter+0x30;
