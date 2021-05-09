@@ -173,13 +173,13 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 
 			if(mainled_t.ledoff_flag ==19){
 					 selectLight_Union(3);
-					 mainled_t.ledoff_flag =0;
+					 mainled_t.ledoff_flag =0xff;
 			}
 			else if(mainled_t.ledoff_flag ==20){
 					 selectLight_Union(2);//updateLight_Union(2);
-					 mainled_t.ledoff_flag =0;
+					 mainled_t.ledoff_flag =0xff;
 			}
-			else{
+			else if(mainled_t.ledoff_flag !=0xff){
 					
 				updateLight(lightIndex);
 
@@ -378,8 +378,10 @@ uint8_t getItemFromUnion(uint8_t unionIndex,uint8_t *filterIndex,uint8_t *lightI
 													{14,9}};
 	if(unionIndex<MAX_UNION_NUMBER)
 	{
+     
 		*filterIndex=settingTable[unionIndex].filter;
 		*lightIndex=settingTable[unionIndex].light;
+		
 		return CMD_SUCCESS;
 	}
 	return CMD_ERROR;

@@ -357,7 +357,7 @@ void AuxiliaryWhichOneLed_Reduce(uint8_t wled)
 void handleInput(void)
 {
 	static uint8_t keySmartflag;
-	static uint8_t temp,power=0;
+	static uint8_t power=0;
 	pKeyStruct pkey=getKey();
 
 	if(_250msFlag)
@@ -511,24 +511,17 @@ void handleInput(void)
 				 if(_500msFlag >2){
 					_500msFlag =0;
 					if(echoUnion ==19){//white					
-					    temp =3;
+				
 					    mainled_t.ledoff_flag=19;
 						turnoffAllLight();
-					    //selectLight_Union(temp);
-					    auxiliary_t.AuxiliarySubItem =Side;
-					    selectLight_AU(temp);
+					   
                    
 					   
 					}
 					else if(echoUnion== 20){
 					    mainled_t.ledoff_flag=20;
-						temp=2;
 						turnoffAllLight();
-						  auxiliary_t.AuxiliarySubItem =Side;
-						  selectLight_AU(temp);
-					   //  selectLight_Union(temp);
-					   // auxiliary_t.AuxiliarySubItem =Side;
-					  // selectLight_AU(temp);
+
 
 					}
 					else{
@@ -561,18 +554,18 @@ void handleInput(void)
 				 if(_500msFlag >2){
 					 _500msFlag =0;
 					if( echoUnion==19){
-						temp = 4;
+
 						turnoffAllLight();
 					  mainled_t.ledoff_flag=19;
-					   selectLight_Union(temp);
+					 //  selectLight_Union(temp);
 					   //auxiliary_t.AuxiliarySubItem =Side;
 					  // selectLight_AU(temp);
 					}
 					else if( echoUnion== 20){
-						temp =2;
+					
 						turnoffAllLight();
 						mainled_t.ledoff_flag=20;
-					    selectLight_Union(temp);
+					   // selectLight_Union(temp);
 					    //auxiliary_t.AuxiliarySubItem =Side;
 					   //selectLight_AU(temp);
 
