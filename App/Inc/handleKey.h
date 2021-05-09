@@ -40,6 +40,9 @@ extern auxiliary auxiliary_t;
 
 extern mainled  mainled_t;
 
+//void selectLight_Union(uint8_t index);
+
+
 enum _aux_{Main,Spot,Side,Left,Right};
 
 

@@ -44,6 +44,7 @@ extern void setEchoLight(uint8_t lightIndex);
 
 extern void setEchoUnion(uint8_t unionIndex);
 extern void trigParameterUpdateImmediate(void);
+extern void selectLight_Union(uint8_t index);
 
 
 static void runCmd(void);
@@ -171,17 +172,18 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 	    else{ 
 
 			if(mainled_t.ledoff_flag ==19){
-					   selectLight_Union(4);
-					}
-					else if(mainled_t.ledoff_flag ==20){
-					   selectLight_Union(2);//updateLight_Union(2);
-
-					}
-					else{
+					 selectLight_Union(3);
+					 mainled_t.ledoff_flag =0;
+			}
+			else if(mainled_t.ledoff_flag ==20){
+					 selectLight_Union(2);//updateLight_Union(2);
+					 mainled_t.ledoff_flag =0;
+			}
+			else{
 					
-					  updateLight(lightIndex);
+				updateLight(lightIndex);
 
-					}
+			}
 
 
 	    }
@@ -1077,7 +1079,7 @@ void selectLight_AU(uint8_t index)
 	}
 	else if(auxiliary_t.AuxiliarySubItem ==Side){
 		//tenNum=index/10; // remainder
-			tenNum=index/5; // WT.EDIT 5 group LED number 2021.04.23 remainder
+			tenNum=index/4; // WT.EDIT 5 group LED number 2021.04.23 remainder
 
 			//crc=0x55;
 			outputBuf[0]='V'; //0X56

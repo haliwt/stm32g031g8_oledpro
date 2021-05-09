@@ -79,7 +79,8 @@ void updateLight_AU(uint8_t lightIndex_AU);
 void updateLight_Union(uint8_t lightIndex);
 
 void selectLight_AU(uint8_t index);
-void selectLight_Union(uint8_t index);
+
+
 
 
 #endif /* CMD_LINK_H_ */

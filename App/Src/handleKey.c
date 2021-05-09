@@ -510,18 +510,23 @@ void handleInput(void)
 				 displayUnionInfo(echoUnion);
 				 if(_500msFlag >2){
 					_500msFlag =0;
-					if(echoUnion ==19){
-						temp =4;
+					if(echoUnion ==19){//white					
+					    temp =3;
 					    mainled_t.ledoff_flag=19;
 						turnoffAllLight();
-					    selectLight_Union(temp);
+					    //selectLight_Union(temp);
+					    auxiliary_t.AuxiliarySubItem =Side;
+					    selectLight_AU(temp);
+                   
 					   
 					}
 					else if(echoUnion== 20){
 					    mainled_t.ledoff_flag=20;
 						temp=2;
 						turnoffAllLight();
-					     selectLight_Union(temp);
+						  auxiliary_t.AuxiliarySubItem =Side;
+						  selectLight_AU(temp);
+					   //  selectLight_Union(temp);
 					   // auxiliary_t.AuxiliarySubItem =Side;
 					  // selectLight_AU(temp);
 

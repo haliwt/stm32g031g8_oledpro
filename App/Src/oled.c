@@ -207,12 +207,10 @@ void oledInit(void)
 }
 /************************************************************************************************************
 ***
-*Function Name:void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex)
-*Function : menu of main board for 16 group
-*
-Input Ref:
-*
-Return Ref:
+	*Function Name:void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex)
+	*Function : menu of main board for 16 group
+	*Input Ref:
+	*Return Ref:
 *
 *************************************************************************************************************/
 void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex)
