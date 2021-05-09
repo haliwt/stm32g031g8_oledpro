@@ -12,6 +12,9 @@
 #define ENABLE_VCC_LEVEL	GPIO_PIN_RESET
 #define DISABLE_VCC_LEVEL	GPIO_PIN_SET
 
+char gtmpStr[MAX_UNION_STR_LEN+1];
+
+
 extern uint8_t retrieveEchoFilter(void);
 extern uint8_t retrieveEchoLight(void);
 extern uint8_t retrieveEchoUnion(void);
@@ -256,19 +259,19 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 		   else printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,tmpStr); //display number
         //filter
 		i=0;
-		if(tmpFilter<10) tmpStr[i++]=tmpFilter+0x30;
+		if(tmpFilter<10) gtmpStr[i++]=tmpFilter+0x30;
 		else
 		{
 			tenNum=tmpFilter/10;
-			tmpStr[i++]=tenNum+0x30;
+			gtmpStr[i++]=tenNum+0x30;
 			tmpFilter-= tenNum*10;
-			tmpStr[i++]=tmpFilter+0x30;
+			gtmpStr[i++]=tmpFilter+0x30;
 		}
-		tmpStr[i++]=0;
+		gtmpStr[i++]=0;
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
 			printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[filterIndex]);
-			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,tmpStr);
+			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,gtmpStr);
 		}
 		break;
 		
@@ -325,11 +328,11 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 *************************************************************************************************************/
 void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex_lr,uint8_t blinkIndex)
 {
-	char tmpStr[MAX_UNION_STR_LEN+1];
-	uint8_t tmpFilter, tmpLight, i, tenNum;
+	char tmpStr[MAX_UNION_STR_LEN+1],tmpSfliter[1];
+	uint8_t tmpFilter, tmpLight, i,tenNum;
 	uint8_t group;
 
-
+   
 	tmpFilter=filterIndex+1;
 	tmpLight=lightIndex_lr+1;
 	group=retrieveEchoGroup();
@@ -355,12 +358,12 @@ void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 		u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 		printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
 		printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
-
+        
 		
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
 			printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[filterIndex]);
-			//printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,tmpStr);
+			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,gtmpStr);
 		}
 
 		u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
