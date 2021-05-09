@@ -49,7 +49,7 @@ const char lightStr_LN[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"IR730\0","IR850\0
 
 /***************************************************************************************************************************************/
 /*LED name axuiliary WT.EDIT */
-const char lightStr_LR[MAX_LIGHT_LR_INDEX][MAX_LIGHT_STR_LR_LEN+1]={"Right\0","Main\0","Spot\0","Side\0","Left\0"};													 
+const char lightStr_LR[MAX_LIGHT_LR_INDEX][MAX_LIGHT_STR_LR_LEN+1]={"Main\0","Spot\0","Side\0","Left\0","Right\0"};													 
 
 
 /***************************************************************************************************************************************/
@@ -245,7 +245,8 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 			tmpStr[i++]=tmpLight+0x30;
 		}
 		tmpStr[i++]=0;
-		LedMainNumber = tmpLight ;
+		//LedMainNumber = tmpLight ;
+		LedMainNumber =lightIndex;
 		
 			u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 			if (auxiliary_t.Auxiliary_flag == 1)
@@ -351,7 +352,7 @@ void printSettingInfo_filter(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 		
 			u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 			if (auxiliary_t.Auxiliary_flag == 1)
-			     printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr_ML[LedMainNumber]);
+			     printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
 			else 
 				 printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
 
@@ -399,8 +400,6 @@ void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 	uint8_t group;
 
    
-	tmpFilter=filterIndex+1;
-	tmpLight=lightIndex_lr+1;
 	group=retrieveEchoGroup();
 
 	printFrame_Manual();//printFrame();
@@ -408,18 +407,8 @@ void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 	switch(group)
 	{
 	case ECHO_GROUP_A:
-		i=0;
-		if(tmpLight<5)
-			tmpStr[i++]=tmpLight+0x30; 
-		else
-		{
-			tenNum=tmpLight/5;
-			tmpStr[i++]=tenNum+0x30;
-			tmpLight-= tenNum*5;//tmpLight-= tenNum*10;
-			tmpStr[i++]=tmpLight+0x30;
-		}
-		tmpStr[i++]=0;
-		LedSpotNumber = tmpLight;
+		
+		LedSpotNumber = lightIndex_lr;
 
 		u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 		printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
@@ -486,7 +475,6 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 
 	tmpUnion = lightIndex_au+1;//unionIndex + 1;
 	tmpFilter=filterIndex+1;
-	tmpLight=lightIndex_au+1;
 	group=retrieveEchoGroup();
 
 	printFrame_Manual();
@@ -495,7 +483,7 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 	{
 	case ECHO_GROUP_A:
 		
-		//LedSpotNumber = tmpLight;
+		
 		u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 		printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
 		printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
@@ -539,7 +527,7 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 //			}
 //			tmpStr[z++] = 0;
 		}
-		else{
+		else if(auxiliary_t.AuxiliarySubItem !=Main){
 			while (lightStr_LN[lightIndex_au][j] != 0)
 			{
 				tmpStr[z++] = lightStr_LN[lightIndex_au][j];
