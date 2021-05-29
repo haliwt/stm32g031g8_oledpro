@@ -494,7 +494,7 @@ void handleInput(void)
 				 
 			 }
 		}
-		else if(!(pkey->keyCode & KEY_CODE_KEY5))	// change union + //
+		else if(!(pkey->keyCode & KEY_CODE_KEY5))	// change union + "Smart Button"
 		{
 			 auxiliary_t.SmartKey = 0;
 			 if (auxiliary_t.Auxiliary_flag == 0)
@@ -536,7 +536,7 @@ void handleInput(void)
 				 //sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CCW);
 			 }
 		}
-		else if(!(pkey->keyCode & KEY_CODE_KEY6))	// change union - //
+		else if(!(pkey->keyCode & KEY_CODE_KEY6))	// change union - //"smart Button"
 		{
 			 auxiliary_t.SmartKey = 0;
 			 if (auxiliary_t.Auxiliary_flag == 0)

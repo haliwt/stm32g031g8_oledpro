@@ -131,7 +131,7 @@ void decode(void)
 /****************************************************************************************************
 **
 *Function Name:void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t filterIndex)
-*Function: main function per 1 second process one time
+*Function: main function per 1 second process one time,send order command by UART
 *Input Ref: unioIndex---smart menu, lightIndex---LED number,filterIndex----filter number
 *Return Ref:NO
 *
@@ -181,7 +181,7 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 			}
 			else if(mainled_t.ledoff_flag !=0xff){
 					
-				updateLight(lightIndex);
+				   updateLight(lightIndex);
 
 			}
 

@@ -53,15 +53,17 @@ const char lightStr_LR[MAX_LIGHT_LR_INDEX][MAX_LIGHT_STR_LR_LEN+1]={"Main\0","Sp
 
 
 /***************************************************************************************************************************************/
-const char unionInfo1[MAX_UNION_INDEX][MAX_UNION_INFO1_STR_LEN+1]={"Fibers&Hair,Tooth&Bone\0","Fibers&Hair,Tooth&Bone\0","Fibers&Hair,Bruises&Bite\0","Bruises&Bite,BodyFluids\0","Bruises&Bite,BodyFluids\0",
-																"BodyFluids,Bruises&Bite\0","BodyFluids,Tooth&Bone\0","BodyFluids\0","BodyFluids\0","General Research\0",
-																"Blood,GSR\0","Blood,GSR\0","Blood\0","Blood\0","Blood\0",
-																"GSR,TraceDrugs\0","GSR,Oil\0","TraceDrugs,DochExam\0","DochExam\0","Side Board\0","Side Board"};
+const char unionInfo1[MAX_UNION_INDEX][MAX_UNION_INFO1_STR_LEN+1]={"Deleted Articles\0","Deleted Articles\0","Deleted Articles\0","Deleted Articles\0","Passport UVC+Money\0",
+																"Passport UVB+Money\0","Passport IR+ID IR+Money\0","Passport IR+ID IR+Money\0","Passport IR+ID IR+Money \0","Passport UVA+ID,UVA+Money\0",
+																"General Research\0","Black Pen\0","Black Pen\0","Black Pen+Blue\0","Black Pen+Blue\0",
+																"Black Pen+Blue\0","Black Pen+Blue\0","Black Pen+Blue\0","Black Pen+Blue\0","Scribble Marks White\0",
+																"Scribble Marks IR\0"};
 
-const char unionInfo2[MAX_UNION_INDEX][MAX_UNION_INFO2_STR_LEN+1]={"FingerPrint\0","FingerPrint\0","BodyFluids,FingerPrint\0","FingerPrint\0","Fibers&Hair,FingerPrint\0",
-																"Tooth&Bone,Fibers&Hair,FP\0","Bruises&Bite,FingerPrint\0","FingerPrint\0","Tooth&Bone,FingerPrint\0","Normal Camera Mode\0",
-																"DochExam,IR FingerPrint\0","DochExam,FingerPrint\0","FingerPrint\0","*\0","FingerPrint\0",
-																"FingerPrint\0","FingerPrint\0","FingerPrint\0","FingerPrint\0","White\0","840\0"};
+const char unionInfo2[MAX_UNION_INDEX][MAX_UNION_INFO2_STR_LEN+1]={"\0","\0","\0","\0","UVC+Driving License UVC\0",
+																"UVB+Driving License UVB\0","Checker Driving License\0","Checker Driving License\0","Checker Driving License\0","Checker Driving License\0",
+																"Normal Picture\0","\0","\0","Pen+Red Pen\0","Pen+Red Pen\0",
+																" Pen+Red Pen\0"," Pen+Red Pen\0","Pen+Red Pen\0","Pen+Red Pen\0","\0",
+																"\0"};
 
 
 /********************************************************************************************************************
