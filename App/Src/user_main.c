@@ -44,7 +44,8 @@ void user_main(void)
 		handleInput();
 		decode();
 		 /* USER CODE END WHILE */
-		 if( HAL_GPIO_ReadPin(KEY11_GPIO_Port, KEY11_Pin)==0)	// auxiliary SideBotton select sub item 2021.05.31
+		if(SideButton_SubItem_Input())
+		// if( HAL_GPIO_ReadPin(KEY11_GPIO_Port, KEY11_Pin)==0)	// auxiliary SideBotton select sub item 2021.05.31
 		 {
 			 	 if(auxiliary_t.ManualMode ==1){ //manual mode "SPOT" "SIDE" "LEFT" "RIGHT"
 			     
@@ -65,7 +66,7 @@ void user_main(void)
 				
 				//echoGroup=ECHO_GROUP_A;
 				//echoLight = LED Name
-				  
+				turnoffAllLight();
 				printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
 						
 				}
@@ -77,7 +78,7 @@ void user_main(void)
 			             subIO++;
 			  		   //initial subIO delay 2s
 			  		   HAL_Delay(3000);
-			             SideBotton_Init();
+			            SideBotton_Init();
 			  }
 
 

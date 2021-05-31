@@ -662,30 +662,7 @@ void handleInput(void)
 						// HAL_Delay(100);
 						
 					}
-			        
-             // }
-			//   if(auxiliary_t.ManualMode ==1){ //manual mode "SPOT" "SIDE" "LEFT" "RIGHT"
-			     
-			// 	  auxiliary_t.SmartKey = 0;
-			
-			//     if(auxiliary_t.AuxiliarySubItem>=MAX_LIGHT_LR_NUMBER-1){
-			// 		auxiliary_t.AuxiliarySubItem=0;
-			// 		auxiliary_t.mainLedKey =0;
-			// 		HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
-			//     }
-			// 	else{ 
-			// 		auxiliary_t.mainLedKey =1;
-			// 		auxiliary_t.AuxiliarySubItem ++;
-			// 	    //if(auxiliary_t.AuxiliarySubItem == 1) auxiliary_t.mainLedKey = 0;
-			// 		//else auxiliary_t.mainLedKey = 1;
-			// 		HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
-			// 	}
-				
-			// 	echoGroup=ECHO_GROUP_A;
-			// 	//echoLight = LED Name
-				  
-			// 			printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
-			//  }
+			       
 			 if(auxiliary_t.ManualMode ==0){  //defalut value is "smartButton"
 				auxiliary_t.Auxiliary_flag=0; //
 				auxiliary_t.SmartKey = 0;
@@ -820,6 +797,34 @@ static void displayUnionInfo_Manual(uint8_t unionIndex)
 	//printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight,BLINK_OFF);
 	printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight,BLINK_OFF);
 }
+/*****************************************************************************************************
+**
+*Function Name:SideButton_SubItem_Input(void)
+*Function : 
+*
+*
+*
+******************************************************************************************************/
+uint8_t SideButton_SubItem_Input(void)
+{
+	static uint16_t k11=0;
+	static uint8_t cnt;
+	uint8_t value=0;
+	if(HAL_GPIO_ReadPin(KEY11_GPIO_Port, KEY11_Pin)==0){
+
+	    cnt=0;
+		k11++;
+
+    }
+
+    if(k11>3000 && k11< 3500){
+	   	 value = 1;
+	    	k11=0;
+	    return value;
+
+    }
+    return 0;
+}
 
 /*****************************************************************************************************
 **
@@ -870,4 +875,5 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)	// 2ms
 	}
 	updateKeyStatus(); //key scan every 2ms be detect
 }
+
 

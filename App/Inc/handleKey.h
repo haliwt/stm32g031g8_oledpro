@@ -14,6 +14,7 @@ extern void keyInit(void);
 extern void handleInput(void);
 void AuxiliaryWhichOneLed_Plus(uint8_t wled);
 void AuxiliaryWhichOneLed_Reduce(uint8_t wled);
+extern uint8_t SideButton_SubItem_Input(void);
 
 typedef struct _auxiliary_
 {
