@@ -503,10 +503,10 @@ void handleInput(void)
 					 mainled_t.ledoff_flag++;
 				     HAL_UART_Transmit(&CMD_LINKER,&echoUnion,1,2);
 				 }
+				 turnoffAllLight();
 				 displayUnionInfo(echoUnion);
-				 if(_500msFlag >2){
-					_500msFlag =0;
-					if(echoUnion==4){ //display "#5"
+		
+				 if(echoUnion==4){ //display "#5"
 					    mainled_t.ledoff_flag=4;
 					   turnoffAllLight();
 
@@ -530,10 +530,10 @@ void handleInput(void)
 					
 					  updateLight(echoLight);
 
-					}
-					
+				
+				 	}
 
-				 }
+				
 			 }
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY6))	// change union - //"smart Button"
@@ -552,29 +552,36 @@ void handleInput(void)
 					  mainled_t.ledoff_flag--;
 				      HAL_UART_Transmit(&CMD_LINKER,&echoUnion,1,2);
 				 }
+				 turnoffAllLight();
 				 displayUnionInfo(echoUnion);
-				 if(_500msFlag >2){
-					 _500msFlag =0;
-					if( echoUnion==19){
+				
+					 if(echoUnion==4){ //display "#5"
+					    mainled_t.ledoff_flag=4;
+					   turnoffAllLight();
 
-						turnoffAllLight();
+					}
+					else if(echoUnion==5){
+					 mainled_t.ledoff_flag=5; //display '#6'
+					   turnoffAllLight();
+					}
+					else if(echoUnion ==19){//white					
+				
 					    mainled_t.ledoff_flag=19;
-			        }
-					else if( echoUnion== 20){
-					
 						turnoffAllLight();
-						mainled_t.ledoff_flag=20;
+					   
+                    }
+					else if(echoUnion== 20){
+					    mainled_t.ledoff_flag=20;
+						turnoffAllLight();
 
 					}
 					else{
-						
-					    updateLight(echoLight);
+					
+					  updateLight(echoLight);
 
-					}
-
-				 }
-				 // turn on ccw slowly
-				 //sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CCW);
+				
+				 	}
+				 
 			 }
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY7))	// turn off light

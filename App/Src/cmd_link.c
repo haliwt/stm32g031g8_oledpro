@@ -139,7 +139,7 @@ void decode(void)
 ****************************************************************************************************/
 void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,uint8_t lightIndx_AU, uint8_t filterIndex)
 {
-    uint8_t add=0x0A,addb=0x0B;
+    uint8_t add=0xAA,addb=0xBB;
 
 	if(unionIndex!=currUnion || filterIndex !=currFilter || lightIndex!=currLight || lightIndx_LR != currLight_LR || lightIndx_AU != currLight_AU)//currUnion = 0xff,
 	{
