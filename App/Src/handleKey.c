@@ -496,16 +496,17 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY5))	// change union + "Smart Button"
 		{
-			 auxiliary_t.SmartKey = 0;
+			// auxiliary_t.SmartKey = 0; //WT.EDIT 2021.05.30
 			 if (auxiliary_t.Auxiliary_flag == 0)
 			 {
 				 if (echoUnion >= MAX_UNION_NUMBER - 1){
-					 echoUnion = 0;
+					  echoUnion = 0;
 					  mainled_t.ledoff_flag =0;
 				 }
 				 else{
 					 echoUnion++;
 					 mainled_t.ledoff_flag++;
+				     HAL_UART_Transmit(&CMD_LINKER,&echoUnion,1,2);
 				 }
 				 displayUnionInfo(echoUnion);
 				 if(_500msFlag >2){
@@ -515,9 +516,7 @@ void handleInput(void)
 					    mainled_t.ledoff_flag=19;
 						turnoffAllLight();
 					   
-                   
-					   
-					}
+                    }
 					else if(echoUnion== 20){
 					    mainled_t.ledoff_flag=20;
 						turnoffAllLight();
@@ -549,6 +548,7 @@ void handleInput(void)
 				 else{
 					 echoUnion--;
 					  mainled_t.ledoff_flag--;
+				      HAL_UART_Transmit(&CMD_LINKER,&echoUnion,1,2);
 				 }
 				 displayUnionInfo(echoUnion);
 				 if(_500msFlag >2){
@@ -634,20 +634,17 @@ void handleInput(void)
              //smart mode
 			  if(pkey->long_pressed ==1 && auxiliary_t.SmartKey !=1){
 			  	   
-		        	keySmartflag = keySmartflag ^ 0x1;
+					pkey->long_pressed =0;//WT.EDTI 2021.05.30
+					keySmartflag = keySmartflag ^ 0x1;
 					HAL_UART_Transmit(&huart2,&keySmartflag ,1,0); //debug information
 					if(keySmartflag ==1 ){ //ManualMode
 						auxiliary_t.SmartMenuItem =1;
-					    auxiliary_t.SmartKey =1;
-					    auxiliary_t.SmartMode =1;
+					    auxiliary_t.SmartKey =1; //
+					    auxiliary_t.SmartMode =1; //Mode : 1->ManualMode
 						auxiliary_t.ManualMode =1;
 						auxiliary_t.AuxiliarySubItem=Main ;
-						auxiliary_t.mainLedKey =0;
+						auxiliary_t.mainLedKey =0; //
 						auxiliary_t.Auxiliary_flag=1;
-						
-						 //manual "menu"
-						//if(echoUnion_manual>=MAX_UNION_NUMBER-1) echoUnion_manual=0;
-						//else echoUnion_manual++;
 
 						displayUnionInfo_Manual(echoUnion_manual);
 						HAL_Delay(1000);
@@ -670,11 +667,12 @@ void handleInput(void)
 			
 			    if(auxiliary_t.AuxiliarySubItem>=MAX_LIGHT_LR_NUMBER-1){
 					auxiliary_t.AuxiliarySubItem=0;
-					auxiliary_t.mainLedKey =0;
+					auxiliary_t.mainLedKey =0; //default : mainLedKey =0 is MainLed -Mode
 					HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
+					HAL_Delay(20);//WT.EDIT 2021.05.30
 			    }
 				else{ 
-					auxiliary_t.mainLedKey =1;
+					auxiliary_t.mainLedKey =1; //is SPOT MODE
 					auxiliary_t.AuxiliarySubItem ++;
 				    //if(auxiliary_t.AuxiliarySubItem == 1) auxiliary_t.mainLedKey = 0;
 					//else auxiliary_t.mainLedKey = 1;
@@ -683,15 +681,17 @@ void handleInput(void)
 				
 				echoGroup=ECHO_GROUP_A;
 				//echoLight = LED Name
-				  
-						printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
+				turnoffAllLight();//WT.EDIT 2021.05.30
+				echoLight_AU=1;//LED the first On WT.EDIT 2021.05.30
+				printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
 						
 				
 			        	
 			 }
 			 else{  //defalut value is "smartButton"
+			 	turnoffAllLight();//WT.EDIT 2021.05.30
 				auxiliary_t.Auxiliary_flag=0; //
-				auxiliary_t.SmartKey = 0;
+				auxiliary_t.SmartKey = 0; 
 			    auxiliary_t.SmartMode =0;
 				//auxiliary_t.SmartMenuItem =0;
 			 }

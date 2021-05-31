@@ -138,6 +138,7 @@ void decode(void)
 ****************************************************************************************************/
 void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,uint8_t lightIndx_AU, uint8_t filterIndex)
 {
+    uint8_t add=0x0A;
 
 	if(unionIndex!=currUnion || filterIndex !=currFilter || lightIndex!=currLight || lightIndx_LR != currLight_LR || lightIndx_AU != currLight_AU)//currUnion = 0xff,
 	{
@@ -164,9 +165,10 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 	{
 		
 		
-		if(auxiliary_t.mainLedKey == 1){
-			//updateLight_LR(lightIndx_LR); //WT.EDIT 2021.04.24 //mainLed Item
-			updateLight_AU(lightIndx_AU); //WT.EDIT 2021.04.28 //subItem
+		if(auxiliary_t.mainLedKey == 1){ //default mainLedKey =0 is main board LED 
+
+			HAL_UART_Transmit(&CMD_LINKER,&add,1,2);
+			updateLight_AU(lightIndx_AU); //WT.EDIT 2021.04.28 //SPOT board subItem
 			
 		}
 	    else{ 
@@ -176,7 +178,7 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 					 mainled_t.ledoff_flag =0xff;
 			}
 			else if(mainled_t.ledoff_flag ==20){
-					 selectLight_Union(2);//updateLight_Union(2);
+					 selectLight_Union(1);//updateLight_Union(2);
 					 mainled_t.ledoff_flag =0xff;
 			}
 			else if(mainled_t.ledoff_flag !=0xff){
@@ -1049,12 +1051,12 @@ static void selectLight_LR(uint8_t index)
 void selectLight_AU(uint8_t index)
 {
 	
-   //uint8_t i,crc;
+    //static uint8_t firstIn; //WT.EDIT 2021.05.30
 	uint8_t tenNum;
-
+   // HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
 	
     if(auxiliary_t.AuxiliarySubItem ==Main){
-
+        
 
 	}
 	else if(auxiliary_t.AuxiliarySubItem ==Spot){
