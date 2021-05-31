@@ -44,7 +44,8 @@ extern void setEchoLight(uint8_t lightIndex);
 
 extern void setEchoUnion(uint8_t unionIndex);
 extern void trigParameterUpdateImmediate(void);
-extern void selectLight_Union(uint8_t index);
+extern void selectLight_LinearBoard(uint8_t index);
+extern void selectLight_SpotBoard(uint8_t index);
 
 
 static void runCmd(void);
@@ -173,18 +174,26 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 		}
 	    else{ 
 
-			if(mainled_t.ledoff_flag ==19){
-					 selectLight_Union(3);
+			if(mainled_t.ledoff_flag ==4){
+					 selectLight_SpotBoard(2);
+					 mainled_t.ledoff_flag =0xff;
+			}
+            else if(mainled_t.ledoff_flag ==5){
+					  selectLight_SpotBoard(3);
+					 mainled_t.ledoff_flag =0xff;
+			}
+			else if(mainled_t.ledoff_flag ==19){
+					 selectLight_LinearBoard(3);
 					 mainled_t.ledoff_flag =0xff;
 			}
 			else if(mainled_t.ledoff_flag ==20){
-					 selectLight_Union(1);//updateLight_Union(2);
+					  selectLight_LinearBoard(1);//updateLight_Union(2);
 					 mainled_t.ledoff_flag =0xff;
 			}
 			else if(mainled_t.ledoff_flag !=0xff){
 					
 				  HAL_UART_Transmit(&CMD_LINKER,&addb,1,2);
-				   updateLight(lightIndex);
+				  updateLight(lightIndex);
 
 			}
 
@@ -241,7 +250,7 @@ void updateLight_Union(uint8_t lightIndex)
 		if(powerOnFlag) powerOnFlag=0;	//need not turn on light when power on
 		else
 		{
-			selectLight_Union(lightIndex); //Transmit Interrupt process 
+			selectLight_LinearBoard(lightIndex); //Transmit Interrupt process 
 			//nowLightState=NOW_LIGHT_IS_ON;
 		}
 	}
@@ -972,7 +981,7 @@ static void selectLight(uint8_t index)
 *Return Ref:NO
 *
 ****************************************************************************************************/
-void selectLight_Union(uint8_t index)
+void selectLight_LinearBoard(uint8_t index)
 {
 	
        uint8_t tenNum;
@@ -982,7 +991,43 @@ void selectLight_Union(uint8_t index)
 		outputBuf[0]='V'; //0X56
 		outputBuf[1]='X'; //0X58
 		outputBuf[2]='L'; //0X4C	// 'L' for light board
-		outputBuf[3]='S'; //0X53	// 'S' select light command, 'C' close all light command
+		outputBuf[3]='S'; //0X53	// 'S' -->LinearBoard  ;'C' close all light command
+		outputBuf[4]='3'; //0X31	//has  three command parameter
+		outputBuf[5]='3'; //0X33   //the first = ledab.led_lr_id = 3 --left and right the same time On
+		outputBuf[6]=tenNum+0x30; // change to ascii number ,decimal + 0x30 ->hexadecimal
+		outputBuf[7]=(index-tenNum*10)+0x30;
+		//for(i=3;i<7;i++) crc ^= outputBuf[i];
+		//outputBuf[i]=crc;
+		transferSize=8;
+		if(transferSize)
+		{
+			while(transOngoingFlag);
+			transOngoingFlag=1;
+			HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
+		}
+	
+	 nowLightState=NOW_LIGHT_IS_ON;
+
+}
+/****************************************************************************************************
+**
+*Function Name:void selectLight_SpotBoard(uint8_t index)
+*Function: UART2 transmit interrupt process ---4D 58 4C 53 32 30 32 
+*Input Ref: LED number 
+*Return Ref:NO
+*
+****************************************************************************************************/
+void selectLight_SpotBoard(uint8_t index)
+{
+	
+       uint8_t tenNum;
+       tenNum=index/5; // WT.EDIT 5 group LED number 2021.04.23 remainder
+
+		//crc=0x55;
+		outputBuf[0]='V'; //0X56
+		outputBuf[1]='X'; //0X58
+		outputBuf[2]='L'; //0X4C	// 'L' for light board
+		outputBuf[3]='O'; //0X4F	// 'O' -->SPOT BOARD,   'C' close all light command
 		outputBuf[4]='3'; //0X31	//has  three command parameter
 		outputBuf[5]='3'; //0X33   //the first = ledab.led_lr_id = 3 --left and right the same time On
 		outputBuf[6]=tenNum+0x30; // change to ascii number ,decimal + 0x30 ->hexadecimal

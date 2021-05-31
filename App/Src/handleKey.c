@@ -427,9 +427,7 @@ void handleInput(void)
 						else echoLight++;
 						echoGroup=ECHO_GROUP_A;
 						printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
-						//printEchoLight(echoLight);
-						// turn on cw slowly
-						//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CW);
+					
 					}
 			}
 
@@ -453,9 +451,7 @@ void handleInput(void)
 					else echoLight--;
 					echoGroup=ECHO_GROUP_A;
 					printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
-					//printEchoLight(echoLight);
-					// turn on cw quickly
-					//sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_HIGH,MOTOR_DIR_CW);
+				
 			   }
 		   }
 		}
@@ -469,8 +465,7 @@ void handleInput(void)
 					 echoFilter++;
 				 echoGroup = ECHO_GROUP_A;
 				   printSettingInfo_filter(echoUnion, echoFilter, echoLight, BLINK_OFF);
-				 // updateLight_AU(echoLight_LR);
-			    //  printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
+				
 			    if(auxiliary_t.AuxiliarySubItem!=Main)
 		            printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
 				
@@ -487,16 +482,16 @@ void handleInput(void)
 					 echoFilter--;
 				 echoGroup = ECHO_GROUP_A;
 				  printSettingInfo_filter(echoUnion, echoFilter, echoLight, BLINK_OFF);
-				 // updateLight_AU(echoLight_LR);
-			     //  printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
+				
 				 if(auxiliary_t.AuxiliarySubItem!=Main)
-						printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
+				 printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
 				 
 			 }
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY5))	// change union + "Smart Button"
 		{
-			// auxiliary_t.SmartKey = 0; //WT.EDIT 2021.05.30
+			 auxiliary_t.SmartKey = 0; //WT.EDIT 2021.05.30
+			 auxiliary_t.mainLedKey =0; //WT.EDIT 2021.05.31
 			 if (auxiliary_t.Auxiliary_flag == 0)
 			 {
 				 if (echoUnion >= MAX_UNION_NUMBER - 1){
@@ -511,7 +506,16 @@ void handleInput(void)
 				 displayUnionInfo(echoUnion);
 				 if(_500msFlag >2){
 					_500msFlag =0;
-					if(echoUnion ==19){//white					
+					if(echoUnion==4){ //display "#5"
+					    mainled_t.ledoff_flag=4;
+					   turnoffAllLight();
+
+					}
+					else if(echoUnion==5){
+					 mainled_t.ledoff_flag=5; //display '#6'
+					   turnoffAllLight();
+					}
+					else if(echoUnion ==19){//white					
 				
 					    mainled_t.ledoff_flag=19;
 						turnoffAllLight();
@@ -521,23 +525,21 @@ void handleInput(void)
 					    mainled_t.ledoff_flag=20;
 						turnoffAllLight();
 
-
 					}
 					else{
-				
+					
 					  updateLight(echoLight);
 
 					}
 					
 
 				 }
-				 // turn on ccw slowly
-				 //sendMotorCmd(MOTOR_CMD_RUN,MOTOR_SPEED_NORMAL,MOTOR_DIR_CCW);
 			 }
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY6))	// change union - //"smart Button"
 		{
 			 auxiliary_t.SmartKey = 0;
+			 auxiliary_t.mainLedKey =0; //WT.EDIT 2021.05.31
 			 if (auxiliary_t.Auxiliary_flag == 0)
 			 {
 				 if (echoUnion == 0){
@@ -556,18 +558,12 @@ void handleInput(void)
 					if( echoUnion==19){
 
 						turnoffAllLight();
-					  mainled_t.ledoff_flag=19;
-					 //  selectLight_Union(temp);
-					   //auxiliary_t.AuxiliarySubItem =Side;
-					  // selectLight_AU(temp);
-					}
+					    mainled_t.ledoff_flag=19;
+			        }
 					else if( echoUnion== 20){
 					
 						turnoffAllLight();
 						mainled_t.ledoff_flag=20;
-					   // selectLight_Union(temp);
-					    //auxiliary_t.AuxiliarySubItem =Side;
-					   //selectLight_AU(temp);
 
 					}
 					else{
@@ -649,6 +645,7 @@ void handleInput(void)
 						displayUnionInfo_Manual(echoUnion_manual);
 						//HAL_Delay(1000);
 						echoGroup=ECHO_GROUP_A;
+						turnoffAllLight();
 			            printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
 						
 					}
@@ -658,7 +655,8 @@ void handleInput(void)
 					     auxiliary_t.ManualMode=0;
 						  auxiliary_t.SmartMode =0;
 						  auxiliary_t.Auxiliary_flag=0;
-						 displayUnionInfo(echoUnion);
+						  turnoffAllLight();
+						  displayUnionInfo(echoUnion);
 						// HAL_Delay(100);
 						
 					}
@@ -670,39 +668,9 @@ void handleInput(void)
 				//auxiliary_t.SmartMenuItem =0;
 			 }
 		}
-		// else if( HAL_GPIO_ReadPin(KEY11_GPIO_Port, KEY11_Pin)==0)	// auxiliary SideBotton select sub item 2021.05.31
-		//  {
-		// 	 	 if(auxiliary_t.ManualMode ==1){ //manual mode "SPOT" "SIDE" "LEFT" "RIGHT"
-			     
-		// 		  auxiliary_t.SmartKey = 0;
-			
-		// 	    if(auxiliary_t.AuxiliarySubItem>=MAX_LIGHT_LR_NUMBER-1){
-		// 			auxiliary_t.AuxiliarySubItem=0;
-		// 			auxiliary_t.mainLedKey =0;
-		// 			HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
-		// 	    }
-		// 		else{ 
-		// 			auxiliary_t.mainLedKey =1;
-		// 			auxiliary_t.AuxiliarySubItem ++;
-		// 		    //if(auxiliary_t.AuxiliarySubItem == 1) auxiliary_t.mainLedKey = 0;
-		// 			//else auxiliary_t.mainLedKey = 1;
-		// 			HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
-		// 		}
-				
-		// 		echoGroup=ECHO_GROUP_A;
-		// 		//echoLight = LED Name
-				  
-		// 		printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
-						
-				
-			        	
-		// 	 }
-
-
-		//  }
+	
 	    
-	    }
-
+	}
 	else if(pkey->status==KEY_STATUS_UP)
 	{
 		pkey->status=KEY_STATUS_NOPRESSED;

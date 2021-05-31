@@ -47,7 +47,7 @@ void user_main(void)
 		if(SideButton_SubItem_Input())
 		// if( HAL_GPIO_ReadPin(KEY11_GPIO_Port, KEY11_Pin)==0)	// auxiliary SideBotton select sub item 2021.05.31
 		 {
-			 	 if(auxiliary_t.ManualMode ==1){ //manual mode "SPOT" "SIDE" "LEFT" "RIGHT"
+			 	if(auxiliary_t.ManualMode ==1){ //manual mode "SPOT" "SIDE" "LEFT" "RIGHT"
 			     
 				  auxiliary_t.SmartKey = 0;
 			
