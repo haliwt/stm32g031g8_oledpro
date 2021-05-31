@@ -332,7 +332,7 @@ Return Ref:
 void printSettingInfo_filter(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex)
 {
 	char tmpStr[MAX_UNION_STR_LEN+1];
-	uint8_t tmpUnion,tmpFilter,tmpLight,i,j,tenNum;
+	uint8_t tmpFilter,i,tenNum;
 	uint8_t group;
 	
 

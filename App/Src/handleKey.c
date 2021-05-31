@@ -632,9 +632,9 @@ void handleInput(void)
 	    else if(!(pkey->keyCode & KEY_CODE_KEY10))	// auxiliary Menu button WT.EDIT 
 		{
              //smart mode
-			  if(pkey->long_pressed ==1 && auxiliary_t.SmartKey !=1){
+			  //if(pkey->long_pressed ==1 && auxiliary_t.SmartKey !=1){
 			  	   
-					pkey->long_pressed =0;//WT.EDTI 2021.05.30
+			
 					keySmartflag = keySmartflag ^ 0x1;
 					HAL_UART_Transmit(&huart2,&keySmartflag ,1,0); //debug information
 					if(keySmartflag ==1 ){ //ManualMode
@@ -647,57 +647,85 @@ void handleInput(void)
 						auxiliary_t.Auxiliary_flag=1;
 
 						displayUnionInfo_Manual(echoUnion_manual);
-						HAL_Delay(1000);
+						//HAL_Delay(1000);
+						echoGroup=ECHO_GROUP_A;
+			            printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
 						
 					}
 					else { //
  						 auxiliary_t.SmartMenuItem =0; //default "Smart Mode "
-					     auxiliary_t.SmartKey = 1;
+					     auxiliary_t.SmartKey = 0;
 					     auxiliary_t.ManualMode=0;
+						  auxiliary_t.SmartMode =0;
 						  auxiliary_t.Auxiliary_flag=0;
 						 displayUnionInfo(echoUnion);
-						 HAL_Delay(1000);
+						// HAL_Delay(100);
 						
 					}
 			        
-              }
-			  if(auxiliary_t.ManualMode ==1){ //manual mode "SPOT" "SIDE" "LEFT" "RIGHT"
+             // }
+			//   if(auxiliary_t.ManualMode ==1){ //manual mode "SPOT" "SIDE" "LEFT" "RIGHT"
 			     
-				  auxiliary_t.SmartKey = 0;
+			// 	  auxiliary_t.SmartKey = 0;
 			
-			    if(auxiliary_t.AuxiliarySubItem>=MAX_LIGHT_LR_NUMBER-1){
-					auxiliary_t.AuxiliarySubItem=0;
-					auxiliary_t.mainLedKey =0; //default : mainLedKey =0 is MainLed -Mode
-					HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
-					HAL_Delay(20);//WT.EDIT 2021.05.30
-			    }
-				else{ 
-					auxiliary_t.mainLedKey =1; //is SPOT MODE
-					auxiliary_t.AuxiliarySubItem ++;
-				    //if(auxiliary_t.AuxiliarySubItem == 1) auxiliary_t.mainLedKey = 0;
-					//else auxiliary_t.mainLedKey = 1;
-					HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
-				}
+			//     if(auxiliary_t.AuxiliarySubItem>=MAX_LIGHT_LR_NUMBER-1){
+			// 		auxiliary_t.AuxiliarySubItem=0;
+			// 		auxiliary_t.mainLedKey =0;
+			// 		HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
+			//     }
+			// 	else{ 
+			// 		auxiliary_t.mainLedKey =1;
+			// 		auxiliary_t.AuxiliarySubItem ++;
+			// 	    //if(auxiliary_t.AuxiliarySubItem == 1) auxiliary_t.mainLedKey = 0;
+			// 		//else auxiliary_t.mainLedKey = 1;
+			// 		HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
+			// 	}
 				
-				echoGroup=ECHO_GROUP_A;
-				//echoLight = LED Name
-				turnoffAllLight();//WT.EDIT 2021.05.30
-				echoLight_AU=1;//LED the first On WT.EDIT 2021.05.30
-				printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
-						
-				
-			        	
-			 }
-			 else{  //defalut value is "smartButton"
-			 	turnoffAllLight();//WT.EDIT 2021.05.30
+			// 	echoGroup=ECHO_GROUP_A;
+			// 	//echoLight = LED Name
+				  
+			// 			printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
+			//  }
+			 if(auxiliary_t.ManualMode ==0){  //defalut value is "smartButton"
 				auxiliary_t.Auxiliary_flag=0; //
-				auxiliary_t.SmartKey = 0; 
+				auxiliary_t.SmartKey = 0;
 			    auxiliary_t.SmartMode =0;
 				//auxiliary_t.SmartMenuItem =0;
 			 }
+		}
+		// else if( HAL_GPIO_ReadPin(KEY11_GPIO_Port, KEY11_Pin)==0)	// auxiliary SideBotton select sub item 2021.05.31
+		//  {
+		// 	 	 if(auxiliary_t.ManualMode ==1){ //manual mode "SPOT" "SIDE" "LEFT" "RIGHT"
+			     
+		// 		  auxiliary_t.SmartKey = 0;
+			
+		// 	    if(auxiliary_t.AuxiliarySubItem>=MAX_LIGHT_LR_NUMBER-1){
+		// 			auxiliary_t.AuxiliarySubItem=0;
+		// 			auxiliary_t.mainLedKey =0;
+		// 			HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
+		// 	    }
+		// 		else{ 
+		// 			auxiliary_t.mainLedKey =1;
+		// 			auxiliary_t.AuxiliarySubItem ++;
+		// 		    //if(auxiliary_t.AuxiliarySubItem == 1) auxiliary_t.mainLedKey = 0;
+		// 			//else auxiliary_t.mainLedKey = 1;
+		// 			HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
+		// 		}
+				
+		// 		echoGroup=ECHO_GROUP_A;
+		// 		//echoLight = LED Name
+				  
+		// 		printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
+						
+				
+			        	
+		// 	 }
+
+
+		//  }
+	    
 	    }
-		
-	}
+
 	else if(pkey->status==KEY_STATUS_UP)
 	{
 		pkey->status=KEY_STATUS_NOPRESSED;
