@@ -268,16 +268,16 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 			   printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
 		   else printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,tmpStr); //display number
         //filter
-		i=0;
-		if(tmpFilter<10) gtmpStr[i++]=tmpFilter+0x30;
-		else
-		{
-			tenNum=tmpFilter/10;
-			gtmpStr[i++]=tenNum+0x30;
-			tmpFilter-= tenNum*10;
-			gtmpStr[i++]=tmpFilter+0x30;
-		}
-		gtmpStr[i++]=0;
+//		i=0;
+//		if(tmpFilter<10) gtmpStr[i++]=tmpFilter+0x30;
+//		else
+//		{
+//			tenNum=tmpFilter/10;
+//			gtmpStr[i++]=tenNum+0x30;
+//			tmpFilter-= tenNum*10;
+//			gtmpStr[i++]=tmpFilter+0x30;
+//		}
+//		gtmpStr[i++]=0;
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
 			printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[filterIndex]);
@@ -389,20 +389,10 @@ void printSettingInfo_MainLed(uint8_t unionIndex,uint8_t filterIndex,uint8_t lig
          printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
 
 	
-        //filter
-		i=0;
-		if(tmpFilter<10) gtmpStr[i++]=tmpFilter+0x30;
-		else
-		{
-			tenNum=tmpFilter/10;
-			gtmpStr[i++]=tenNum+0x30;
-			tmpFilter-= tenNum*10;
-			gtmpStr[i++]=tmpFilter+0x30;
-		}
-		gtmpStr[i++]=0;
+     
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
-			printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[filterIndex]);
+			printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[auxiliary_t.filterID]);
 			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,gtmpStr);
 		}
 		
@@ -551,7 +541,7 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 {
 	char tmpStr[MAX_UNION_STR_LEN+1];
 	uint8_t tmpUnion, tmpFilter, tmpLight, i,j,z,tenNum;
-	uint8_t group;
+	uint8_t group,gt=auxiliary_t.filterID + 0x31;
 
 	tmpUnion = lightIndex_au+1;//unionIndex + 1;
 	tmpFilter=filterIndex+1;
@@ -572,7 +562,7 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
 			printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[auxiliary_t.filterID ]);
-			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,gtmpStr);
+			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,&gt);
 		}
 		//break;
 

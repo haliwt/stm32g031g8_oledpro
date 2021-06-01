@@ -420,7 +420,7 @@ void handleInput(void)
 		               
 						
 					}
-					else{ //MainLed switch
+					if (auxiliary_t.AuxiliarySubItem   == Main){
 						if(echoLight>=MAX_LIGHT_NUMBER-1) echoLight=0;
 						else echoLight++;
 						echoGroup=ECHO_GROUP_A;
@@ -444,7 +444,8 @@ void handleInput(void)
 				    printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
 					
 				}
-			   else{ //mainLed switch
+			   if (auxiliary_t.AuxiliarySubItem   == Main){
+			  //mainLed switch
 					if(echoLight==0) echoLight=MAX_LIGHT_NUMBER-1;
 					else echoLight--;
 					echoGroup=ECHO_GROUP_A;
@@ -458,7 +459,7 @@ void handleInput(void)
 		{
 			 auxiliary_t.SmartKey = 0;
 			 mainled_t.MainSpotUnion_Led=0;
-			  if (auxiliary_t.AuxiliarySubItem == Main){//The "manualMenu"
+			 	if (auxiliary_t.Auxiliary_flag == 1){
 				 if (echoFilter >= MAX_FILTER_NUMBER - 1)
 					 echoFilter = 0;
 				 else
@@ -472,7 +473,7 @@ void handleInput(void)
 		{
 			 auxiliary_t.SmartKey = 0;
 			 mainled_t.MainSpotUnion_Led=0;
-			 if (auxiliary_t.AuxiliarySubItem == Main)
+			if (auxiliary_t.Auxiliary_flag == 1)
 			 {
 				 if (echoFilter == 0)
 					 echoFilter = MAX_FILTER_NUMBER - 1;
