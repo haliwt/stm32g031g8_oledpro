@@ -646,6 +646,7 @@ void handleInput(void)
 						auxiliary_t.AuxiliarySubItem=Main ;
 						LedMainNumber=0;//WT.EDIT 2021.06.01
 						auxiliary_t.filterID=0;  //WT.EDIT 2021.06.01
+						auxiliary_t.filterRunNum =0;
 						auxiliary_t.mainLedKey =0; //
 						auxiliary_t.Auxiliary_flag=1;
 

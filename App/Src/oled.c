@@ -354,7 +354,7 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 void printSettingInfo_MainLed(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex)
 {
 	char tmpStr[MAX_UNION_STR_LEN+1];
-	uint8_t tmpUnion,tmpFilter,tmpLight,i,j,tenNum;
+	uint8_t tmpUnion,tmpFilter,tmpLight,i,tenNum;
 	uint8_t group;
 	
 
@@ -392,8 +392,17 @@ void printSettingInfo_MainLed(uint8_t unionIndex,uint8_t filterIndex,uint8_t lig
      
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
-			printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[auxiliary_t.filterID]);
-			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,gtmpStr);
+            if(auxiliary_t.filterRunNum ==0){
+				printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[auxiliary_t.filterID]);
+				printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,&auxiliary_t.filterIDInit);
+            }
+			if(auxiliary_t.filterRunNum >0){
+				printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[auxiliary_t.filterID]);
+				printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,gtmpStr);
+
+			}
+		
+			
 		}
 		
         if(auxiliary_t.Auxiliary_flag == 1)
@@ -436,8 +445,10 @@ void printSettingInfo_filter(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 	uint8_t tmpFilter,i,tenNum;
 	uint8_t group;
 	
-     auxiliary_t.filterID = filterIndex;   
+	auxiliary_t.filterRunNum ++;
 
+	auxiliary_t.filterID = filterIndex;   
+    
 	tmpFilter=filterIndex+1;
 	group=retrieveEchoGroup();
 
@@ -492,7 +503,8 @@ void printSettingInfo_Manual(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 {
 	char tmpStr[MAX_UNION_STR_LEN+1],tmpSfliter[1];
 	uint8_t tmpFilter, tmpLight, i,tenNum;
-	uint8_t group,gt=0x31;
+	uint8_t group;
+	auxiliary_t.filterIDInit=0x31;
 
     tenNum=0;
 	group=retrieveEchoGroup();
@@ -514,7 +526,7 @@ void printSettingInfo_Manual(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
 			printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[auxiliary_t.filterID]);
-			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,&gt);
+			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,&auxiliary_t.filterIDInit);
 		}
 
 
@@ -541,7 +553,8 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 {
 	char tmpStr[MAX_UNION_STR_LEN+1];
 	uint8_t tmpUnion, tmpFilter, tmpLight, i,j,z,tenNum;
-	uint8_t group,gt=auxiliary_t.filterID + 0x31;
+	uint8_t group;
+	auxiliary_t.filterID = 0x31;
 
 	tmpUnion = lightIndex_au+1;//unionIndex + 1;
 	tmpFilter=filterIndex+1;
@@ -562,7 +575,7 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
 			printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[auxiliary_t.filterID ]);
-			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,&gt);
+			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,&auxiliary_t.filterID );
 		}
 		//break;
 
