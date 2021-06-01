@@ -393,7 +393,7 @@ void handleInput(void)
 		if (auxiliary_t.Auxiliary_flag==1){
 			  updateLight_AU(echoLight_LR);
 			  printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
-		      printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
+		    //  printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
 		}
 		else
 			printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
