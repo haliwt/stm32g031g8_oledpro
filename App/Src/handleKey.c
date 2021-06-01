@@ -652,8 +652,7 @@ void handleInput(void)
 						auxiliary_t.mainLedKey =0; //
 						auxiliary_t.Auxiliary_flag=1;
 
-						displayUnionInfo_Manual(echoUnion_manual);
-						//HAL_Delay(1000);
+						displayUnionInfo_Manual(echoUnion_manual);//Display Filter name and number 
 						echoGroup=ECHO_GROUP_A;
 						turnoffAllLight();
 			            printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
@@ -672,13 +671,7 @@ void handleInput(void)
 						
 					}
 			       
-			 if(auxiliary_t.ManualMode ==0){  //defalut value is "smartButton"
-				auxiliary_t.Auxiliary_flag=0; //
-				auxiliary_t.SmartKey = 0;
-			    auxiliary_t.SmartMode =0;
-				mainled_t.MainSpotUnion_Led=1;
-				//auxiliary_t.SmartMenuItem =0;
-			 }
+		
 		}
 	
 	    
@@ -773,7 +766,7 @@ static void displayUnionInfo_Manual(uint8_t unionIndex)
 	echoGroup=ECHO_GROUP_B;
 	getItemFromUnion_AU(unionIndex,&echoFilter,&echoLight);
 	//printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight,BLINK_OFF);
-	printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight,BLINK_OFF);
+	//printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight,BLINK_OFF);
 }
 /*****************************************************************************************************
 **

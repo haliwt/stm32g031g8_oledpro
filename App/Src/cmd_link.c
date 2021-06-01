@@ -407,7 +407,7 @@ uint8_t getItemFromUnion(uint8_t unionIndex,uint8_t *filterIndex,uint8_t *lightI
 ************************************************************************************************************/
 uint8_t getItemFromUnion_AU(uint8_t unionIndex,uint8_t *filterIndex,uint8_t *lightIndex)
 {
-	settingUnion_t settingTable[MAX_UNION_NUMBER]={	{5,6},{4,6},{1,5},{2,5},{2,3},
+	settingUnion_t settingTable[MAX_UNION_NUMBER]={	{0,6},{4,6},{1,5},{2,5},{2,3},
 												  	{1,2},{3,4},{3,3},{3,6},{0,0},
 													{9,9},{2,4},{1,2},{2,1},{3,3},
 													{4,6},{3,4},{1,0},{3,8},{8,9}};
