@@ -9,29 +9,7 @@
 #include "handleKey.h"
 #include "cmd_link.h"
 
-static uint16_t scanKey(void);
-static void displayUnionInfo(uint8_t unionIndex);
-static void displayUnionInfo_Manual(uint8_t unionIndex);
 
-
-//static KeyStruct glKey;				// key for forward/backward
-static uint8_t echoFilter;
-static uint8_t echoLight;
-static uint8_t  echoLight_LR; //WT.EDIT 2021.04.23
-static uint8_t  echoLight_AU; //WT.EDIT 2021.04.28
-
-static uint8_t echoUnion;
-static uint8_t  echoUnion_manual; //WT.EDIT 2021.04.28
-static uint8_t echoGroup;
-static uint8_t timerDownFlag;
-static uint32_t counter_15m;
-static uint16_t counter_ActionDelay;
-static uint16_t counter_Waitingtime;
-static uint8_t  waitingTimeoutFlag;
-static uint8_t  timeoutFlag;
-static uint8_t checkParameterFlag;
-static uint8_t	_250msFlag;
-static uint8_t _500msFlag;
 
 void user_main(void)
 {
@@ -67,7 +45,7 @@ void user_main(void)
 				//echoGroup=ECHO_GROUP_A;
 				//echoLight = LED Name
 				turnoffAllLight();
-				printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
+				printSettingInfo_SubItem();
 						
 				}
 

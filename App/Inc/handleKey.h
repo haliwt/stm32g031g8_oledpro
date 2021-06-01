@@ -28,6 +28,7 @@ typedef struct _auxiliary_
 	uint8_t SmartMode;
 	uint8_t ManualMode;
 	uint8_t mainLedKey;
+	uint8_t filterID;
 }auxiliary;
 
 typedef struct _mainLed_
