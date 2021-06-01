@@ -123,7 +123,7 @@ void keyInit(void)
 	//printEchoFilter(echoFilter);
 	//printEchoLight(echoLight);
 	printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
-	printSettingInfo_LR_Led(echoUnion,echoFilter,echoLight_LR,BLINK_OFF);
+	printSettingInfo_Manual(echoUnion,echoFilter,echoLight_LR,BLINK_OFF);
 	printSettingInfo_Auxiliary(echoUnion,echoFilter,echoLight_AU,BLINK_OFF);
 	HAL_TIM_Base_Start_IT(&htim17);
 	
@@ -392,7 +392,7 @@ void handleInput(void)
 		
 		if (auxiliary_t.Auxiliary_flag==1){
 			  updateLight_AU(echoLight_LR);
-			  printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
+			  printSettingInfo_Manual(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
 		    //  printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
 		}
 		else
@@ -458,7 +458,7 @@ void handleInput(void)
 		{
 			 auxiliary_t.SmartKey = 0;
 			 mainled_t.MainSpotUnion_Led=0;
-			 if (auxiliary_t.Auxiliary_flag == 1){//The "manualMenu"
+			  if (auxiliary_t.AuxiliarySubItem == Main){//The "manualMenu"
 				 if (echoFilter >= MAX_FILTER_NUMBER - 1)
 					 echoFilter = 0;
 				 else
@@ -466,16 +466,13 @@ void handleInput(void)
 				 echoGroup = ECHO_GROUP_A;
 				   printSettingInfo_filter(echoUnion, echoFilter, echoLight, BLINK_OFF);
 				
-			    if(auxiliary_t.AuxiliarySubItem!=Main)
-		            printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
-				
 			 }
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY3))	// change filter -
 		{
 			 auxiliary_t.SmartKey = 0;
 			 mainled_t.MainSpotUnion_Led=0;
-			 if (auxiliary_t.Auxiliary_flag == 1)
+			 if (auxiliary_t.AuxiliarySubItem == Main)
 			 {
 				 if (echoFilter == 0)
 					 echoFilter = MAX_FILTER_NUMBER - 1;
@@ -484,10 +481,7 @@ void handleInput(void)
 				 echoGroup = ECHO_GROUP_A;
 				  printSettingInfo_filter(echoUnion, echoFilter, echoLight, BLINK_OFF);
 				
-				 if(auxiliary_t.AuxiliarySubItem!=Main)
-				 printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
-				 
-			 }
+			}
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY5))	// change union + "Smart Button"
 		{
@@ -649,13 +643,16 @@ void handleInput(void)
 					    auxiliary_t.SmartMode =1; //Mode : 1->ManualMode
 						auxiliary_t.ManualMode =1;
 						auxiliary_t.AuxiliarySubItem=Main ;
+						LedMainNumber=0;//WT.EDIT 2021.06.01
+						auxiliary_t.filterID=0;  //WT.EDIT 2021.06.01
 						auxiliary_t.mainLedKey =0; //
 						auxiliary_t.Auxiliary_flag=1;
 
 						displayUnionInfo_Manual(echoUnion_manual);//Display Filter name and number 
 						echoGroup=ECHO_GROUP_A;
 						turnoffAllLight();
-			            printSettingInfo_LR_Led(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
+						
+			            printSettingInfo_Manual(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
 						
 					}
 					else { //

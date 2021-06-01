@@ -48,7 +48,7 @@ void setEchoLightBlink(uint8_t state);
 uint8_t getEchoLightBlink(void);
 void blinkEchoFilter(uint8_t filterIndex);
 void blinkEchoLight(uint8_t lightIndex);
-void printSettingInfo_LR_Led(uint8_t unionIndex,uint8_t filterIndex,uint8_t ledlrIndex,uint8_t blinkIndex);
+void printSettingInfo_Manual(uint8_t unionIndex,uint8_t filterIndex,uint8_t ledlrIndex,uint8_t blinkIndex);
 void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t ledlrIndex,uint8_t blinkIndex);
 void printSettingInfo_filter(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex);
 void printSettingInfo_SubItem(void); 
