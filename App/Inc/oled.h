@@ -39,6 +39,9 @@ void printEchoFilter(uint8_t filterIndex);
 void printEchoLight(uint8_t lightIndex);
 void printEchoUnion(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex);
 void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex);
+void printSettingInfo_MainLed(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex);
+
+
 void setEchoFilterBlink(uint8_t state);
 uint8_t getEchoFilterBlink(void);
 void setEchoLightBlink(uint8_t state);

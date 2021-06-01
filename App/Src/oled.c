@@ -35,6 +35,11 @@ const char filterStr[MAX_FILTER_INDEX][MAX_FILTER_STR_LEN+1]={"VIS\0","BPS32\0",
 const char lightStr[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"White\0","UV365\0","Violet\0","Blue1\0","Blue2\0","Cyan\0",
 													 "Green\0","Orange\0","Red\0","640\0","690\0","720\0","750\0","770\0","840\0","930\0"};
 
+/*SmartBotton union menu*/
+/*LED name Modify */
+const char lightStr_MainUnion[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"White\0","UV310\0","UV275\0","Blue1\0","Blue2\0","Cyan\0",
+													 "Green\0","Orange\0","Red\0","640\0","690\0","720\0","750\0","770\0","840\0","930\0"};
+
 /*LED name Modify--Manual Button */
 
 const char lightStr_ML[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"930\0","White\0","UV365\0","Violet\0","Blue1\0","Blue2\0","Cyan\0",
@@ -64,7 +69,9 @@ const char unionInfo2[MAX_UNION_INDEX][MAX_UNION_INFO2_STR_LEN+1]={"\0","\0","\0
 																"Normal Picture\0","\0","\0","Pen+Red Pen\0","Pen+Red Pen\0",
 																" Pen+Red Pen\0"," Pen+Red Pen\0","Pen+Red Pen\0","Pen+Red Pen\0","\0",
 																"\0"};
-
+/***MainLed of words ****/
+const char unionInfo_mainled[MAX_UNION_INDEX][MAX_UNION_INFO2_STR_LEN+1]={"Main,Board\0"};
+																
 
 /********************************************************************************************************************
  * *
@@ -251,7 +258,9 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 			u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 			if (auxiliary_t.Auxiliary_flag == 1)
 			     printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr_ML[LedMainNumber+1]);
-			else 
+			else if(mainled_t.MainSpotUnion_Led==1) //WT.EDIT 2021.05.31
+				  printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr_MainUnion[LedMainNumber]);
+			else
 				 printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
 
 	
@@ -290,12 +299,26 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 		tmpStr[i++]=' ';
 
 		j=0; //LED number 
-		while(lightStr[lightIndex][j]!=0)
-		{
-			tmpStr[i++]=lightStr[lightIndex][j];
-			j++;
-		}
+
+		 if(mainled_t.MainSpotUnion_Led==1){
+			while(lightStr_MainUnion[lightIndex][j]!=0)
+			{
+	            
+	            tmpStr[i++]=lightStr_MainUnion[lightIndex][j];
+				
+				j++;
+			}
+
+		 }
+		 else{
+			while(lightStr[lightIndex][j]!=0)
+			{
+	            tmpStr[i++]=lightStr[lightIndex][j];
+				j++;
+			}
+		 }
 		tmpStr[i++]='+';
+		
 
 		j=0;while(filterStr[filterIndex][j]!=0)
 		{
@@ -319,6 +342,95 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 	u8g2_SendBuffer(&u8g2);
 
 }
+/************************************************************************************************************
+     ***
+	*Function Name:void printSettingInfo_MainLed
+	             (uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex)
+	*Function : menu of main board for 16 group
+	*Input Ref:
+	*Return Ref:
+    *
+*************************************************************************************************************/
+
+void printSettingInfo_MainLed(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex)
+{
+	char tmpStr[MAX_UNION_STR_LEN+1];
+	uint8_t tmpUnion,tmpFilter,tmpLight,i,j,tenNum;
+	uint8_t group;
+	
+
+	tmpUnion=unionIndex+1;
+	tmpFilter=filterIndex+1;
+	tmpLight=lightIndex+1;
+	group=retrieveEchoGroup();
+
+	if (auxiliary_t.Auxiliary_flag == 1)
+		printFrame_Manual();//
+	else printFrame();
+
+	switch(group)
+	{
+	case ECHO_GROUP_A:
+		i=0;
+		if(tmpLight<16)//if(tmpLight<10)
+			tmpStr[i++]=tmpLight+0x30; 
+		else
+		{
+			tenNum=tmpLight/16;//tenNum=tmpLight/10;
+			tmpStr[i++]=tenNum+0x30;
+			tmpLight-= tenNum*16;//tmpLight-= tenNum*10;
+			tmpStr[i++]=tmpLight+0x30;
+		}
+		tmpStr[i++]=0;
+		//LedMainNumber = tmpLight ;
+		LedMainNumber =lightIndex;
+		
+			u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
+			
+           printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[LedMainNumber]);
+
+	
+        //filter
+		i=0;
+		if(tmpFilter<10) gtmpStr[i++]=tmpFilter+0x30;
+		else
+		{
+			tenNum=tmpFilter/10;
+			gtmpStr[i++]=tenNum+0x30;
+			tmpFilter-= tenNum*10;
+			gtmpStr[i++]=tmpFilter+0x30;
+		}
+		gtmpStr[i++]=0;
+		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
+		{
+			printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[filterIndex]);
+			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,gtmpStr);
+		}
+		
+        if(auxiliary_t.Auxiliary_flag == 1)
+			   printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
+		  else printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,tmpStr); //display number
+		
+	
+        //display explain words
+		u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
+		printWithFmt(&u8g2,UNION_INFO1_X,UNION_INFO1_Y,WIDTH_UNION,UNION_INFO1_HEIGHT,ALIGN_MID_ALL,unionInfo_mainled[0]);
+		//printWithFmt(&u8g2,UNION_INFO2_X,UNION_INFO2_Y,WIDTH_UNION,UNION_INFO2_HEIGHT,ALIGN_MID_ALL,unionInfo2[unionIndex]);
+//		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
+//		{
+//			u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
+//			printWithFmt(&u8g2,UNION_INFO3_X,UNION_INFO3_Y,WIDTH_UNION,UNION_INFO3_HEIGHT,ALIGN_MID_ALL,tmpStr);
+//		}
+		break;
+	default:
+		break;
+	}
+	u8g2_SendBuffer(&u8g2);
+
+
+
+}
+
 /************************************************************************************************************
 ***
 *Function Name:void printSettingInfo_filter(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,uint8_t blinkIndex)

@@ -390,7 +390,6 @@ uint8_t getItemFromUnion(uint8_t unionIndex,uint8_t *filterIndex,uint8_t *lightI
 													{14,9}};
 	if(unionIndex<MAX_UNION_NUMBER)
 	{
-     
 		*filterIndex=settingTable[unionIndex].filter;
 		*lightIndex=settingTable[unionIndex].light;
 		
@@ -596,7 +595,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 /****************************************************************************************************
 **
 *Function Name:static void runCmd(void)
-*Function:
+*Function: Motor Return signal 
 *Input Ref: 
 *Return Ref:NO
 *

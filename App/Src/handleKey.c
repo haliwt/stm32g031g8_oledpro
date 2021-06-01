@@ -6,7 +6,6 @@
  */
 #include "tim.h"
 #include "keyDef.h"
-
 #include "cmd_link.h"
 #include "oled.h"
 #include "handlekey.h"
@@ -412,12 +411,11 @@ void handleInput(void)
 		if(!(pkey->keyCode & KEY_CODE_KEY2))	// change light +  //LED  
 		{
 			 auxiliary_t.SmartKey = 0;
-		
+		     mainled_t.MainSpotUnion_Led=0;
 			  if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board 
-		             if(auxiliary_t.mainLedKey == 1){
+		             if(auxiliary_t.mainLedKey == 1){ //"Manual Menu" -'SPOT,SIDE ,LEFT, RIGHT'
 							
 						AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
-						//getItemFromUnion_AU(echoUnion,&echoFilter,&echoLight);
 						printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
 		               
 						
@@ -426,7 +424,8 @@ void handleInput(void)
 						if(echoLight>=MAX_LIGHT_NUMBER-1) echoLight=0;
 						else echoLight++;
 						echoGroup=ECHO_GROUP_A;
-						printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
+						//printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
+						printSettingInfo_MainLed(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
 					
 					}
 			}
@@ -435,14 +434,13 @@ void handleInput(void)
 		else if(!(pkey->keyCode & KEY_CODE_KEY1))	// change light - //LED
 		{
 			 auxiliary_t.SmartKey = 0;
-			
+			 mainled_t.MainSpotUnion_Led=0;
 			if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board change light + spot and lin
 
 				if(auxiliary_t.mainLedKey == 1){
 
 				    
 					AuxiliaryWhichOneLed_Reduce(auxiliary_t.AuxiliarySubItem);
-					//getItemFromUnion_AU(echoUnion,&echoFilter,&echoLight);
 				    printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
 					
 				}
@@ -450,7 +448,8 @@ void handleInput(void)
 					if(echoLight==0) echoLight=MAX_LIGHT_NUMBER-1;
 					else echoLight--;
 					echoGroup=ECHO_GROUP_A;
-					printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
+					//printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
+					printSettingInfo_MainLed(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
 				
 			   }
 		   }
@@ -458,6 +457,7 @@ void handleInput(void)
 		else if(!(pkey->keyCode & KEY_CODE_KEY4))	// change filter +  
 		{
 			 auxiliary_t.SmartKey = 0;
+			 mainled_t.MainSpotUnion_Led=0;
 			 if (auxiliary_t.Auxiliary_flag == 1){//The "manualMenu"
 				 if (echoFilter >= MAX_FILTER_NUMBER - 1)
 					 echoFilter = 0;
@@ -474,6 +474,7 @@ void handleInput(void)
 		else if(!(pkey->keyCode & KEY_CODE_KEY3))	// change filter -
 		{
 			 auxiliary_t.SmartKey = 0;
+			 mainled_t.MainSpotUnion_Led=0;
 			 if (auxiliary_t.Auxiliary_flag == 1)
 			 {
 				 if (echoFilter == 0)
@@ -492,6 +493,7 @@ void handleInput(void)
 		{
 			 auxiliary_t.SmartKey = 0; //WT.EDIT 2021.05.30
 			 auxiliary_t.mainLedKey =0; //WT.EDIT 2021.05.31
+			 mainled_t.MainSpotUnion_Led=1;
 			 if (auxiliary_t.Auxiliary_flag == 0)
 			 {
 				 if (echoUnion >= MAX_UNION_NUMBER - 1){
@@ -540,6 +542,7 @@ void handleInput(void)
 		{
 			 auxiliary_t.SmartKey = 0;
 			 auxiliary_t.mainLedKey =0; //WT.EDIT 2021.05.31
+			  mainled_t.MainSpotUnion_Led=1;
 			 if (auxiliary_t.Auxiliary_flag == 0)
 			 {
 				 if (echoUnion == 0){
@@ -637,7 +640,7 @@ void handleInput(void)
              //smart mode
 			  //if(pkey->long_pressed ==1 && auxiliary_t.SmartKey !=1){
 			  	   
-			
+					 mainled_t.MainSpotUnion_Led=0;
 					keySmartflag = keySmartflag ^ 0x1;
 					HAL_UART_Transmit(&huart2,&keySmartflag ,1,0); //debug information
 					if(keySmartflag ==1 ){ //ManualMode
@@ -664,6 +667,7 @@ void handleInput(void)
 						  auxiliary_t.Auxiliary_flag=0;
 						  turnoffAllLight();
 						  displayUnionInfo(echoUnion);
+						   mainled_t.MainSpotUnion_Led=1;
 						// HAL_Delay(100);
 						
 					}
@@ -672,6 +676,7 @@ void handleInput(void)
 				auxiliary_t.Auxiliary_flag=0; //
 				auxiliary_t.SmartKey = 0;
 			    auxiliary_t.SmartMode =0;
+				mainled_t.MainSpotUnion_Led=1;
 				//auxiliary_t.SmartMenuItem =0;
 			 }
 		}
@@ -753,9 +758,7 @@ static void displayUnionInfo(uint8_t unionIndex)
 	echoGroup=ECHO_GROUP_B;
 	getItemFromUnion(unionIndex,&echoFilter,&echoLight);
 	printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
-	//printEchoUnion(unionIndex,echoFilter,echoLight);
-	//printEchoFilter(echoFilter);
-	//printEchoLight(echoLight);
+	
 }
 /*****************************************************************************************************
 **
@@ -792,7 +795,7 @@ uint8_t SideButton_SubItem_Input(void)
 
     }
 
-    if(k11>3000 && k11< 3500){
+    if(k11>5000 && k11< 6500){
 	   	 value = 1;
 	    	k11=0;
 	    return value;
