@@ -530,7 +530,8 @@ void printSettingInfo_Manual(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 		}
 
 
-
+       u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
+		printWithFmt(&u8g2,UNION_INFO1_X,UNION_INFO1_Y,WIDTH_UNION,UNION_INFO1_HEIGHT,ALIGN_MID_ALL,unionInfo_mainled[0]);
 		
 		break;
 
