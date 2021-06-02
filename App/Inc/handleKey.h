@@ -15,6 +15,8 @@ extern void handleInput(void);
 void AuxiliaryWhichOneLed_Plus(uint8_t wled);
 void AuxiliaryWhichOneLed_Reduce(uint8_t wled);
 extern uint8_t SideButton_SubItem_Input(void);
+void TurnOnUnionSPOT_Light(void);
+
 
 typedef struct _auxiliary_
 {
@@ -38,6 +40,7 @@ typedef struct _mainLed_
    uint8_t ledoff_flag;
    uint8_t MainSpotUnion_Led;
    uint8_t MainLed_Num;
+   uint8_t MainUnionSport_flag;
 
 }mainled;
 

@@ -162,7 +162,7 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 		selectFilter(filterIndex); //filter HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
 		startTimeDown(1);
 	}
-	else
+	else //WT.EDIT 2021.06.02
 	{
 		
 		
@@ -174,29 +174,12 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 		}
 	    else{ 
 
-			if(mainled_t.ledoff_flag ==4){
-					 selectLight_SpotBoard(2);
-					 mainled_t.ledoff_flag =0xff;
-			}
-            else if(mainled_t.ledoff_flag ==5){
-					  selectLight_SpotBoard(3);
-					 mainled_t.ledoff_flag =0xff;
-			}
-			else if(mainled_t.ledoff_flag ==19){
-					 selectLight_LinearBoard(3);
-					 mainled_t.ledoff_flag =0xff;
-			}
-			else if(mainled_t.ledoff_flag ==20){
-					  selectLight_LinearBoard(1);//updateLight_Union(2);
-					 mainled_t.ledoff_flag =0xff;
-			}
-			else if(mainled_t.ledoff_flag !=0xff){
-					
-				  HAL_UART_Transmit(&CMD_LINKER,&addb,1,2);
-				  updateLight(lightIndex);
-
-			}
-
+            
+			 TurnOnUnionSPOT_Light();
+			 if( mainled_t.MainUnionSport_flag ==0){
+					updateLight(lightIndex);
+				}
+			 HAL_UART_Transmit(&CMD_LINKER,&addb,1,2);
 
 	    }
 	}
@@ -221,7 +204,7 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 ****************************************************************************************************/
 void updateLight(uint8_t lightIndex)
 {
-	if(lightIndex!=currLight)
+	if(lightIndex!=currLight) //WT.EDIT 2021.06.02
 	{
 		currLight=lightIndex;
 		//setEchoLightBlink(ENABLE_BLINK);
@@ -243,7 +226,7 @@ void updateLight(uint8_t lightIndex)
 ****************************************************************************************************/
 void updateLight_Union(uint8_t lightIndex)
 {
-	if(lightIndex!=currLight)
+	if(lightIndex!=currLight)//WT.EDIT 2021.06.02
 	{
 		currLight=lightIndex;
 		//setEchoLightBlink(ENABLE_BLINK);
@@ -266,7 +249,7 @@ void updateLight_Union(uint8_t lightIndex)
 ****************************************************************************************************/
 void updateLight_AU(uint8_t lightIndex_AU)
 {
-	if (lightIndex_AU != currLight_AU)
+	if (lightIndex_AU != currLight_AU)//WT.EDIT 2021.06.02
 	{
 		currLight_AU=lightIndex_AU;
 		//setEchoLightBlink(ENABLE_BLINK);

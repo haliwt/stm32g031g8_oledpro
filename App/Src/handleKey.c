@@ -355,8 +355,9 @@ void AuxiliaryWhichOneLed_Reduce(uint8_t wled)
 *******************************************************************************************/
 void handleInput(void)
 {
-	static uint8_t keySmartflag;
+	static uint8_t keySmartflag,keyTurnOnflag;
 	static uint8_t power=0;
+	uint8_t temp;
 	pKeyStruct pkey=getKey();
 
 	if(_250msFlag)
@@ -391,7 +392,7 @@ void handleInput(void)
 		//printEchoFilter(echoFilter);
 		
 		if (auxiliary_t.Auxiliary_flag==1){
-			  updateLight_AU(echoLight_LR);
+			 // updateLight_AU(echoLight_LR);
 			  printSettingInfo_Manual(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
 		    
 		}
@@ -536,7 +537,7 @@ void handleInput(void)
 
 					}
 					else{
-					
+					  mainled_t.MainUnionSport_flag =0;
 					  updateLight(echoLight);
 
 				
@@ -586,7 +587,7 @@ void handleInput(void)
 
 					}
 					else{
-					
+					  mainled_t.MainUnionSport_flag =0;
 					  updateLight(echoLight);
 
 				
@@ -597,14 +598,20 @@ void handleInput(void)
 		else if(!(pkey->keyCode & KEY_CODE_KEY7))	// turn off light
 		{
 			auxiliary_t.SmartKey = 0;
-			if(getLightOnoffState()==NOW_LIGHT_IS_ON)
+			keyTurnOnflag = keyTurnOnflag ^ 0x01;
+			if(keyTurnOnflag ==1)
 			{
 				turnoffAllLight();
 			}
 			else
 			{
-                if(auxiliary_t.Auxiliary_flag==0 ||auxiliary_t.AuxiliarySubItem ==Main )//WT.EDIT  2021.06.02
-				     setCurrentLightOn(); //default "0"
+                if(auxiliary_t.Auxiliary_flag==0 ||auxiliary_t.AuxiliarySubItem ==Main ){//WT.EDIT  2021.06.02
+
+					 mainled_t.ledoff_flag =mainled_t.ledoff_flag-5;
+					 TurnOnUnionSPOT_Light();
+					 if(mainled_t.MainUnionSport_flag ==0)
+				            setCurrentLightOn(); 
+				 }
 				 else 
 				 	  setCurrentLightOn_AU(); //WT.EDIT 2021.06.02
 				
@@ -659,7 +666,6 @@ void handleInput(void)
 						auxiliary_t.filterRunNum =0;
 						auxiliary_t.mainLedKey =0; //
 						auxiliary_t.Auxiliary_flag=1;
-						mainled_t.ledoff_flag =0; //WT.EDIT 2021.06.01
 						mainled_t.MainLed_Num=0;
 
 						displayUnionInfo_Manual(echoUnion_manual);//Display Filter name and number 
@@ -678,7 +684,7 @@ void handleInput(void)
 						  turnoffAllLight();
 						  displayUnionInfo(echoUnion);
 						  mainled_t.MainSpotUnion_Led=1;
-						  mainled_t.ledoff_flag =0; //WT.EDIT 2021.06.01
+						 
 						}
 			       
 		
@@ -764,12 +770,12 @@ static void displayUnionInfo(uint8_t unionIndex)
 	
 }
 /*****************************************************************************************************
-**
-*Function Name:void displayUnionInfo_Menu(uint8_t unionIndex)
-*Function : display auxiliary "menu" --LED 
-*
-*
-*
+	**
+	*Function Name:void displayUnionInfo_Menu(uint8_t unionIndex)
+	*Function : display auxiliary "menu" --LED 
+	*
+	*
+	*
 ******************************************************************************************************/
 static void displayUnionInfo_Manual(uint8_t unionIndex)
 {
@@ -777,6 +783,55 @@ static void displayUnionInfo_Manual(uint8_t unionIndex)
 	getItemFromUnion_AU(unionIndex,&echoFilter,&echoLight);
 	//printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight,BLINK_OFF);
 	//printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight,BLINK_OFF);
+}
+/*****************************************************************************************************
+	**
+	*Function Name:static void TurnOnUnionSPOT_Light(void)
+	*Function : 
+	*Input Ref:
+	*Return Ref:
+	*
+******************************************************************************************************/
+void TurnOnUnionSPOT_Light(void)
+{
+         
+
+		switch(mainled_t.ledoff_flag){
+
+		  case 4:
+		         selectLight_SpotBoard(2);
+		         mainled_t.ledoff_flag =mainled_t.ledoff_flag+5;
+				 mainled_t.MainUnionSport_flag =1;
+		      break;
+
+		   case 5:
+                selectLight_SpotBoard(3);
+				mainled_t.ledoff_flag =mainled_t.ledoff_flag+5;
+				 mainled_t.MainUnionSport_flag =1;
+				break;
+
+			case 19:
+		         selectLight_LinearBoard(3);
+				 mainled_t.ledoff_flag =mainled_t.ledoff_flag+5;
+				 mainled_t.MainUnionSport_flag =1;
+			  
+				break;
+
+			case 20:
+			    selectLight_LinearBoard(1);
+				mainled_t.ledoff_flag =mainled_t.ledoff_flag+5;
+				mainled_t.MainUnionSport_flag =1;
+			  break;
+
+			default :
+
+			 
+
+			break;
+          }
+         
+		
+
 }
 /*****************************************************************************************************
 **
