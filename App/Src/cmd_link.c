@@ -64,7 +64,7 @@ static void notifyStatusToHost(uint8_t lightNum,uint8_t lightNum_LR,uint8_t filt
 //static void getTargetStatus(uint8_t *pBuf);
 
 static uint8_t currUnion,currLight,currFilter,currLight_LR,currLight_AU,tmpLight,tmpLight_LR,tmpLight_AU; //WT.EDIT 
-static uint8_t currSW_Mode;
+static uint8_t currSW_Mode,currSame_23;
 static uint8_t inputCmd[32],bleInputCmd[32];
 static uint8_t cmdSize,bleCmdSize;
 static uint8_t paraIndex,bleParaIndex;
@@ -169,18 +169,20 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 		
 		if(auxiliary_t.mainLedKey == 1){ //default mainLedKey =0 is main board LED 
 
-			HAL_UART_Transmit(&CMD_LINKER,&add,1,2);
 			updateLight_AU(lightIndx_AU); //WT.EDIT 2021.04.28 //SPOT board subItem
+			#if DEBUG
+			 HAL_UART_Transmit(&CMD_LINKER,&add,1,2);
+			#endif 
 			
 		}
 	    else{ 
-
-            
-			 TurnOnUnionSPOT_Light();
+			TurnOnUnionSPOT_Light();
 			 if( mainled_t.MainUnionSport_flag ==0){
 					updateLight(lightIndex);
 				}
-			 HAL_UART_Transmit(&CMD_LINKER,&addb,1,2);
+			 #if DEBUG 
+			   HAL_UART_Transmit(&CMD_LINKER,&addb,1,2);
+			 #endif 
 
 	    }
 	}
@@ -196,13 +198,20 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 ****************************************************************************************************/
 void updateLight(uint8_t lightIndex)
 {
-	if(mainled_t.SW_Mode!=currSW_Mode) //WT.EDIT 2021.06.02
+	if(mainled_t.SW_Mode!=currSW_Mode ) //WT.EDIT 2021.06.02
 	{
 		currSW_Mode=mainled_t.SW_Mode;
+		
 		selectLight(mainled_t.MainLed_Num);//WT.EDIT 2021.06.02
-			
 	}
 
+	if(mainled_t.Same_23 !=currSame_23) //WT.EDIT 2021.06.02
+	{
+	
+		currSame_23 = mainled_t.Same_23;
+		selectLight(lightIndex);//WT.EDIT 2021.06.02
+			
+	}
 	if(lightIndex!=currLight) //WT.EDIT 2021.06.02
 	{
 		currLight=lightIndex;
@@ -314,6 +323,7 @@ uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_
 	currLight_LR = 0xff;
 	currLight_AU = 0xff;
     currSW_Mode = 0xff; //WT.EDIT 2021.06.02
+    currSame_23 = 0xff; //WT.EDIT 2021.06.02
 
 	*revealUnion=10; //9
 	*revealFilter=0;

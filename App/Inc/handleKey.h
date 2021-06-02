@@ -8,7 +8,7 @@
 #ifndef HANDLEKEY_H_
 #define HANDLEKEY_H_
 
-
+#define DEBUG   1
 
 extern void keyInit(void);
 extern void handleInput(void);
@@ -41,7 +41,9 @@ typedef struct _mainLed_
    uint8_t MainSpotUnion_Led;
    uint8_t MainLed_Num;
    uint8_t MainUnionSport_flag;
+   uint8_t Same_23;
    uint8_t SW_Mode;
+   
 
 }mainled;
 

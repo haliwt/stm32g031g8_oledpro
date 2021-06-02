@@ -511,7 +511,9 @@ void handleInput(void)
 				 else{
 					 echoUnion++;
 					 mainled_t.ledoff_flag++;
-				     HAL_UART_Transmit(&CMD_LINKER,&echoUnion,1,2);
+				    #if DEBUG
+				      HAL_UART_Transmit(&CMD_LINKER,&echoUnion,1,2);
+					#endif
 				 }
 				 turnoffAllLight();
 				 displayUnionInfo(echoUnion);
@@ -537,8 +539,11 @@ void handleInput(void)
 
 					}
 					else{
+					  if(echoUnion ==2)//oled display "#3"
+					      mainled_t.Same_23 =0;
+					  else if(echoUnion ==3)  mainled_t.Same_23 =1;
 					  mainled_t.MainUnionSport_flag =0;
-					  updateLight(echoLight);
+					  //updateLight(echoLight);
 
 				
 				 	}
@@ -588,7 +593,10 @@ void handleInput(void)
 					}
 					else{
 					  mainled_t.MainUnionSport_flag =0;
-					  updateLight(echoLight);
+					  if(echoUnion ==2)//oled display "#3"
+					      mainled_t.Same_23 =0;
+					  else if(echoUnion ==3)  mainled_t.Same_23 =1;
+					  //updateLight(echoLight);
 
 				
 				 	}
