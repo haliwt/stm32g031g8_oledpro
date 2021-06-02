@@ -64,6 +64,7 @@ static void notifyStatusToHost(uint8_t lightNum,uint8_t lightNum_LR,uint8_t filt
 //static void getTargetStatus(uint8_t *pBuf);
 
 static uint8_t currUnion,currLight,currFilter,currLight_LR,currLight_AU,tmpLight,tmpLight_LR,tmpLight_AU; //WT.EDIT 
+static uint8_t currSW_Mode;
 static uint8_t inputCmd[32],bleInputCmd[32];
 static uint8_t cmdSize,bleCmdSize;
 static uint8_t paraIndex,bleParaIndex;
@@ -185,15 +186,6 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 	}
 }
 
-//void updateFilter(filterIndex)
-//{
-//	if(filterIndex!=currFilter)
-//	{
-//		currFilter=filterIndex;
-//		setEchoFilterBlink(ENABLE_BLINK);
-//		selectFilter(filterIndex);
-//	}
-//}
 /****************************************************************************************************
 **
 *Function Name:void updateLight(uint8_t lightIndex)
@@ -204,6 +196,13 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 ****************************************************************************************************/
 void updateLight(uint8_t lightIndex)
 {
+	if(mainled_t.SW_Mode!=currSW_Mode) //WT.EDIT 2021.06.02
+	{
+		currSW_Mode=mainled_t.SW_Mode;
+		selectLight(mainled_t.MainLed_Num);//WT.EDIT 2021.06.02
+			
+	}
+
 	if(lightIndex!=currLight) //WT.EDIT 2021.06.02
 	{
 		currLight=lightIndex;
@@ -226,6 +225,7 @@ void updateLight(uint8_t lightIndex)
 ****************************************************************************************************/
 void updateLight_Union(uint8_t lightIndex)
 {
+
 	if(lightIndex!=currLight)//WT.EDIT 2021.06.02
 	{
 		currLight=lightIndex;
@@ -249,7 +249,9 @@ void updateLight_Union(uint8_t lightIndex)
 ****************************************************************************************************/
 void updateLight_AU(uint8_t lightIndex_AU)
 {
-	if (lightIndex_AU != currLight_AU)//WT.EDIT 2021.06.02
+
+  	
+   if (lightIndex_AU != currLight_AU)//WT.EDIT 2021.06.02
 	{
 		currLight_AU=lightIndex_AU;
 		//setEchoLightBlink(ENABLE_BLINK);
@@ -311,6 +313,7 @@ uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_
 	currLight=0xff;
 	currLight_LR = 0xff;
 	currLight_AU = 0xff;
+    currSW_Mode = 0xff; //WT.EDIT 2021.06.02
 
 	*revealUnion=10; //9
 	*revealFilter=0;
@@ -374,12 +377,12 @@ uint8_t getItemFromUnion_AU(uint8_t unionIndex,uint8_t *filterIndex,uint8_t *lig
 }
 
 /********************************************************************************
-**
-*Function Name:void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-*Function :UART callback function  for UART interrupt for receive data
-*Input Ref: structure UART_HandleTypeDef pointer
-*Return Ref:NO
-*
+	**
+	*Function Name:void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+	*Function :UART callback function  for UART interrupt for receive data
+	*Input Ref: structure UART_HandleTypeDef pointer
+	*Return Ref:NO
+	*
 *******************************************************************************/
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
@@ -526,25 +529,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		HAL_UART_Receive_IT(&BLE_USART,bleBuf,1);
 	}
 }
-/********************************************************************************
-**
-*Function Name:void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
-*Function :UART callback function  for UART interrupt for transmit data
-*Input Ref: structure UART_HandleTypeDef pointer
-*Return Ref:NO
-*
-*******************************************************************************/
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
-{
-	if(huart==&CMD_LINKER)
-	{
-		transOngoingFlag=0; //UART Transmit interrupt flag =0 ,RUN
-	}
-	else if(huart==&BLE_USART)
-	{
-		bleTransOngoingFlag=0;	// reset busy flag
-	}
-}
+
 /****************************************************************************************************
 **
 *Function Name:static void runCmd(void)
@@ -1015,9 +1000,10 @@ void selectLight_AU(uint8_t index)
 	
     if(auxiliary_t.AuxiliarySubItem ==Main){
 
+	
+	  selectLight(mainled_t.MainLed_Num);//WT.EDIT 2021.06.02
 			
-		selectLight(mainled_t.MainLed_Num);//WT.EDIT 2021.06.02
-				
+	
 	}
 	else if(auxiliary_t.AuxiliarySubItem ==Spot){
 			tenNum=index/6; // WT.EDIT 5 group LED number 2021.04.23 remainder
@@ -1161,31 +1147,23 @@ static void notifyStatusToHost(uint8_t lightNum,uint8_t lightNum_LR,uint8_t filt
 	}
 }
 
-//static uint8_t suffBoardStatusToBuffer(void)
-//{
-//	uint8_t i,crc=0xAA;
-//
-//	bleOutputBuf[0]=BOARD_ADDR_BT;
-//	bleOutputBuf[1]='L';	// leds status
-//	for(i=2;i<6;i++) crc ^= bleOutputBuf[i];
-//	bleOutputBuf[i]= crc;	// checksum
-//	return i+1;	// 7 bytes
-//}
-//
-//static void getTargetStatus(uint8_t *pBuf)
-//{
-//	uint8_t tmp;
-//	tmp=retrieveEchoUnion();
-//	*pBuf++=retrieveEchoLight();
-//	*pBuf++=retrieveEchoFilter();
-//	if(tmp>=8)
-//	{
-//		*pBuf++=0xff;
-//		*pBuf=tmp-8;
-//	}
-//	else
-//	{
-//		*pBuf++=tmp;
-//		*pBuf=0xff;
-//	}
-//}
+/********************************************************************************
+**
+*Function Name:void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+*Function :UART callback function  for UART interrupt for transmit data
+*Input Ref: structure UART_HandleTypeDef pointer
+*Return Ref:NO
+*
+*******************************************************************************/
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart==&CMD_LINKER)
+	{
+		transOngoingFlag=0; //UART Transmit interrupt flag =0 ,RUN
+	}
+	else if(huart==&BLE_USART)
+	{
+		bleTransOngoingFlag=0;	// reset busy flag
+	}
+}
+

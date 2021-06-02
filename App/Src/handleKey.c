@@ -667,6 +667,7 @@ void handleInput(void)
 						auxiliary_t.mainLedKey =0; //
 						auxiliary_t.Auxiliary_flag=1;
 						mainled_t.MainLed_Num=0;
+						mainled_t.SW_Mode =1;
 
 						displayUnionInfo_Manual(echoUnion_manual);//Display Filter name and number 
 						echoGroup=ECHO_GROUP_A;
@@ -681,6 +682,7 @@ void handleInput(void)
 					     auxiliary_t.ManualMode=0;
 						  auxiliary_t.SmartMode =0;
 						  auxiliary_t.Auxiliary_flag=0;
+						  mainled_t.SW_Mode =0;
 						  turnoffAllLight();
 						  displayUnionInfo(echoUnion);
 						  mainled_t.MainSpotUnion_Led=1;

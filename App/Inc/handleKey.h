@@ -41,6 +41,7 @@ typedef struct _mainLed_
    uint8_t MainSpotUnion_Led;
    uint8_t MainLed_Num;
    uint8_t MainUnionSport_flag;
+   uint8_t SW_Mode;
 
 }mainled;
 
