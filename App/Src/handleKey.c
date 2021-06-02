@@ -676,6 +676,8 @@ void handleInput(void)
 						auxiliary_t.Auxiliary_flag=1;
 						mainled_t.MainLed_Num=0;
 						mainled_t.SW_Mode =1;
+						if( mainled_t.ledoff_flag >0)//WT.EDIT 2021.06.02
+						  	mainled_t.ledoff_flag =mainled_t.ledoff_flag-5;
 
 						displayUnionInfo_Manual(echoUnion_manual);//Display Filter name and number 
 						echoGroup=ECHO_GROUP_A;
@@ -694,6 +696,8 @@ void handleInput(void)
 						  turnoffAllLight();
 						  displayUnionInfo(echoUnion);
 						  mainled_t.MainSpotUnion_Led=1;
+						  if( mainled_t.ledoff_flag >0)//WT.EDIT 2021.06.02
+						  	mainled_t.ledoff_flag =mainled_t.ledoff_flag-5;
 						 
 						}
 			       
