@@ -141,6 +141,7 @@ void decode(void)
 void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,uint8_t lightIndx_AU, uint8_t filterIndex)
 {
     uint8_t add=0xAA,addb=0xBB;
+	static uint8_t sw=0;
 
 	if(unionIndex!=currUnion || filterIndex !=currFilter || lightIndex!=currLight || lightIndx_LR != currLight_LR || lightIndx_AU != currLight_AU)//currUnion = 0xff,
 	{
@@ -176,7 +177,18 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 			
 		}
 	    else{ 
-			TurnOnUnionSPOT_Light();
+              if(auxiliary_t.SmartMenuItem ==1 ){
+			     
+			  	  auxiliary_t.SmartMenuItem++;
+				  sw= sw^0x01;
+					if(sw==1)
+			             mainled_t.SW_Mode=6;
+				    else  mainled_t.SW_Mode=3;
+					 updateLight(lightIndex);
+              }
+			  else
+			      TurnOnUnionSPOT_Light();
+
 			 if( mainled_t.MainUnionSport_flag ==0){
 					updateLight(lightIndex);
 				}

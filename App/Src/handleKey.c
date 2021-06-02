@@ -662,7 +662,9 @@ void handleInput(void)
              
 			  	    mainled_t.MainSpotUnion_Led=0;
 					keySmartflag = keySmartflag ^ 0x1;
-					//HAL_UART_Transmit(&huart2,&keySmartflag ,1,2); //debug information
+					#if DEBUG
+   							HAL_UART_Transmit(&huart2,&keySmartflag ,1,2); //debug information
+					#endif 
 					if(keySmartflag ==1 ){ //ManualMode
 						auxiliary_t.SmartMenuItem =1;
 					    auxiliary_t.SmartKey =1; //
@@ -676,8 +678,6 @@ void handleInput(void)
 						auxiliary_t.Auxiliary_flag=1;
 						mainled_t.MainLed_Num=0;
 						mainled_t.SW_Mode =1;
-						if( mainled_t.ledoff_flag >0)//WT.EDIT 2021.06.02
-						  	mainled_t.ledoff_flag =mainled_t.ledoff_flag-5;
 
 						displayUnionInfo_Manual(echoUnion_manual);//Display Filter name and number 
 						echoGroup=ECHO_GROUP_A;
@@ -808,8 +808,7 @@ static void displayUnionInfo_Manual(uint8_t unionIndex)
 ******************************************************************************************************/
 void TurnOnUnionSPOT_Light(void)
 {
-         
-
+       
 		switch(mainled_t.ledoff_flag){
 
 		  case 4:
