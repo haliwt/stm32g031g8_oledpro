@@ -421,8 +421,14 @@ void handleInput(void)
 						
 					}
 					if (auxiliary_t.AuxiliarySubItem   == Main){
-						if(echoLight>=MAX_LIGHT_NUMBER-1) echoLight=0;
-						else echoLight++;
+						if(echoLight>=MAX_LIGHT_NUMBER-1) {
+							echoLight=0;
+							mainled_t.MainLed_Num=0;
+						}
+						else {
+							echoLight++;
+							mainled_t.MainLed_Num++;
+						}
 						echoGroup=ECHO_GROUP_A;
 						//printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
 						printSettingInfo_MainLed(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
@@ -446,8 +452,14 @@ void handleInput(void)
 				}
 			   if (auxiliary_t.AuxiliarySubItem   == Main){
 			  //mainLed switch
-					if(echoLight==0) echoLight=MAX_LIGHT_NUMBER-1;
-					else echoLight--;
+					if(echoLight==0){
+						echoLight=MAX_LIGHT_NUMBER-1;
+						mainled_t.MainLed_Num =MAX_LIGHT_NUMBER-1;
+					}
+					else{
+						echoLight--;
+						mainled_t.MainLed_Num --;
+					}
 					echoGroup=ECHO_GROUP_A;
 					//printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
 					printSettingInfo_MainLed(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
@@ -512,7 +524,7 @@ void handleInput(void)
 					 mainled_t.ledoff_flag=5; //display '#6'
 					   turnoffAllLight();
 					}
-					else if(echoUnion ==19){//white					
+					else if(echoUnion ==19){//display '#20'			
 				
 					    mainled_t.ledoff_flag=19;
 						turnoffAllLight();
@@ -591,7 +603,7 @@ void handleInput(void)
 			}
 			else
 			{
-                if(auxiliary_t.Auxiliary_flag==0)
+                if(auxiliary_t.Auxiliary_flag==0 ||auxiliary_t.AuxiliarySubItem ==Main )//WT.EDIT  2021.06.02
 				     setCurrentLightOn(); //default "0"
 				 else 
 				 	  setCurrentLightOn_AU(); //WT.EDIT 2021.06.02
@@ -648,6 +660,7 @@ void handleInput(void)
 						auxiliary_t.mainLedKey =0; //
 						auxiliary_t.Auxiliary_flag=1;
 						mainled_t.ledoff_flag =0; //WT.EDIT 2021.06.01
+						mainled_t.MainLed_Num=0;
 
 						displayUnionInfo_Manual(echoUnion_manual);//Display Filter name and number 
 						echoGroup=ECHO_GROUP_A;

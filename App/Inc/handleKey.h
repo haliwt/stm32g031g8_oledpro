@@ -37,6 +37,7 @@ typedef struct _mainLed_
 {
    uint8_t ledoff_flag;
    uint8_t MainSpotUnion_Led;
+   uint8_t MainLed_Num;
 
 }mainled;
 

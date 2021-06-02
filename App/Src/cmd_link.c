@@ -306,11 +306,11 @@ void setCurrentLightOn(void)
 
 void setCurrentLightOn_AU(void)
 {
-	if(currLight_AU<MAX_AUXILIARY_NUMBER)
-		{
+	if(currLight_AU<MAX_AUXILIARY_NUMBER){
+
 			selectLight_AU(currLight_AU);
 			//nowLightState=NOW_LIGHT_IS_ON;
-		}
+	}
 }
 
 /****************************************************************************************************
@@ -1031,8 +1031,10 @@ void selectLight_AU(uint8_t index)
    // HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
 	
     if(auxiliary_t.AuxiliarySubItem ==Main){
-        
 
+			
+		selectLight(mainled_t.MainLed_Num);//WT.EDIT 2021.06.02
+				
 	}
 	else if(auxiliary_t.AuxiliarySubItem ==Spot){
 			tenNum=index/6; // WT.EDIT 5 group LED number 2021.04.23 remainder
