@@ -546,14 +546,14 @@ void handleInput(void)
 
 				 }
 				 else{
-					 echoUnion--;
+					  echoUnion--;
 					  mainled_t.ledoff_flag--;
 				      HAL_UART_Transmit(&CMD_LINKER,&echoUnion,1,2);
 				 }
 				 turnoffAllLight();
 				 displayUnionInfo(echoUnion);
 				
-					 if(echoUnion==4){ //display "#5"
+				  if(echoUnion==4){ //display "#5"
 					    mainled_t.ledoff_flag=4;
 					   turnoffAllLight();
 
@@ -588,7 +588,6 @@ void handleInput(void)
 			if(getLightOnoffState()==NOW_LIGHT_IS_ON)
 			{
 				turnoffAllLight();
-				
 			}
 			else
 			{
@@ -648,6 +647,7 @@ void handleInput(void)
 						auxiliary_t.filterRunNum =0;
 						auxiliary_t.mainLedKey =0; //
 						auxiliary_t.Auxiliary_flag=1;
+						mainled_t.ledoff_flag =0; //WT.EDIT 2021.06.01
 
 						displayUnionInfo_Manual(echoUnion_manual);//Display Filter name and number 
 						echoGroup=ECHO_GROUP_A;
@@ -664,10 +664,9 @@ void handleInput(void)
 						  auxiliary_t.Auxiliary_flag=0;
 						  turnoffAllLight();
 						  displayUnionInfo(echoUnion);
-						   mainled_t.MainSpotUnion_Led=1;
-						
-						
-					}
+						  mainled_t.MainSpotUnion_Led=1;
+						  mainled_t.ledoff_flag =0; //WT.EDIT 2021.06.01
+						}
 			       
 		
 		}
