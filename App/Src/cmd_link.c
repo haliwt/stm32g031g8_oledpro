@@ -143,7 +143,7 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 
 	if(unionIndex!=currUnion || filterIndex !=currFilter || lightIndex!=currLight || lightIndx_LR != currLight_LR || lightIndx_AU != currLight_AU)//currUnion = 0xff,
 	{
-		notifyStatusToHost(lightIndex,lightIndx_LR,filterIndex,unionIndex); //Smart Menu update parameter .
+		notifyStatusToHost(lightIndex,lightIndx_AU,filterIndex,unionIndex); //Smart Menu update parameter .
 		//for Blue UART Transmit 
 	}
 
@@ -258,28 +258,6 @@ void updateLight_Union(uint8_t lightIndex)
 
 /****************************************************************************************************
 **
-*Function Name:void updateLight(uint8_t lightIndex)
-*Function:
-*Input Ref: 
-*Return Ref:NO
-*
-****************************************************************************************************/
-void updateLight_LR(uint8_t lightIndex_LR)
-{
-	if(lightIndex_LR!=currLight_LR)
-	{
-		currLight_LR=lightIndex_LR;
-		//setEchoLightBlink(ENABLE_BLINK);
-		if(powerOnFlag) powerOnFlag=0;	//need not turn on light when power on
-		else
-		{
-			selectLight_LR(lightIndex_LR); //Transmit Interrupt process 
-			//nowLightState=NOW_LIGHT_IS_ON;
-		}
-	}
-}
-/****************************************************************************************************
-**
 *Function Name:void updateLight_AU(uint8_t lightIndex_AU)
 *Function:
 *Input Ref: 
@@ -325,15 +303,7 @@ void setCurrentLightOn(void)
 	}
 }
 //mainItem Item 
-void setCurrentLightOn_LR(void)
-{
-	if(currLight_LR<MAX_LIGHT_LR_NUMBER)
-		{
-			selectLight_LR(currLight_LR);
-			//nowLightState=NOW_LIGHT_IS_ON;
-		}
-}
-//subItem led
+
 void setCurrentLightOn_AU(void)
 {
 	if(currLight_AU<MAX_AUXILIARY_NUMBER)
@@ -1045,46 +1015,6 @@ void selectLight_SpotBoard(uint8_t index)
 
 }
 
-/****************************************************************************************************
-**
-*Function Name:static void selectLight_LR(uint8_t index)
-*Function: UART2 transmit interrupt process ---
-*Input Ref: main Item of name
-*Return Ref:NO
-*
-****************************************************************************************************/
-static void selectLight_LR(uint8_t index)
-{
-	
-	#if 0
-//uint8_t i,crc;
-	uint8_t tenNum;
-
-	//tenNum=index/10; // remainder
-	tenNum=index/5; // WT.EDIT 5 group LED number 2021.04.23 remainder
-
-	//crc=0x55;
-	outputBuf[0]='V'; //0X56
-	outputBuf[1]='X'; //0X58
-	outputBuf[2]='L'; //0X4C	// 'L' for light board
-	outputBuf[3]='S'; //0X53	// 'S' select light command, 'C' close all light command
-	outputBuf[4]='3'; //0X33	// two command parameter
-	outputBuf[5]='3'; //0X33
-	outputBuf[6]=tenNum+0x30; // change to ascii number ,decimal + 0x30 ->hexadecimal
-	outputBuf[7]=(index-tenNum*10)+0x30;
-	//for(i=3;i<7;i++) crc ^= outputBuf[i];
-	//outputBuf[i]=crc;
-    transferSize=8;
-	if(transferSize)
-	{
-		while(transOngoingFlag);
-		transOngoingFlag=1;
-		HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
-	}
-	nowLightState=NOW_LIGHT_IS_ON;
-	#endif
-
-}
 /****************************************************************************************************
 **
 *Function Name:static void selectLight_AU(uint8_t index)

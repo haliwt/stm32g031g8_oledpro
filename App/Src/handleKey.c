@@ -376,7 +376,7 @@ void handleInput(void)
 		if(power < 6){
 			 power++;
 		     if(power==5)
-		       setCurrentLightOn(); //WT.EDIT 2021.05.08
+		       setCurrentLightOn(); //WT.EDIT 2021.05.08 main board led
 		    
 		}
 	}
@@ -393,7 +393,7 @@ void handleInput(void)
 		if (auxiliary_t.Auxiliary_flag==1){
 			  updateLight_AU(echoLight_LR);
 			  printSettingInfo_Manual(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
-		    //  printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF);
+		    
 		}
 		else
 			printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
@@ -592,11 +592,12 @@ void handleInput(void)
 			}
 			else
 			{
-               // if(auxiliary_t.Auxiliary_flag==1)
+                if(auxiliary_t.Auxiliary_flag==0)
 				     setCurrentLightOn(); //default "0"
+				 else 
+				 	  setCurrentLightOn_AU(); //WT.EDIT 2021.06.02
 				
-				//setCurrentLightOn_LR();//WT.EDIT 2021.04.27
-				//setCurrentLightOn_AU();//WT.EDIT 2021.04.28
+				
 			}
 			reportLightStatusChange();
 		}
@@ -632,12 +633,10 @@ void handleInput(void)
 		}
 	    else if(!(pkey->keyCode & KEY_CODE_KEY10))	// auxiliary Menu button WT.EDIT 
 		{
-             //smart mode
-			  //if(pkey->long_pressed ==1 && auxiliary_t.SmartKey !=1){
-			  	   
-					 mainled_t.MainSpotUnion_Led=0;
+             
+			  	    mainled_t.MainSpotUnion_Led=0;
 					keySmartflag = keySmartflag ^ 0x1;
-					HAL_UART_Transmit(&huart2,&keySmartflag ,1,0); //debug information
+					//HAL_UART_Transmit(&huart2,&keySmartflag ,1,2); //debug information
 					if(keySmartflag ==1 ){ //ManualMode
 						auxiliary_t.SmartMenuItem =1;
 					    auxiliary_t.SmartKey =1; //
@@ -666,7 +665,7 @@ void handleInput(void)
 						  turnoffAllLight();
 						  displayUnionInfo(echoUnion);
 						   mainled_t.MainSpotUnion_Led=1;
-						// HAL_Delay(100);
+						
 						
 					}
 			       
