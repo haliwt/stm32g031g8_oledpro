@@ -615,10 +615,17 @@ void handleInput(void)
 			{
                 if(auxiliary_t.Auxiliary_flag==0 ||auxiliary_t.AuxiliarySubItem ==Main ){//WT.EDIT  2021.06.02
 
-					 mainled_t.ledoff_flag =mainled_t.ledoff_flag-5;
-					 TurnOnUnionSPOT_Light();
-					 if(mainled_t.MainUnionSport_flag ==0)
-				            setCurrentLightOn(); 
+					
+					 if(mainled_t.MainUnionSport_flag ==1 && auxiliary_t.subMenuOne==1 )
+				            setCurrentLightOn();
+					 else{
+						 if(mainled_t.MainUnionSport_flag ==1){
+							 mainled_t.ledoff_flag =mainled_t.ledoff_flag-5;
+					         TurnOnUnionSPOT_Light();
+						 }
+						 else
+					         setCurrentLightOn();
+                      }
 				 }
 				 else 
 				 	  setCurrentLightOn_AU(); //WT.EDIT 2021.06.02
@@ -678,7 +685,7 @@ void handleInput(void)
 						auxiliary_t.Auxiliary_flag=1;
 						mainled_t.MainLed_Num=0;
 						mainled_t.SW_Mode =1;
-
+                        auxiliary_t.subMenuOne=1; //for turn off differen main led and auxiliay board led 
 						displayUnionInfo_Manual(echoUnion_manual);//Display Filter name and number 
 						echoGroup=ECHO_GROUP_A;
 						turnoffAllLight();
@@ -696,6 +703,7 @@ void handleInput(void)
 						  turnoffAllLight();
 						  displayUnionInfo(echoUnion);
 						  mainled_t.MainSpotUnion_Led=1;
+						   auxiliary_t.subMenuOne=0; 
 						  if( mainled_t.ledoff_flag >0)//WT.EDIT 2021.06.02
 						  	mainled_t.ledoff_flag =mainled_t.ledoff_flag-5;
 						 

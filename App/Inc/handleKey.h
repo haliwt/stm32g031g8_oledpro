@@ -29,10 +29,11 @@ typedef struct _auxiliary_
     uint8_t SmartKey;
 	uint8_t SmartMode;
 	uint8_t ManualMode;
-	uint8_t mainLedKey;
+	uint8_t mainLedKey;  //main led flag
 	uint8_t filterID;
 	uint8_t filterRunNum;
 	uint8_t filterIDInit;
+	uint8_t subMenuOne;  //main led comment
 }auxiliary;
 
 typedef struct _mainLed_

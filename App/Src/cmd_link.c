@@ -711,11 +711,7 @@ static uint8_t checkBleModuleAVDData(void)
 ****************************************************************************************************/
 static void selectFilter(uint8_t index)
 {
-	//uint8_t i,crc;
-    if( auxiliary_t.AuxiliarySubItem > 4){
-	
-	   auxiliary_t.AuxiliarySubItem =0;
-    }
+
 	//crc=0x55;
 	outputBuf[0]='M'; //4D
 	outputBuf[1]='X'; //58
@@ -1018,12 +1014,12 @@ void selectLight_AU(uint8_t index)
 	
     //static uint8_t firstIn; //WT.EDIT 2021.05.30
 	uint8_t tenNum;
-   // HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
+   
 	
     if(auxiliary_t.AuxiliarySubItem ==Main){
 
-	
-	  selectLight(mainled_t.MainLed_Num);//WT.EDIT 2021.06.02
+	 
+	    selectLight(mainled_t.MainLed_Num);//WT.EDIT 2021.06.02
 			
 	
 	}
@@ -1047,7 +1043,7 @@ void selectLight_AU(uint8_t index)
 				transOngoingFlag=1;
 				HAL_UART_Transmit_IT(&CMD_LINKER,outputBuf,transferSize);
 			}
-
+          
 	}
 	else if(auxiliary_t.AuxiliarySubItem ==Side){
 		//tenNum=index/10; // remainder
