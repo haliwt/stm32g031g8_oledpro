@@ -69,6 +69,7 @@ static uint16_t counter_Waitingtime;
 static uint8_t  waitingTimeoutFlag;
 static uint8_t  timeoutFlag;
 static uint8_t checkParameterFlag;
+static uint8_t checkParameterFlag_500ms;
 static uint8_t	_250msFlag;
 static uint8_t _500msFlag;
 
@@ -381,9 +382,9 @@ void handleInput(void)
 		//blinkLed();
 	}
 
-	if(checkParameterFlag) //1s--update UART1 and UART2 data
+	if(checkParameterFlag_500ms)////if(checkParameterFlag) //1s--update UART1 and UART2 data
 	{
-		checkParameterFlag=0;
+		checkParameterFlag_500ms=0;//checkParameterFlag=0;
 		updateParameter(echoUnion,echoLight,echoLight_LR,auxiliary_t.subSubItemLed_Num,echoFilter); //blue tooth --USART1
 		//updateParameter -> UART2,UART1 Transmit interrupt process
 		if(power < 6){
@@ -428,12 +429,15 @@ void handleInput(void)
 			  if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board 
 		            if(auxiliary_t.AuxiliarySubItem != Main){ //"Manual Menu" -'SPOT,SIDE ,LEFT, RIGHT'
 							
+						turnoffAllLight();//WT.EDIT 2021.06.03
+						HAL_Delay(200);
 						AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
 						printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,auxiliary_t.subSubItemLed_Num,BLINK_OFF); //echoLight = LED Name 
-		               
-						
+		                
 					}
 					else{
+						turnoffAllLight();//WT.EDIT 2021.06.03
+						HAL_Delay(200);
 						if(echoLight>=MAX_LIGHT_NUMBER-1) {
 							echoLight=0;
 							mainled_t.MainLed_Num=0;
@@ -443,6 +447,7 @@ void handleInput(void)
 							mainled_t.MainLed_Num++;
 						}
 						echoGroup=ECHO_GROUP_A;
+						
 						//printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
 						printSettingInfo_MainLed(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
 					
@@ -458,13 +463,16 @@ void handleInput(void)
 
 				if(auxiliary_t.AuxiliarySubItem != Main){
 
-				    
+				    turnoffAllLight();//WT.EDIT 2021.06.03
+					HAL_Delay(200);
 					AuxiliaryWhichOneLed_Reduce(auxiliary_t.AuxiliarySubItem);
 				    printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,auxiliary_t.subSubItemLed_Num,BLINK_OFF); //echoLight = LED Name 
 					
 				}
 			   else{ //Main Board
 			  //mainLed switch
+			        turnoffAllLight();//WT.EDIT 2021.06.03
+					HAL_Delay(200);
 					if(echoLight==0){
 						echoLight=MAX_LIGHT_NUMBER-1;
 						mainled_t.MainLed_Num =MAX_LIGHT_NUMBER-1;
@@ -474,6 +482,7 @@ void handleInput(void)
 						mainled_t.MainLed_Num --;
 					}
 					echoGroup=ECHO_GROUP_A;
+					
 					//printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
 					printSettingInfo_MainLed(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
 				
@@ -511,8 +520,6 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY5))	// change union + "Smart Button"
 		{
-			
-		
 			 mainled_t.MainSpotUnion_Led=1;
 			 if (auxiliary_t.Auxiliary_flag == 0)
 			 {
@@ -528,6 +535,7 @@ void handleInput(void)
 					#endif
 				 }
 				 turnoffAllLight();
+				 HAL_Delay(200);
 				 displayUnionInfo(echoUnion);
 		
 				 if(echoUnion==4){ //display "#5"
@@ -537,17 +545,17 @@ void handleInput(void)
 					}
 					else if(echoUnion==5){
 					 mainled_t.ledoff_flag=5; //display '#6'
-					   turnoffAllLight();
+					  // turnoffAllLight();
 					}
 					else if(echoUnion ==19){//display '#20'			
 				
 					    mainled_t.ledoff_flag=19;
-						turnoffAllLight();
+					//	turnoffAllLight();
 					   
                     }
 					else if(echoUnion== 20){
 					    mainled_t.ledoff_flag=20;
-						turnoffAllLight();
+					//	turnoffAllLight();
 
 					}
 					else{
@@ -581,26 +589,27 @@ void handleInput(void)
 				      HAL_UART_Transmit(&CMD_LINKER,&echoUnion,1,2);
 				 }
 				 turnoffAllLight();
+				 HAL_Delay(200);
 				 displayUnionInfo(echoUnion);
 				
 				  if(echoUnion==4){ //display "#5"
 					    mainled_t.ledoff_flag=4;
-					   turnoffAllLight();
+					  // turnoffAllLight();
 
 					}
 					else if(echoUnion==5){
 					 mainled_t.ledoff_flag=5; //display '#6'
-					   turnoffAllLight();
+					  // turnoffAllLight();
 					}
 					else if(echoUnion ==19){//white					
 				
 					    mainled_t.ledoff_flag=19;
-						turnoffAllLight();
+						//turnoffAllLight();
 					   
                     }
 					else if(echoUnion== 20){
 					    mainled_t.ledoff_flag=20;
-						turnoffAllLight();
+					//	turnoffAllLight();
 
 					}
 					else{
@@ -622,6 +631,7 @@ void handleInput(void)
 			if(keyTurnOnflag ==1)
 			{
 				turnoffAllLight();
+				HAL_Delay(200);
 			}
 			else
 			{
@@ -907,6 +917,8 @@ void SideButtonSub_KEY(void)
 	 if(SideButton_SubItem_Input()){
 
 
+			   turnoffAllLight();
+			   HAL_Delay(200);
 			   if(auxiliary_t.ManualMode ==1){ //manual mode "SPOT" "SIDE" "LEFT" "RIGHT"
 				
 		   
@@ -919,13 +931,12 @@ void SideButtonSub_KEY(void)
 			   else{ 
 				   
 					auxiliary_t.subMenuOne=0; //WT.EDIT 2021.06.03
-				   auxiliary_t.AuxiliarySubItem ++;
+				    auxiliary_t.AuxiliarySubItem ++;
 		   
-				   HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
-			   }
+			  }
 			   
 			   
-			   turnoffAllLight();
+			  
 			   printSettingInfo_SubItem();
 					   
 			   }
@@ -934,19 +945,21 @@ void SideButtonSub_KEY(void)
 }
 
 /*****************************************************************************************************
-**
-*Function Name:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-*Function : timer of callback function ,timer of times is 2ms
-*
-*
-*
+	**
+	*Function Name:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+	*Function : timer of callback function ,timer of times is 2ms
+	*
+	*
+	*
 ******************************************************************************************************/
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)	// 2ms
 {
 	static uint8_t tick_250ms=0;
+	static uint16_t tick_500ms=0;
 	
 
 	tick_250ms++;
+	tick_500ms++;
 	counter_ActionDelay++;
 	counter_15m++;
 
@@ -954,9 +967,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)	// 2ms
 	{
 		_250msFlag=1;
 		tick_250ms=0;
-		_500msFlag++;
+		
 		
 	}
+	if(tick_500ms>250){ //250*2 =500ms
+		tick_500ms=0;
+		_500msFlag=1;
+	   checkParameterFlag_500ms=1;
+	}
+	
 	if(counter_ActionDelay>500)//500 * 2ms = 1000ms =1s
 	{
 		counter_ActionDelay=0;
