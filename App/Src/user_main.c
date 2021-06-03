@@ -42,8 +42,7 @@ void user_main(void)
 					HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
 				}
 				
-				//echoGroup=ECHO_GROUP_A;
-				//echoLight = LED Name
+				
 				turnoffAllLight();
 				printSettingInfo_SubItem();
 						
@@ -51,7 +50,7 @@ void user_main(void)
 
 
 		 }
-			  if(subIO==0)
+			  if(subIO==0) //SWDIO update softe GPIO initial
 			  {
 			             subIO++;
 			  		   //initial subIO delay 2s

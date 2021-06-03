@@ -249,28 +249,45 @@ void AuxiliaryWhichOneLed_Plus(uint8_t wled)
    break;
 
 	case Spot:
-		  if(echoLight_AU>=MAX_SPOT_NUMBER-1) echoLight_AU=0;
-			else echoLight_AU++;
+		  if(auxiliary_t.subSubItemLed_Num>=MAX_SPOT_NUMBER-1){
+		  	   
+				auxiliary_t.subSubItemLed_Num=0;
+		  	}
+			else {
+				
+				auxiliary_t.subSubItemLed_Num++;
+			}
 			echoGroup=ECHO_GROUP_A;
 		//	printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
          
 	break;
 
 	case Side:
-		if(echoLight_AU>=MAX_SIDE_NUMBER-1) echoLight_AU=0;
-		else echoLight_AU++;
+		if(auxiliary_t.subSubItemLed_Num>=MAX_SIDE_NUMBER-1) {
+		
+			auxiliary_t.subSubItemLed_Num=0;
+		}
+		else{
+			
+			auxiliary_t.subSubItemLed_Num++;
+		}
 		echoGroup=ECHO_GROUP_A;
 	break;
 
 	case Left:
-		if(echoLight_AU>=MAX_LEFT_NUMBER-1) echoLight_AU=0;
-		else echoLight_AU++;
+		if(auxiliary_t.subSubItemLed_Num>=MAX_LEFT_NUMBER-1){
+			auxiliary_t.subSubItemLed_Num=0;
+		}
+		else{
+			auxiliary_t.subSubItemLed_Num++;
+			}
 		echoGroup=ECHO_GROUP_A;
 	break;
 
 	case Right:
-		if(echoLight_AU>=MAX_RIGHT_NUMBER-1) echoLight_AU=0;
-		else echoLight_AU++;
+		if(auxiliary_t.subSubItemLed_Num>=MAX_RIGHT_NUMBER-1)
+			auxiliary_t.subSubItemLed_Num=0;
+		else auxiliary_t.subSubItemLed_Num++;
 		echoGroup=ECHO_GROUP_A;
 
 	break;
@@ -295,43 +312,38 @@ void AuxiliaryWhichOneLed_Reduce(uint8_t wled)
 	uint8_t temp;
 	switch(wled){
 
-	case Main:
-		 temp =0xa0;
-         HAL_UART_Transmit(&CMD_LINKER,&temp,1,2);
+   case Main:
+		
           
    break;
 
    case Spot: //01
-		  temp =0xa1;
-          HAL_UART_Transmit(&CMD_LINKER,&temp,1,2);
-		  if(echoLight_AU==0) echoLight_AU=MAX_SPOT_NUMBER-1;
-		  else echoLight_AU--;
+		 
+		  if(auxiliary_t.subSubItemLed_Num==0) auxiliary_t.subSubItemLed_Num=MAX_SPOT_NUMBER-1;
+		  else auxiliary_t.subSubItemLed_Num--;
 		  echoGroup=ECHO_GROUP_A;
 		//	printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
          
 	break;
 
 	case Side: //02
-		 temp =0xa2;
-          HAL_UART_Transmit(&CMD_LINKER,&temp,1,2);
-		if(echoLight_AU==0) echoLight_AU=MAX_SIDE_NUMBER-1;
-		else echoLight_AU--;
+		
+		if(auxiliary_t.subSubItemLed_Num==0) auxiliary_t.subSubItemLed_Num=MAX_SIDE_NUMBER-1;
+		else auxiliary_t.subSubItemLed_Num--;
 		echoGroup=ECHO_GROUP_A;
 	break;
 
 	case Left: //03
-		 temp =0xa3;
-          HAL_UART_Transmit(&CMD_LINKER,&temp,1,2);
-		if(echoLight_AU ==0) echoLight_AU=MAX_LEFT_NUMBER-1;
-		else echoLight_AU--;
+		
+		if(auxiliary_t.subSubItemLed_Num ==0) auxiliary_t.subSubItemLed_Num=MAX_LEFT_NUMBER-1;
+		else auxiliary_t.subSubItemLed_Num--;
 		echoGroup=ECHO_GROUP_A;
 	break;
 
 	case Right://04
-		 temp =0xa4;
-         HAL_UART_Transmit(&CMD_LINKER,&temp,1,2);
-		if(echoLight_AU == 0) echoLight_AU=MAX_RIGHT_NUMBER-1;
-		else echoLight_AU--;
+		
+		if(auxiliary_t.subSubItemLed_Num == 0) auxiliary_t.subSubItemLed_Num=MAX_RIGHT_NUMBER-1;
+		else auxiliary_t.subSubItemLed_Num--;
 		echoGroup=ECHO_GROUP_A;
 
 	break;
@@ -372,7 +384,7 @@ void handleInput(void)
 	if(checkParameterFlag) //1s--update UART1 and UART2 data
 	{
 		checkParameterFlag=0;
-		updateParameter(echoUnion,echoLight,echoLight_LR,echoLight_AU,echoFilter); //blue tooth --USART1
+		updateParameter(echoUnion,echoLight,echoLight_LR,auxiliary_t.subSubItemLed_Num,echoFilter); //blue tooth --USART1
 		//updateParameter -> UART2,UART1 Transmit interrupt process
 		if(power < 6){
 			 power++;
@@ -417,7 +429,7 @@ void handleInput(void)
 		            if(auxiliary_t.AuxiliarySubItem != Main){ //"Manual Menu" -'SPOT,SIDE ,LEFT, RIGHT'
 							
 						AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
-						printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
+						printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,auxiliary_t.subSubItemLed_Num,BLINK_OFF); //echoLight = LED Name 
 		               
 						
 					}
@@ -448,7 +460,7 @@ void handleInput(void)
 
 				    
 					AuxiliaryWhichOneLed_Reduce(auxiliary_t.AuxiliarySubItem);
-				    printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
+				    printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,auxiliary_t.subSubItemLed_Num,BLINK_OFF); //echoLight = LED Name 
 					
 				}
 			   else{ //Main Board

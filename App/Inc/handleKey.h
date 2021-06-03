@@ -31,6 +31,8 @@ typedef struct _auxiliary_
 	uint8_t filterRunNum;
 	uint8_t filterIDInit;
 	uint8_t subMenuOne;  //main board led flag
+
+	uint8_t subSubItemLed_Num;
 }auxiliary;
 
 typedef struct _mainLed_
