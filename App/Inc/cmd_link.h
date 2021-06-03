@@ -76,7 +76,7 @@ uint8_t getItemFromUnion_AU(uint8_t unionIndex,uint8_t *filterIndex,uint8_t *lig
 
 void updateLight_LR(uint8_t lightIndex_LR);
 void updateLight_AU(uint8_t lightIndex_AU);
-void updateLight_Union(uint8_t lightIndex);
+
 
 void selectLight_AU(uint8_t index);
 

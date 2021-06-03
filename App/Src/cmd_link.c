@@ -64,7 +64,7 @@ static void notifyStatusToHost(uint8_t lightNum,uint8_t lightNum_LR,uint8_t filt
 //static void getTargetStatus(uint8_t *pBuf);
 
 static uint8_t currUnion,currLight,currFilter,currLight_LR,currLight_AU,tmpLight,tmpLight_LR,tmpLight_AU; //WT.EDIT 
-static uint8_t currSW_Mode,currSame_23;
+static uint8_t currSW_Mode,currSame_23,currSub_item;
 static uint8_t inputCmd[32],bleInputCmd[32];
 static uint8_t cmdSize,bleCmdSize;
 static uint8_t paraIndex,bleParaIndex;
@@ -236,44 +236,29 @@ void updateLight(uint8_t lightIndex)
 		}
 	}
 }
-/****************************************************************************************************
-**
-*Function Name:void updateLight(uint8_t lightIndex)
-*Function: Union UART to Side Board data
-*Input Ref: 
-*Return Ref:NO
-*
-****************************************************************************************************/
-void updateLight_Union(uint8_t lightIndex)
-{
-
-	if(lightIndex!=currLight)//WT.EDIT 2021.06.02
-	{
-		currLight=lightIndex;
-		//setEchoLightBlink(ENABLE_BLINK);
-		if(powerOnFlag) powerOnFlag=0;	//need not turn on light when power on
-		else
-		{
-			selectLight_LinearBoard(lightIndex); //Transmit Interrupt process 
-			//nowLightState=NOW_LIGHT_IS_ON;
-		}
-	}
-}
 
 /****************************************************************************************************
-**
-*Function Name:void updateLight_AU(uint8_t lightIndex_AU)
-*Function:
-*Input Ref: 
-*Return Ref:NO
-*
+	**
+	*Function Name:void updateLight_AU(uint8_t lightIndex_AU)
+	*Function:
+	*Input Ref: 
+	*Return Ref:NO
+	*
 ****************************************************************************************************/
 void updateLight_AU(uint8_t lightIndex_AU)
 {
-
-  	
+	
+   if(auxiliary_t.subSubmode_bits !=currSub_item){
+        currSub_item = auxiliary_t.subSubmode_bits;
+   		if(powerOnFlag) powerOnFlag=0;	//need not turn on light when power on
+		else
+		{
+			selectLight_AU(lightIndex_AU); //Transmit Interrupt process subItem
+			//nowLightState=NOW_LIGHT_IS_ON;
+		}
+   }
    if (lightIndex_AU != currLight_AU)//WT.EDIT 2021.06.02
-	{
+   {
 		currLight_AU=lightIndex_AU;
 		//setEchoLightBlink(ENABLE_BLINK);
 		if(powerOnFlag) powerOnFlag=0;	//need not turn on light when power on
@@ -285,14 +270,13 @@ void updateLight_AU(uint8_t lightIndex_AU)
 	}
 }
 
-
 /****************************************************************************************************
-**
-*Function Name:uint8_t getLightOnoffState(void)
-*Function: 
-*Input Ref: 
-*Return Ref:
-*
+	**
+	*Function Name:uint8_t getLightOnoffState(void)
+	*Function: 
+	*Input Ref: 
+	*Return Ref:
+	*
 ****************************************************************************************************/
 uint8_t getLightOnoffState(void)
 {
@@ -336,6 +320,8 @@ uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_
 	currLight_AU = 0xff;
     currSW_Mode = 0xff; //WT.EDIT 2021.06.02
     currSame_23 = 0xff; //WT.EDIT 2021.06.02
+    currSub_item = 0xff; //WT.EDIT 2021.06.03
+    
 
 	*revealUnion=10; //9
 	*revealFilter=0;

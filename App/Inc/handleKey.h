@@ -16,6 +16,7 @@ void AuxiliaryWhichOneLed_Plus(uint8_t wled);
 void AuxiliaryWhichOneLed_Reduce(uint8_t wled);
 extern uint8_t SideButton_SubItem_Input(void);
 void TurnOnUnionSPOT_Light(void);
+void SideButtonSub_KEY(void);
 
 
 typedef struct _auxiliary_
@@ -33,6 +34,7 @@ typedef struct _auxiliary_
 	uint8_t subMenuOne;  //main board led flag
 
 	uint8_t subSubItemLed_Num;
+	uint8_t subSubmode_bits;
 }auxiliary;
 
 typedef struct _mainLed_

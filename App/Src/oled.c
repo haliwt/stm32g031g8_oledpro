@@ -704,6 +704,7 @@ void printSettingInfo_SubItem(void)
 		if(auxiliary_t.AuxiliarySubItem ==Main){
 			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[0]); //The one rows
 			//printWithFmt(&u8g2, UNION_INFO2_X, UNION_INFO2_Y, WIDTH_UNION, UNION_INFO2_HEIGHT, ALIGN_MID_ALL, unionInfoAU2[0]);  //The two rows
+			auxiliary_t.subSubmode_bits=0;
 		}
 		if(auxiliary_t.AuxiliarySubItem ==Spot){
 			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[1]); //The one rows
@@ -711,6 +712,7 @@ void printSettingInfo_SubItem(void)
 			u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 		 	printWithFmt(&u8g2, UNION_INFO3_X, UNION_INFO3_Y, WIDTH_UNION, UNION_INFO3_HEIGHT, ALIGN_MID_ALL, light_SPOT[0]);
 			auxiliary_t.subSubItemLed_Num=0;
+			auxiliary_t.subSubmode_bits=1;
 		}
 		if(auxiliary_t.AuxiliarySubItem ==Side){
 			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[2]); //The one rows
@@ -718,6 +720,7 @@ void printSettingInfo_SubItem(void)
 			u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 		 	printWithFmt(&u8g2, UNION_INFO3_X, UNION_INFO3_Y, WIDTH_UNION, UNION_INFO3_HEIGHT, ALIGN_MID_ALL, light_LINEAR[0]);
 			auxiliary_t.subSubItemLed_Num=0;
+			auxiliary_t.subSubmode_bits=2;
 		}
 		if(auxiliary_t.AuxiliarySubItem ==Left){
 			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[3]); //The one rows
@@ -725,6 +728,7 @@ void printSettingInfo_SubItem(void)
 			u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 		 	printWithFmt(&u8g2, UNION_INFO3_X, UNION_INFO3_Y, WIDTH_UNION, UNION_INFO3_HEIGHT, ALIGN_MID_ALL, light_LINEAR[0]);
 			auxiliary_t.subSubItemLed_Num=0;
+			auxiliary_t.subSubmode_bits=3;
 		}
 		if(auxiliary_t.AuxiliarySubItem ==Right){
 			printWithFmt(&u8g2, UNION_INFO1_X, UNION_INFO1_Y, WIDTH_UNION, UNION_INFO1_HEIGHT, ALIGN_MID_ALL, unionInfoAU1[4]); //The one rows
@@ -732,6 +736,7 @@ void printSettingInfo_SubItem(void)
 			u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 		 	printWithFmt(&u8g2, UNION_INFO3_X, UNION_INFO3_Y, WIDTH_UNION, UNION_INFO3_HEIGHT, ALIGN_MID_ALL, light_LINEAR[0]);
 			auxiliary_t.subSubItemLed_Num=0;
+			auxiliary_t.subSubmode_bits=4;
 		}
 
        

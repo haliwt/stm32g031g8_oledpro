@@ -867,12 +867,12 @@ void TurnOnUnionSPOT_Light(void)
 
 }
 /*****************************************************************************************************
-**
-*Function Name:SideButton_SubItem_Input(void)
-*Function : 
-*
-*
-*
+	**
+	*Function Name:SideButton_SubItem_Input(void)
+	*Function : 
+	*
+	*
+	*
 ******************************************************************************************************/
 uint8_t SideButton_SubItem_Input(void)
 {
@@ -886,13 +886,51 @@ uint8_t SideButton_SubItem_Input(void)
 
     }
 
-    if(k11>8000 && k11< 9500){
+    if(k11>10000 && k11< 10500){
 	   	 value = 1;
 	    	k11=0;
 	    return value;
 
     }
     return 0;
+}
+/*****************************************************************************************************
+	**
+	*Function Name:SideButtonSub_KEY(void)
+	*Function : GPIO -SWDIO for update GPIO 
+	*Input Ref:
+	*Return Ref:
+	*
+******************************************************************************************************/
+void SideButtonSub_KEY(void)
+{
+	 if(SideButton_SubItem_Input()){
+
+
+			   if(auxiliary_t.ManualMode ==1){ //manual mode "SPOT" "SIDE" "LEFT" "RIGHT"
+				
+		   
+			   if(auxiliary_t.AuxiliarySubItem>=MAX_LIGHT_LR_NUMBER-1){
+				   auxiliary_t.AuxiliarySubItem=Main;
+			   
+				   auxiliary_t.subMenuOne=1; //WT.EDIT 2021.06.03
+				   HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
+			   }
+			   else{ 
+				   
+					auxiliary_t.subMenuOne=0; //WT.EDIT 2021.06.03
+				   auxiliary_t.AuxiliarySubItem ++;
+		   
+				   HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
+			   }
+			   
+			   
+			   turnoffAllLight();
+			   printSettingInfo_SubItem();
+					   
+			   }
+
+		}
 }
 
 /*****************************************************************************************************

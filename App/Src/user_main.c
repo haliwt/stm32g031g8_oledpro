@@ -22,34 +22,9 @@ void user_main(void)
 		handleInput();
 		decode();
 		 /* USER CODE END WHILE */
-		if(SideButton_SubItem_Input())
+		
 		// if( HAL_GPIO_ReadPin(KEY11_GPIO_Port, KEY11_Pin)==0)	// auxiliary SideBotton select sub item 2021.05.31
-		 {
-			 	if(auxiliary_t.ManualMode ==1){ //manual mode "SPOT" "SIDE" "LEFT" "RIGHT"
-			     
-			
-			    if(auxiliary_t.AuxiliarySubItem>=MAX_LIGHT_LR_NUMBER-1){
-					auxiliary_t.AuxiliarySubItem=Main;
-				
-				    auxiliary_t.subMenuOne=1; //WT.EDIT 2021.06.03
-					HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
-			    }
-				else{ 
-					
-					 auxiliary_t.subMenuOne=0; //WT.EDIT 2021.06.03
-					auxiliary_t.AuxiliarySubItem ++;
-			
-					HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
-				}
-				
-				
-				turnoffAllLight();
-				printSettingInfo_SubItem();
-						
-				}
-
-
-		 }
+		SideButtonSub_KEY();
 			  if(subIO==0) //SWDIO update softe GPIO initial
 			  {
 			             subIO++;
