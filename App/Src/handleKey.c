@@ -411,17 +411,17 @@ void handleInput(void)
 
 		if(!(pkey->keyCode & KEY_CODE_KEY2))	// change light +  //LED  
 		{
-			 auxiliary_t.SmartKey = 0;
+			
 		     mainled_t.MainSpotUnion_Led=0;
 			  if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board 
-		             if(auxiliary_t.mainLedKey == 1){ //"Manual Menu" -'SPOT,SIDE ,LEFT, RIGHT'
+		            if(auxiliary_t.AuxiliarySubItem != Main){ //"Manual Menu" -'SPOT,SIDE ,LEFT, RIGHT'
 							
 						AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
 						printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
 		               
 						
 					}
-					if (auxiliary_t.AuxiliarySubItem   == Main){
+					else{
 						if(echoLight>=MAX_LIGHT_NUMBER-1) {
 							echoLight=0;
 							mainled_t.MainLed_Num=0;
@@ -440,18 +440,18 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY1))	// change light - //LED
 		{
-			 auxiliary_t.SmartKey = 0;
+		
 			 mainled_t.MainSpotUnion_Led=0;
 			if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board change light + spot and lin
 
-				if(auxiliary_t.mainLedKey == 1){
+				if(auxiliary_t.AuxiliarySubItem != Main){
 
 				    
 					AuxiliaryWhichOneLed_Reduce(auxiliary_t.AuxiliarySubItem);
 				    printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
 					
 				}
-			   if (auxiliary_t.AuxiliarySubItem   == Main){
+			   else{ //Main Board
 			  //mainLed switch
 					if(echoLight==0){
 						echoLight=MAX_LIGHT_NUMBER-1;
@@ -470,7 +470,7 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY4))	// change filter +  
 		{
-			 auxiliary_t.SmartKey = 0;
+			
 			 mainled_t.MainSpotUnion_Led=0;
 			 	if (auxiliary_t.Auxiliary_flag == 1){
 				 if (echoFilter >= MAX_FILTER_NUMBER - 1)
@@ -484,7 +484,7 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY3))	// change filter -
 		{
-			 auxiliary_t.SmartKey = 0;
+	
 			 mainled_t.MainSpotUnion_Led=0;
 			if (auxiliary_t.Auxiliary_flag == 1)
 			 {
@@ -499,8 +499,8 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY5))	// change union + "Smart Button"
 		{
-			 auxiliary_t.SmartKey = 0; //WT.EDIT 2021.05.30
-			 auxiliary_t.mainLedKey =0; //WT.EDIT 2021.05.31
+			
+		
 			 mainled_t.MainSpotUnion_Led=1;
 			 if (auxiliary_t.Auxiliary_flag == 0)
 			 {
@@ -553,8 +553,8 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY6))	// change union - //"smart Button"
 		{
-			 auxiliary_t.SmartKey = 0;
-			 auxiliary_t.mainLedKey =0; //WT.EDIT 2021.05.31
+			
+		
 			  mainled_t.MainSpotUnion_Led=1;
 			 if (auxiliary_t.Auxiliary_flag == 0)
 			 {
@@ -605,7 +605,7 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY7))	// turn off light
 		{
-			auxiliary_t.SmartKey = 0;
+		
 			keyTurnOnflag = keyTurnOnflag ^ 0x01;
 			if(keyTurnOnflag ==1)
 			{
@@ -636,12 +636,12 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY8))	// brightness adj -
 		{
-			 auxiliary_t.SmartKey = 0;
+			
 			 if(auxiliary_t.Auxiliary_flag==0)
 			    brightnessAdj(BRIGHTNESS_ADJ_DOWN);
 			 else{
 				 
-				if(auxiliary_t.mainLedKey == 1)
+				if(auxiliary_t.AuxiliarySubItem != Main)
 				   brightnessAdj_AuxiliaryLed(BRIGHTNESS_ADJ_DOWN);
 				else  
 					brightnessAdj(BRIGHTNESS_ADJ_DOWN);
@@ -651,12 +651,12 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY9))	// brightness adj +
 		{
-			 auxiliary_t.SmartKey = 0;
+			
 			 if(auxiliary_t.Auxiliary_flag==0)
 			       brightnessAdj(BRIGHTNESS_ADJ_UP);
 			 else {
 
-				 if(auxiliary_t.mainLedKey == 1)
+				 if(auxiliary_t.AuxiliarySubItem != Main)
 					 brightnessAdj_AuxiliaryLed(BRIGHTNESS_ADJ_UP);
 				 else 
 				 	brightnessAdj(BRIGHTNESS_ADJ_UP);
@@ -674,14 +674,14 @@ void handleInput(void)
 					#endif 
 					if(keySmartflag ==1 ){ //ManualMode
 						auxiliary_t.SmartMenuItem =1;
-					    auxiliary_t.SmartKey =1; //
-					    auxiliary_t.SmartMode =1; //Mode : 1->ManualMode
+					
+					    auxiliary_t.SmartMenuItem=1;
 						auxiliary_t.ManualMode =1;
 						auxiliary_t.AuxiliarySubItem=Main ;
 						LedMainNumber=0;//WT.EDIT 2021.06.01
 						auxiliary_t.filterID=0;  //WT.EDIT 2021.06.01
 						auxiliary_t.filterRunNum =0;
-						auxiliary_t.mainLedKey =0; //
+				
 						auxiliary_t.Auxiliary_flag=1;
 						mainled_t.MainLed_Num=0;
 						mainled_t.SW_Mode =1;
@@ -695,9 +695,9 @@ void handleInput(void)
 					}
 					else { //
  						 auxiliary_t.SmartMenuItem =0; //default "Smart Mode "
-					     auxiliary_t.SmartKey = 0;
+					     auxiliary_t.SmartMenuItem=0;
 					     auxiliary_t.ManualMode=0;
-						  auxiliary_t.SmartMode =0;
+					
 						  auxiliary_t.Auxiliary_flag=0;
 						  mainled_t.SW_Mode =0;
 						  turnoffAllLight();

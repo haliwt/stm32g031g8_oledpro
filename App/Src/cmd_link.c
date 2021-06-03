@@ -140,7 +140,7 @@ void decode(void)
 ****************************************************************************************************/
 void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,uint8_t lightIndx_AU, uint8_t filterIndex)
 {
-    uint8_t add=0xAA,addb=0xBB;
+    uint8_t addA=0xAA,addb=0xBB;
 	static uint8_t sw=0;
 
 	if(unionIndex!=currUnion || filterIndex !=currFilter || lightIndex!=currLight || lightIndx_LR != currLight_LR || lightIndx_AU != currLight_AU)//currUnion = 0xff,
@@ -168,11 +168,11 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 	{
 		
 		
-		if(auxiliary_t.mainLedKey == 1){ //default mainLedKey =0 is main board LED 
+		if(auxiliary_t.Auxiliary_flag == 1 && auxiliary_t.subMenuOne ==0){ //default mainLedKey =0 is main board LED 
 
 			updateLight_AU(lightIndx_AU); //WT.EDIT 2021.04.28 //SPOT board subItem
 			#if DEBUG
-			 HAL_UART_Transmit(&CMD_LINKER,&add,1,2);
+			 HAL_UART_Transmit(&CMD_LINKER,&addA,1,2);
 			#endif 
 			
 		}

@@ -20,20 +20,17 @@ void TurnOnUnionSPOT_Light(void);
 
 typedef struct _auxiliary_
 {
-    uint8_t AuxiliaryItem;
-	uint8_t AuxiliaryLed_id;
+    uint8_t AuxiliaryLed_id;
 	uint8_t AuxiliarySubItem;
 	uint8_t Auxiliary_flag;
-    uint8_t SmartMenuFlag;
-    uint8_t SmartMenuItem;
-    uint8_t SmartKey;
-	uint8_t SmartMode;
+
+	uint8_t SmartMenuItem;
+ 
 	uint8_t ManualMode;
-	uint8_t mainLedKey;  //main led flag
 	uint8_t filterID;
 	uint8_t filterRunNum;
 	uint8_t filterIDInit;
-	uint8_t subMenuOne;  //main led comment
+	uint8_t subMenuOne;  //main board led flag
 }auxiliary;
 
 typedef struct _mainLed_

@@ -27,16 +27,15 @@ void user_main(void)
 		 {
 			 	if(auxiliary_t.ManualMode ==1){ //manual mode "SPOT" "SIDE" "LEFT" "RIGHT"
 			     
-				  auxiliary_t.SmartKey = 0;
 			
 			    if(auxiliary_t.AuxiliarySubItem>=MAX_LIGHT_LR_NUMBER-1){
 					auxiliary_t.AuxiliarySubItem=Main;
-					auxiliary_t.mainLedKey =0;//main led flag
+				
 				    auxiliary_t.subMenuOne=1; //WT.EDIT 2021.06.03
 					HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
 			    }
 				else{ 
-					auxiliary_t.mainLedKey =1;
+					
 					 auxiliary_t.subMenuOne=0; //WT.EDIT 2021.06.03
 					auxiliary_t.AuxiliarySubItem ++;
 			
