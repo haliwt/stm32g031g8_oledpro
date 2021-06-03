@@ -177,7 +177,8 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 			
 		}
 	    else{ 
-              if(auxiliary_t.SmartMenuItem ==1 ){
+
+			  if(auxiliary_t.SmartMenuItem ==1 ){
 			     
 			  	  auxiliary_t.SmartMenuItem++;
 				  sw= sw^0x01;
@@ -210,11 +211,15 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 ****************************************************************************************************/
 void updateLight(uint8_t lightIndex)
 {
-	if(mainled_t.SW_Mode!=currSW_Mode ) //WT.EDIT 2021.06.02
+	if(mainled_t.SW_Mode!=currSW_Mode || auxiliary_t.subSubmode_bits !=currSub_item ) //WT.EDIT 2021.06.02
 	{
 		currSW_Mode=mainled_t.SW_Mode;
-		
-		selectLight(mainled_t.MainLed_Num);//WT.EDIT 2021.06.02
+		currSub_item = auxiliary_t.subSubmode_bits;
+		if(powerOnFlag) powerOnFlag=0;	//need not turn on light when power on
+		else
+		{
+	      selectLight(mainled_t.MainLed_Num);//WT.EDIT 2021.06.02
+		}
 	}
 
 	if(mainled_t.Same_23 !=currSame_23) //WT.EDIT 2021.06.02
