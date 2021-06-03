@@ -896,7 +896,7 @@ uint8_t SideButton_SubItem_Input(void)
 
     }
 
-    if(k11>10000 && k11< 10500){
+    if(k11>20000 && k11< 21000){
 	   	 value = 1;
 	    	k11=0;
 	    return value;
@@ -926,7 +926,7 @@ void SideButtonSub_KEY(void)
 				   auxiliary_t.AuxiliarySubItem=Main;
 			   
 				   auxiliary_t.subMenuOne=1; //WT.EDIT 2021.06.03
-				   HAL_UART_Transmit(&CMD_LINKER,&auxiliary_t.AuxiliarySubItem,1,2);
+				   
 			   }
 			   else{ 
 				   
