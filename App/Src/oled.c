@@ -65,13 +65,13 @@ const char lightStr_LR[MAX_LIGHT_LR_INDEX][MAX_LIGHT_STR_LR_LEN+1]={"Main\0","Sp
 /***************************************************************************************************************************************/
 const char unionInfo1[MAX_UNION_INDEX][MAX_UNION_INFO1_STR_LEN+1]={"Deleted Articles\0","Deleted Articles\0","Deleted Articles\0","Deleted Articles\0","Passport UVC+Money\0",
 																"Passport UVB+Money\0","Passport IR+ID IR+Money\0","Passport IR+ID IR+Money\0","Passport IR+ID IR+Money \0","Passport UVA+ID,UVA+Money\0",
-																"General Research\0","Black Pen\0","Black Pen\0","Black Pen+Blue\0","Black Pen+Blue\0",
+																"General Research Normal Picture\0","Black Pen\0","Black Pen\0","Black Pen+Blue\0","Black Pen+Blue\0",
 																"Black Pen+Blue\0","Black Pen+Blue\0","Black Pen+Blue\0","Black Pen+Blue\0","Scribble Marks White\0",
 																"Scribble Marks IR\0"};
 
 const char unionInfo2[MAX_UNION_INDEX][MAX_UNION_INFO2_STR_LEN+1]={"\0","\0","\0","\0","UVC+Driving License UVC\0",
 																"UVB+Driving License UVB\0","Checker Driving License\0","Checker Driving License\0","Checker Driving License\0","Checker Driving License\0",
-																"Normal Picture\0","\0","\0","Pen+Red Pen\0","Pen+Red Pen\0",
+																"\0","\0","\0","Pen+Red Pen\0","Pen+Red Pen\0",
 																" Pen+Red Pen\0"," Pen+Red Pen\0","Pen+Red Pen\0","Pen+Red Pen\0","\0",
 																"\0"};
 /***MainLed of words ****/
@@ -272,31 +272,8 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
            if (auxiliary_t.Auxiliary_flag == 1)
 			   printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
 		   else printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,tmpStr); //display number
-        //filter
-//		i=0;
-//		if(tmpFilter<10) gtmpStr[i++]=tmpFilter+0x30;
-//		else
-//		{
-//			tenNum=tmpFilter/10;
-//			gtmpStr[i++]=tenNum+0x30;
-//			tmpFilter-= tenNum*10;
-//			gtmpStr[i++]=tmpFilter+0x30;
-//		}
-//		gtmpStr[i++]=0;
-		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
-		{
-			
-			if(auxiliary_t.filterInit_Swtich ==0){
-				printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[auxiliary_t.filterID]);
-				printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,&auxiliary_t.filterIDInit);
-            }
-			else{
-			printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[auxiliary_t.filterID]);
-			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,gtmpStr);
 
-			}
 
-		}
 		break;
 		
 	case ECHO_GROUP_B:
@@ -342,8 +319,8 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 		
 		tmpStr[i++]=0;
 		u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
-		printWithFmt(&u8g2,UNION_INFO1_X,UNION_INFO1_Y,WIDTH_UNION,UNION_INFO1_HEIGHT,ALIGN_MID_ALL,unionInfo1[unionIndex]);
-		printWithFmt(&u8g2,UNION_INFO2_X,UNION_INFO2_Y,WIDTH_UNION,UNION_INFO2_HEIGHT,ALIGN_MID_ALL,unionInfo2[unionIndex]);
+		printWithFmt(&u8g2,UNION_INFO1_X,UNION_INFO1_Y,WIDTH_UNION_SMART,UNION_INFO1_HEIGHT,ALIGN_MID_SECOND,unionInfo1[unionIndex]);
+		printWithFmt(&u8g2,UNION_INFO2_X,UNION_INFO2_Y,WIDTH_UNION,UNION_INFO2_HEIGHT,ALIGN_MID_SECOND,unionInfo2[unionIndex]);
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
 			u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);

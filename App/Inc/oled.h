@@ -28,6 +28,7 @@
 #define ECHO_FORMAT_MID_Y	0
 
 #define ALIGN_MID_ALL		0
+#define ALIGN_MID_SECOND    1
 
 uint8_t LedSpotNumber;  //WT.EDIT
 uint8_t LedMainNumber;
