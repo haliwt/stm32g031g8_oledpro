@@ -49,7 +49,7 @@
 
 static uint16_t scanKey(void);
 static void displayUnionInfo(uint8_t unionIndex);
-static void displayUnionInfo_Manual(uint8_t unionIndex);
+
 
 
 static KeyStruct glKey;				// key for forward/backward
@@ -721,7 +721,7 @@ void handleInput(void)
 						mainled_t.MainLed_Num=0;
 						mainled_t.SW_Mode =1;
                         auxiliary_t.subMenuOne=1; //for turn off differen main led and auxiliay board led 
-						displayUnionInfo_Manual(echoUnion_manual);//Display Filter name and number 
+						//displayUnionInfo_Manual(echoUnion_manual);//Display Filter name and number 
 						echoGroup=ECHO_GROUP_A;
 						turnoffAllLight();
 						
@@ -834,13 +834,7 @@ static void displayUnionInfo(uint8_t unionIndex)
 	*
 	*
 ******************************************************************************************************/
-static void displayUnionInfo_Manual(uint8_t unionIndex)
-{
-	echoGroup=ECHO_GROUP_B;
-	getItemFromUnion_AU(unionIndex,&echoFilter,&echoLight);
-	//printSettingInfo_LR_Led(echoUnion_manual,echoFilter,echoLight,BLINK_OFF);
-	//printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight,BLINK_OFF);
-}
+
 /*****************************************************************************************************
 	**
 	*Function Name:static void TurnOnUnionSPOT_Light(void)

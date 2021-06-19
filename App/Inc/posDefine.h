@@ -11,7 +11,7 @@
 // define the board x,y
 #define VLINE0_X	0
 #define VLINE1_X	49
-#define VLINE1_USER_X    207
+#define VLINE1_USER_X   180// 207
 #define VLINE2_X	98
 #define HLINE1_X	0
 #define HLINE1_Y	15
@@ -32,6 +32,8 @@
 #define TITLE_UNION_SECOND_X   10
 #define SPOT_NUM_X             90
 #define SIDE_USER_X            50
+#define FILTER_NAME_X    185 
+
 
 
 //#define HLINE4_X	107
@@ -135,6 +137,12 @@
 #define FILTER_NUM_USER_Y		HLINE3_Y
 #define FILTER_NUM_USER_HEIGHT	(63-HLINE3_Y)
 
+#define FILTER_NAME_USER_X		FILTER_NAME_X//TITLE_FILTER_X
+#define FILTER_NAME_USER_Y		HLINE3_Y
+#define FILTER_NAME_USER_HEIGHT	(63-HLINE3_Y)
+
+
+
 //The second line 
 #define UNION_INFO1_X		TITLE_UNION_SECOND_X //TITLE_UNION_X
 #define UNION_INFO1_Y		HLINE1_Y
@@ -152,13 +160,16 @@
 #define FILTER_INDEX_X		75
 #define FILTER_INDEX_Y		62
 #define MAX_FILTER_INDEX	10
-#define MAX_FILTER_STR_LEN	5
+#define MAX_FILTER_STR_LEN	 5
+
+#define MAX_FILTER_STR_SUB_LEN	 9
+
 
 // define the position of Light Index
 #define LIGHT_INDEX_X				17
 #define LIGHT_INDEX_Y				62
 #define MAX_LIGHT_INDEX				16//WT.EDIT //10
-#define MAX_LIGHT_STR_LEN			50//6
+#define MAX_LIGHT_STR_LEN			6
 #define MAX_LIGHT_LINEAR_STR_LEN        8
 #define  MAX_LIGHT_SPOT_INDEX       6     
 #define  MAX_LIGHT_LINEAR_INDEX     4
