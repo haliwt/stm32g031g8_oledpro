@@ -20,8 +20,8 @@
 #define HLINE3_X	98
 #define HLINE3_Y	39
 
-#define VLINE1_USER_SUB_X	 80
-#define SUB_X3_X    30
+#define VLINE1_USER_SUB_X	 65//80
+#define SUB_X3_X    20
 #define  TITLE_FILTER_NAME_USER_X    195
 
 
@@ -32,8 +32,8 @@
 #define HLINE_USER3_Y      78
 
 #define TITLE_UNION_SECOND_X   10
-#define SPOT_NUM_X             90
-#define SIDE_USER_X            50
+#define SPOT_NUM_X             70//90
+#define SIDE_USER_X          30 // 50
 #define FILTER_NAME_X    185 
 
 
@@ -75,7 +75,7 @@
 #define LIGHT_INFO_USER_HEIGHT	(HLINE3_Y-HLINE1_Y)
 
 
-#define LIGHT_SUBINFO_USER_X		   VLINE1_USER_SUB_X	
+#define LIGHT_SUBINFO_USER_X		    VLINE1_USER_SUB_X	
 #define LIGHT_SUBINFO_USER_Y		   HLINE1_Y
 #define LIGHT_SUBINFO_USER_HEIGHT	   (HLINE3_Y-HLINE1_Y)
 
