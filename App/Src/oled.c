@@ -564,7 +564,7 @@ void printSettingInfo_Manual(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 		//printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[tenNum]);//the second line 
 		
 	//	printWithFmt(&u8g2,LIGHT_INFO_USER_X,LIGHT_INFO_USER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
-        
+        printWithFmt(&u8g2,LIGHT_SUBINFO_USER_X,LIGHT_SUBINFO_USER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
 
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
@@ -915,7 +915,7 @@ static void printFrame_Manual(void)
 	u8g2_SetFontMode(&u8g2, 1);
 	u8g2_SetFontDirection(&u8g2, 0);
 	u8g2_SetFont(&u8g2, u8g2_font_7x13_tr);
-//	printWithFmt(&u8g2,TITLE_LIGHT_USER_X,TITLE_LIGHT_USER_Y,WIDTH_USER_LIGHT,TITLE_LIGHT_USER_HEIGHT,ALIGN_MID_ALL,"mainlight");
+	//printWithFmt(&u8g2,TITLE_LIGHT_USER_X,TITLE_LIGHT_USER_Y,WIDTH_USER_LIGHT,TITLE_LIGHT_USER_HEIGHT,ALIGN_MID_ALL,"mainlight");
 	printWithFmt(&u8g2,TITLE_FILTER_USER_X,TITLE_FILTER_USER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,"Filter");
 	printWithFmt(&u8g2,TITLE_UNION_X,TITLE_UNION_Y,WIDTH_UNION,TITLE_UNION_HEIGHT,ALIGN_MID_ALL,"User Defined Mode");
 }

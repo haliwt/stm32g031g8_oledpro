@@ -20,6 +20,9 @@
 #define HLINE3_X	98
 #define HLINE3_Y	39
 
+#define VLINE1_USER_SUB_X	 80
+
+
 #define VLINE_USER1_X      207
 #define HLINE_USER3_Y      78
 
@@ -57,9 +60,15 @@
 #define TITLE_FILTER_USER_HEIGHT		HLINE1_Y
 
 
-#define LIGHT_INFO_USER_X		TITLE_LIGHT_X
+#define LIGHT_INFO_USER_X		VLINE1_USER_X	 
 #define LIGHT_INFO_USER_Y		HLINE1_Y
 #define LIGHT_INFO_USER_HEIGHT	(HLINE3_Y-HLINE1_Y)
+
+
+#define LIGHT_SUBINFO_USER_X		   VLINE1_USER_SUB_X	
+#define LIGHT_SUBINFO_USER_Y		   HLINE1_Y
+#define LIGHT_SUBINFO_USER_HEIGHT	   (HLINE3_Y-HLINE1_Y)
+
 
 
 /****************************************************************************/
@@ -129,7 +138,7 @@
 
 //define the sopt board of right and left 
 #define MAX_LIGHT_LR_INDEX		   5  //WT.EDIT 2021.04.23
-#define MAX_LIGHT_STR_LR_LEN       6  //wt.EDIT 2021.04.23
+#define MAX_LIGHT_STR_LR_LEN       18  //  6  //wt.EDIT 2021.04.23
 
 
 #define UNION_STR_X				136
