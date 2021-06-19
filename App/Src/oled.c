@@ -59,20 +59,20 @@ const char light_SPOT[MAX_LIGHT_SPOT_INDEX][MAX_LIGHT_LINEAR_STR_LEN+1]={"#1 Gre
 const char light_LINEAR[MAX_LIGHT_LINEAR_INDEX][MAX_LIGHT_LINEAR_STR_LEN+1]={"#1 IR730\0"};
 /***************************************************************************************************************************************/
 /*LED name axuiliary WT.EDIT */
-const char lightStr_LR[MAX_LIGHT_LR_INDEX][MAX_LIGHT_STR_LR_LEN+1]={"Main\0","Spot\0","Side\0","Left\0","Right\0"};													 
+const char lightStr_LR[MAX_LIGHT_LR_INDEX][MAX_LIGHT_STR_LR_LEN+1]={"mainlight\0","spot light\0","both linear light\0","left linear light\0","right linear light\0"};													 
 
 
 /***************************************************************************************************************************************/
 const char unionInfo1[MAX_UNION_INDEX][MAX_UNION_INFO1_STR_LEN+1]={"Deleted Articles\0","Deleted Articles\0","Deleted Articles\0","Deleted Articles\0","Passport UVC+Money\0",
 																"Passport UVB+Money\0","Passport IR+ID IR+Money\0","Passport IR+ID IR+Money\0","Passport IR+ID IR+Money \0","Passport UVA+ID,UVA+Money\0",
-																"General Research Normal Picture\0","Black Pen\0","Black Pen\0","Black Pen+Blue\0","Black Pen+Blue\0",
-																"Black Pen+Blue\0","Black Pen+Blue\0","Black Pen+Blue\0","Black Pen+Blue\0","Scribble Marks White\0",
+																"General Research Normal Picture\0","Black Pen\0","Black Pen\0","Black Pen+Blue Pen+Red Pen\0","Black Pen+Blue Pen+Red Pen\0",
+																"Black Pen+Blue Pen+Red Pen\0","Black Pen+Blue Pen+Red Pen\0","Black Pen+Blue Pen+Red Pen\0","Black Pen+Blue Pen+Red Pen\0","Scribble Marks White\0",
 																"Scribble Marks IR\0"};
 
 const char unionInfo2[MAX_UNION_INDEX][MAX_UNION_INFO2_STR_LEN+1]={"\0","\0","\0","\0","UVC+Driving License UVC\0",
 																"UVB+Driving License UVB\0","Checker Driving License\0","Checker Driving License\0","Checker Driving License\0","Checker Driving License\0",
-																"\0","\0","\0","Pen+Red Pen\0","Pen+Red Pen\0",
-																" Pen+Red Pen\0"," Pen+Red Pen\0","Pen+Red Pen\0","Pen+Red Pen\0","\0",
+																"\0","\0","\0","\0","\0",
+																" \0","\0","\0","\0","\0",
 																"\0"};
 /***MainLed of words ****/
 const char unionInfo_mainled[MAX_UNION_INDEX][MAX_UNION_INFO2_STR_LEN+1]={"Main,Board\0"};
@@ -320,7 +320,7 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 		tmpStr[i++]=0;
 		u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
 		printWithFmt(&u8g2,UNION_INFO1_X,UNION_INFO1_Y,WIDTH_UNION_SMART,UNION_INFO1_HEIGHT,ALIGN_MID_ALL,unionInfo1[unionIndex]);
-		printWithFmt(&u8g2,UNION_INFO2_X,UNION_INFO2_Y,WIDTH_UNION,UNION_INFO2_HEIGHT,ALIGN_MID_ALL,unionInfo2[unionIndex]);
+		printWithFmt(&u8g2,UNION_INFO2_X,UNION_INFO2_Y,WIDTH_UNION_SMART,UNION_INFO2_HEIGHT,ALIGN_MID_ALL,unionInfo2[unionIndex]);
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
 			u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
@@ -562,19 +562,20 @@ void printSettingInfo_Manual(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 		
 
 		u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
-		printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[tenNum]);
-		printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
+		//printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[tenNum]);//the second line 
+		
+		printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
         
 
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
-			printWithFmt(&u8g2,FILTER_INFO_X,FILTER_INFO_Y,WIDTH_FILTER,FILTER_INFO_HEIGHT,ALIGN_MID_ALL,filterStr[auxiliary_t.filterID]);
-			printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,&auxiliary_t.filterIDInit);
+			printWithFmt(&u8g2,FILTER_NUM_USER_X,FILTER_NUM_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr[auxiliary_t.filterID]);
+			//printWithFmt(&u8g2,FILTER_NUM_USER_X,FILTER_NUM_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,&auxiliary_t.filterIDInit);
 		}
 
 
-        u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
-		printWithFmt(&u8g2,UNION_INFO1_X,UNION_INFO1_Y,WIDTH_UNION,UNION_INFO1_HEIGHT,ALIGN_MID_ALL,unionInfo_mainled[0]);
+        //u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
+		//printWithFmt(&u8g2,UNION_INFO1_X,UNION_INFO1_Y,WIDTH_UNION,UNION_INFO1_HEIGHT,ALIGN_MID_ALL,unionInfo_mainled[0]);
 		
 		break;
 
@@ -611,8 +612,8 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 		
 		
 		u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
-		printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[mainled_t.MainLed_Num]);
-		printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[auxiliary_t.AuxiliarySubItem]);
+		//printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[mainled_t.MainLed_Num]);
+		printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr_LR[auxiliary_t.AuxiliarySubItem]);
 
 		
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
@@ -903,21 +904,29 @@ static void printFrame_Manual(void)
 	u8g2_ClearBuffer(&u8g2);
 	u8g2_DrawFrame(&u8g2,0,0,256,64);
 
-	u8g2_DrawVLine(&u8g2,VLINE1_X,0,63);
-	u8g2_DrawVLine(&u8g2,VLINE2_X,0,63);
+	u8g2_DrawVLine(&u8g2,VLINE1_USER_X,HLINE1_Y,48); //绘制垂直线
+	//u8g2_DrawVLine(&u8g2,VLINE2_X,0,63);
 
-	u8g2_DrawHLine(&u8g2,HLINE1_X,HLINE1_Y,255);
-	u8g2_DrawHLine(&u8g2,HLINE2_X,HLINE2_Y,HLINE_LEN);
-	u8g2_DrawHLine(&u8g2,HLINE3_X,HLINE3_Y,HLINE_LEN);
+//	u8g2_DrawHLine(&u8g2,HLINE1_X,HLINE1_Y,255);
+//	u8g2_DrawHLine(&u8g2,HLINE2_X,HLINE2_Y,HLINE_LEN);
+//	u8g2_DrawHLine(&u8g2,HLINE3_X,HLINE3_Y,HLINE_LEN);
+	u8g2_DrawHLine(&u8g2,HLINE1_X,HLINE1_Y,255); //	绘制水平线--长恒线
+	u8g2_DrawHLine(&u8g2,HLINE1_X,HLINE3_Y,255); //
 
 	u8g2_SetFontMode(&u8g2, 1);
 	u8g2_SetFontDirection(&u8g2, 0);
 	u8g2_SetFont(&u8g2, u8g2_font_7x13_tr);
-	printWithFmt(&u8g2,TITLE_LIGHT_X,TITLE_LIGHT_Y,WIDTH_LIGHT,TITLE_LIGHT_HEIGHT,ALIGN_MID_ALL,"Light");
-	printWithFmt(&u8g2,TITLE_FILTER_X,TITLE_FILTER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,"Filter");
-	printWithFmt(&u8g2,TITLE_UNION_X,TITLE_UNION_Y,WIDTH_UNION,TITLE_UNION_HEIGHT,ALIGN_MID_ALL,"ManualButton");
+	printWithFmt(&u8g2,TITLE_LIGHT_USER_X,TITLE_LIGHT_USER_Y,WIDTH_USER_LIGHT,TITLE_LIGHT_USER_HEIGHT,ALIGN_MID_ALL,"mainlight");
+	printWithFmt(&u8g2,TITLE_FILTER_USER_X,TITLE_FILTER_USER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,"Filter");
+	printWithFmt(&u8g2,TITLE_UNION_X,TITLE_UNION_Y,WIDTH_UNION,TITLE_UNION_HEIGHT,ALIGN_MID_ALL,"User Defined Mode");
 }
-
+/*****************************************************************************************
+**
+*Function Name:static void printFrame(void)
+*Function: diplay title words  manual " ManualButton"
+*
+*
+******************************************************************************************/
 static void printLogo(u8g2_t *pU8g2)
 {
 	u8g2_ClearBuffer(pU8g2);

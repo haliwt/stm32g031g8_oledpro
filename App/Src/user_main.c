@@ -24,7 +24,7 @@ void user_main(void)
 		 /* USER CODE END WHILE */
 		
 		// if( HAL_GPIO_ReadPin(KEY11_GPIO_Port, KEY11_Pin)==0)	// auxiliary SideBotton select sub item 2021.05.31
-		SideButtonSub_KEY();
+		//SideButtonSub_KEY();
 //			  if(subIO==0) //SWDIO update softe GPIO initial
 //			  {
 //			             subIO++;
