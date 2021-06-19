@@ -21,6 +21,8 @@
 #define HLINE3_Y	39
 
 #define VLINE1_USER_SUB_X	 80
+#define SUB_X3_X    30
+
 
 
 #define VLINE_USER1_X      207
@@ -69,9 +71,21 @@
 #define LIGHT_SUBINFO_USER_Y		   HLINE1_Y
 #define LIGHT_SUBINFO_USER_HEIGHT	   (HLINE3_Y-HLINE1_Y)
 
+#define LIGHT_INFO_NUM_X            
+#define LIGHT_INFO_NUM_Y
 
 
-/****************************************************************************/
+#define UNION_INFO3_X		TITLE_UNION_X
+#define UNION_INFO3_Y		HLINE3_Y
+#define UNION_INFO3_HEIGHT	(63-HLINE3_Y)
+
+#define UNION_INFO3_SUB_X		      SUB_X3_X  //TITLE_UNION_X
+#define UNION_INFO3_SUB_Y		      HLINE3_Y
+#define UNION_INFO3_SUB_HEIGHT	      (63-HLINE3_Y)
+
+
+
+/********************************Smart Mode********************************************/
 //"Filter"
 #define TITLE_FILTER_X		VLINE1_X
 #define TITLE_FILTER_Y		0
