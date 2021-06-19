@@ -581,7 +581,7 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 			//auxiliary_t.subSubItemLed_Num=0;
 			auxiliary_t.subSubmode_bits=4;
 		}
-
+        
 		
 	
 	u8g2_SendBuffer(&u8g2);
@@ -613,15 +613,9 @@ void printSettingInfo_SubItem(void)
 		
         //if (blinkIndex != BLINK_ALL && blinkIndex != BLINK_FILTER)
 		{
-			 if(auxiliary_t.filterInit_Swtich ==0){
-				printWithFmt(&u8g2,FILTER_NUM_USER_X,FILTER_NUM_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr[auxiliary_t.filterID]);
-				//printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,&auxiliary_t.filterIDInit);
-            }
-			else{
-				printWithFmt(&u8g2,FILTER_NUM_USER_X,FILTER_NUM_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr[auxiliary_t.filterID]);
-				//printWithFmt(&u8g2,FILTER_NUM_X,FILTER_NUM_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,gtmpStr);
-
-			}
+		   u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
+		   printWithFmt(&u8g2,FILTER_NAME_USER_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
+			
 		}
 
 		//Group B

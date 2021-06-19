@@ -164,7 +164,7 @@
 #define MAX_FILTER_INDEX	10
 #define MAX_FILTER_STR_LEN	 5
 
-#define MAX_FILTER_STR_SUB_LEN	 50//10
+#define MAX_FILTER_STR_SUB_LEN	 15//10
 
 
 // define the position of Light Index
