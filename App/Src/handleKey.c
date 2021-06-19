@@ -120,12 +120,9 @@ void keyInit(void)
 	glKey.long_pressed=0;
 	glKey.multi_pressed=0;
 	retrieveSavedParameter(&echoUnion,&echoFilter,&echoLight,&echoLight_LR,&echoLight_AU,&echoGroup);
-	//printEchoUnion(echoUnion,echoFilter,echoLight);
-	//printEchoFilter(echoFilter);
-	//printEchoLight(echoLight);
+	
 	printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
-	//printSettingInfo_Manual(echoUnion,echoFilter,echoLight_LR,BLINK_OFF);
-	//printSettingInfo_Auxiliary(echoUnion,echoFilter,echoLight_AU,BLINK_OFF);
+	
 	HAL_TIM_Base_Start_IT(&htim17);
 	
 }
@@ -545,17 +542,17 @@ void handleInput(void)
 					}
 					else if(echoUnion==5){
 					 mainled_t.ledoff_flag=5; //display '#6'
-					  // turnoffAllLight();
+					  
 					}
 					else if(echoUnion ==19){//display '#20'			
 				
 					    mainled_t.ledoff_flag=19;
-					//	turnoffAllLight();
+					
 					   
                     }
 					else if(echoUnion== 20){
 					    mainled_t.ledoff_flag=20;
-					//	turnoffAllLight();
+					
 
 					}
 					else{
@@ -563,7 +560,7 @@ void handleInput(void)
 					      mainled_t.Same_23 =0;
 					  else if(echoUnion ==3)  mainled_t.Same_23 =1;
 					  mainled_t.MainUnionSport_flag =0;
-					  //updateLight(echoLight);
+					
 
 				
 				 	}
@@ -594,22 +591,22 @@ void handleInput(void)
 				
 				  if(echoUnion==4){ //display "#5"
 					    mainled_t.ledoff_flag=4;
-					  // turnoffAllLight();
+					 
 
 					}
 					else if(echoUnion==5){
 					 mainled_t.ledoff_flag=5; //display '#6'
-					  // turnoffAllLight();
+					  
 					}
 					else if(echoUnion ==19){//white					
 				
 					    mainled_t.ledoff_flag=19; //"#20"
-						//turnoffAllLight();
+						
 					   
                     }
 					else if(echoUnion== 20){
 					    mainled_t.ledoff_flag=20;
-					//	turnoffAllLight();
+				
 
 					}
 					else{
@@ -617,7 +614,7 @@ void handleInput(void)
 					  if(echoUnion ==2)//oled display "#3"
 					      mainled_t.Same_23 =0;
 					  else if(echoUnion ==3)  mainled_t.Same_23 =1;
-					  //updateLight(echoLight);
+					
 
 				
 				 	}
@@ -703,7 +700,7 @@ void handleInput(void)
 			 }
 			//motionCtrl(MOTION_CW);
 		}
-	    else if(!(pkey->keyCode & KEY_CODE_KEY10))	// auxiliary Menu button WT.EDIT 
+	    else if(!(pkey->keyCode & KEY_CODE_KEY10))	// Switch auxiliary Menu button WT.EDIT 
 		{
              
 			  	    mainled_t.MainSpotUnion_Led=0;
