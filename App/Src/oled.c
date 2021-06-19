@@ -376,8 +376,11 @@ void printSettingInfo_MainLed(uint8_t unionIndex,uint8_t filterIndex,uint8_t lig
 		
         u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 			
-		printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr_LR[auxiliary_t.AuxiliarySubItem]);
-	    printWithFmt(&u8g2,LIGHT_INFO_X,LIGHT_INFO_Y,WIDTH_LIGHT,LIGHT_INFO_HEIGHT,ALIGN_MID_ALL,lightStr[mainled_t.MainLed_Num]);
+		printWithFmt(&u8g2,LIGHT_SUBINFO_USER_X,LIGHT_SUBINFO_USER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,lightStr_LR[auxiliary_t.AuxiliarySubItem]);
+		printWithFmt(&u8g2,UNION_INFO3_SUB_X, UNION_INFO3_SUB_Y, WIDTH_UNION, UNION_INFO3_HEIGHT, ALIGN_MID_ALL,lightStr[mainled_t.MainLed_Num]);//the second line 
+
+
+		
      
 	    if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
@@ -701,8 +704,10 @@ void printSettingInfo_SubItem(void)
 		//u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
 		u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 		if(auxiliary_t.AuxiliarySubItem ==Main){
+           printWithFmt(&u8g2,LIGHT_SUBINFO_USER_X,LIGHT_SUBINFO_USER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,lightStr_LR[auxiliary_t.AuxiliarySubItem]);
+		   printWithFmt(&u8g2,UNION_INFO3_SUB_X, UNION_INFO3_SUB_Y, WIDTH_UNION, UNION_INFO3_HEIGHT, ALIGN_MID_ALL,lightStr[mainled_t.MainLed_Num]);//the second line
+		
 			
-			printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
 			auxiliary_t.subSubmode_bits=0;
 		}
 		if(auxiliary_t.AuxiliarySubItem ==Spot){
