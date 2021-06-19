@@ -29,6 +29,7 @@
 #define HLINE_USER3_Y      78
 
 #define TITLE_UNION_SECOND_X   10
+#define SPOT_X             90
 
 //#define HLINE4_X	107
 //#define HLINE4_Y	51
@@ -83,6 +84,9 @@
 #define UNION_INFO3_SUB_Y		      HLINE3_Y
 #define UNION_INFO3_SUB_HEIGHT	      (63-HLINE3_Y)
 
+#define LIGHT_NUM_SPOT_X				SPOT_X
+#define LIGHT_NUM_SPOT_Y				HLINE3_Y
+#define LIGHT_NUM_SOPOT_HEIGHT			(63-HLINE3_Y)
 
 
 /********************************Smart Mode********************************************/
