@@ -53,14 +53,20 @@
 
 //User Defined Mode 'fiter'
 #define TITLE_FILTER_USER_X				VLINE_USER1_X //VLINE1_X
-#define TITLE_FILTER_USER_Y		    	HLINE_USER3_Y//0
+#define TITLE_FILTER_USER_Y		    	HLINE1_Y//0
 #define TITLE_FILTER_USER_HEIGHT		HLINE1_Y
 
 
+#define LIGHT_INFO_USER_X		TITLE_LIGHT_X
+#define LIGHT_INFO_USER_Y		HLINE1_Y
+#define LIGHT_INFO_USER_HEIGHT	(HLINE3_Y-HLINE1_Y)
+
+
+/****************************************************************************/
 //"Filter"
 #define TITLE_FILTER_X		VLINE1_X
 #define TITLE_FILTER_Y		0
-#define TITLE_FILTER_HEIGHT	HLINE1_Y
+#define TITLE_FILTER_HEIGHT	(HLINE3_Y-HLINE1_Y)
 //'Smart Mode' 
 #define TITLE_UNION_X		VLINE1_X//VLINE2_X //WT.EDIT 
 #define TITLE_UNION_Y		0
