@@ -430,7 +430,7 @@ void handleInput(void)
 						HAL_Delay(200);
 						AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
 						printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,auxiliary_t.subSubItemLed_Num,BLINK_OFF); //echoLight = LED Name 
-		                
+		            
 					}
 					else{
 						turnoffAllLight();//WT.EDIT 2021.06.03

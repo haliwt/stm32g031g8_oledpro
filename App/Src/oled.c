@@ -55,8 +55,8 @@ const char lightStr_AU[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"Green\0","Blue \0
 const char lightStr_LN[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"IR730\0","IR850\0","IR940\0","White\0"};
 
 /**********************/
-const char light_SPOT[MAX_LIGHT_SPOT_INDEX][MAX_LIGHT_LINEAR_STR_LEN+1]={"#1 Green\0"};
-const char light_LINEAR[MAX_LIGHT_LINEAR_INDEX][MAX_LIGHT_LINEAR_STR_LEN+1]={"#1 IR730\0"};
+const char light_SPOT[MAX_LIGHT_SPOT_INDEX][MAX_LIGHT_LINEAR_STR_LEN+1]={"#1 Green\0","#2 Blue\0","#3 UV310\0","#4 UV275\0","#5 White\0","#6 Red\0"};
+const char light_LINEAR[MAX_LIGHT_LINEAR_INDEX][MAX_LIGHT_LINEAR_STR_LEN+1]={"#1 IR730\0","#2 IR850\0","#3 IR940\0","#4 White\0"};
 /***************************************************************************************************************************************/
 /*LED name axuiliary WT.EDIT */
 const char lightStr_LR[MAX_LIGHT_LR_INDEX][MAX_LIGHT_STR_LR_LEN+1]={"mainlight\0","spot light\0","both linear light\0","left linear light\0","right linear light\0"};													 
@@ -580,11 +580,11 @@ void printSettingInfo_Manual(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex_au,uint8_t blinkIndex) //echoLight = LED Name
 {
 	//char SubtmpStr[MAX_UNION_STR_LEN+1];
-	uint8_t tmpUnion, tmpFilter, tmpLight, i,j,z,tenNum;
+	uint8_t  tmpLight;
 	uint8_t group;
 
-	tmpUnion = lightIndex_au+1;//unionIndex + 1;
-	tmpFilter=filterIndex+1;
+	tmpLight = lightIndex_au;//unionIndex + 1;
+	
 	group=retrieveEchoGroup();
 
 	printFrame_Manual();
@@ -602,50 +602,21 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 		{
 			
 			 if(auxiliary_t.filterInit_Swtich ==0){
-				  printWithFmt(&u8g2,LIGHT_SUBINFO_USER_X,LIGHT_SUBINFO_USER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,lightStr_LR[LedSpotNumber]);
-				  printWithFmt(&u8g2,UNION_INFO3_SUB_X, UNION_INFO3_SUB_Y, WIDTH_UNION, UNION_INFO3_HEIGHT, ALIGN_MID_ALL,lightStr[tenNum]);//the second line 
+				printWithFmt(&u8g2,FILTER_NUM_USER_X,FILTER_NUM_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr[auxiliary_t.filterID]);
+				
             }
 			else{
-				printWithFmt(&u8g2,LIGHT_SUBINFO_USER_X,LIGHT_SUBINFO_USER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,filterStr[auxiliary_t.filterID]);
-				printWithFmt(&u8g2,UNION_INFO3_SUB_X, UNION_INFO3_SUB_Y, WIDTH_UNION, UNION_INFO3_HEIGHT, ALIGN_MID_ALL,gtmpStr);
+				printWithFmt(&u8g2,FILTER_NUM_USER_X,FILTER_NUM_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr[auxiliary_t.filterID]);
+				
 
 			}
 
 		}
 
-	//case ECHO_GROUP_B:
-		z = 0;
-		SubtmpStr[z++] = '#';
-		if (tmpUnion < 7)
-			SubtmpStr[z++] = tmpUnion + 0x30;
-		else
-		{
-			tenNum = tmpUnion / 6; //filter has ten
-			SubtmpStr[z++] = tenNum + 0x30;
-			tmpUnion -= tenNum * 6;
-			SubtmpStr[z++] = tmpUnion + 0x30;
-		}
-		SubtmpStr[z++] = ' ';
-
-		j = 0; //LED number
-		if(auxiliary_t.AuxiliarySubItem ==Spot){
-			while (lightStr_AU[lightIndex_au][j] != 0)
-			{
-				SubtmpStr[z++] = lightStr_AU[lightIndex_au][j];
-				j++;
-			}
-		}
-		else if(auxiliary_t.AuxiliarySubItem !=Main){
-			while (lightStr_LN[lightIndex_au][j] != 0)
-			{
-				SubtmpStr[z++] = lightStr_LN[lightIndex_au][j];
-				j++;
-			}
-
-		}
-
+	   //sub Item led add number
 		u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 		if(auxiliary_t.AuxiliarySubItem ==Main){
+			
            printWithFmt(&u8g2,LIGHT_SUBINFO_USER_X,LIGHT_SUBINFO_USER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,lightStr_LR[auxiliary_t.AuxiliarySubItem]);
 		   printWithFmt(&u8g2,UNION_INFO3_SUB_X, UNION_INFO3_SUB_Y, WIDTH_UNION, UNION_INFO3_HEIGHT, ALIGN_MID_ALL,lightStr[mainled_t.MainLed_Num]);//the second line
 		
@@ -654,35 +625,34 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 		}
 		if(auxiliary_t.AuxiliarySubItem ==Spot){
 
-			printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,light_SPOT[0]);
-		    auxiliary_t.subSubItemLed_Num=0;
+		    printWithFmt(&u8g2,LIGHT_SUBINFO_USER_X,LIGHT_SUBINFO_USER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,lightStr_LR[auxiliary_t.AuxiliarySubItem]);
+
+			printWithFmt(&u8g2,LIGHT_NUM_SPOT_X,LIGHT_NUM_SPOT_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,light_SPOT[tmpLight]);
+		    //auxiliary_t.subSubItemLed_Num=0;
 			auxiliary_t.subSubmode_bits=1;
 		}
 		if(auxiliary_t.AuxiliarySubItem ==Side){
 		
-			printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,light_LINEAR[0]);
-			auxiliary_t.subSubItemLed_Num=0;
+			printWithFmt(&u8g2,LIGHT_SIDE_USER_X,LIGHT_SIDE_USER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,lightStr_LR[auxiliary_t.AuxiliarySubItem]);
+			printWithFmt(&u8g2,LIGHT_NUM_SPOT_X,LIGHT_NUM_SPOT_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,light_LINEAR[tmpLight]);
+			//auxiliary_t.subSubItemLed_Num=0;
 			auxiliary_t.subSubmode_bits=2;
 		}
 		if(auxiliary_t.AuxiliarySubItem ==Right){ //Left is error
 			
-			
-			printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,light_LINEAR[0]);
-		    auxiliary_t.subSubItemLed_Num=0;
+			printWithFmt(&u8g2,LIGHT_SIDE_USER_X,LIGHT_SIDE_USER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,lightStr_LR[auxiliary_t.AuxiliarySubItem]);
+			printWithFmt(&u8g2,LIGHT_NUM_SPOT_X,LIGHT_NUM_SPOT_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,light_LINEAR[tmpLight]);
+		    //auxiliary_t.subSubItemLed_Num=0;
 			auxiliary_t.subSubmode_bits=3;
 		}
 		if(auxiliary_t.AuxiliarySubItem ==Left){ //Right is error 
-
-			printWithFmt(&u8g2,LIGHT_NUM_X,LIGHT_NUM_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,light_LINEAR[0]);
-			auxiliary_t.subSubItemLed_Num=0;
+			printWithFmt(&u8g2,LIGHT_SIDE_USER_X,LIGHT_SIDE_USER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,lightStr_LR[auxiliary_t.AuxiliarySubItem]);
+			printWithFmt(&u8g2,LIGHT_NUM_SPOT_X,LIGHT_NUM_SPOT_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,light_LINEAR[tmpLight]);
+			//auxiliary_t.subSubItemLed_Num=0;
 			auxiliary_t.subSubmode_bits=4;
 		}
 
-		 if (blinkIndex != BLINK_ALL && blinkIndex != BLINK_FILTER)
-		 {
-		 	u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
-		 	printWithFmt(&u8g2, UNION_INFO3_X, UNION_INFO3_Y, WIDTH_UNION, UNION_INFO3_HEIGHT, ALIGN_MID_ALL, SubtmpStr);
-		 }
+		
 		break;
 		default:
 		break;
