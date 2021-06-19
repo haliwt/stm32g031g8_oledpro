@@ -158,7 +158,7 @@
 #define LIGHT_INDEX_X				17
 #define LIGHT_INDEX_Y				62
 #define MAX_LIGHT_INDEX				16//WT.EDIT //10
-#define MAX_LIGHT_STR_LEN			6
+#define MAX_LIGHT_STR_LEN			50//6
 #define MAX_LIGHT_LINEAR_STR_LEN        8
 #define  MAX_LIGHT_SPOT_INDEX       6     
 #define  MAX_LIGHT_LINEAR_INDEX     4

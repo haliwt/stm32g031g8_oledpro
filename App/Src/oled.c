@@ -34,8 +34,9 @@ u8g2_t u8g2;
 const char filterStr[MAX_FILTER_INDEX][MAX_FILTER_STR_LEN+1]={"VIS\0","BP532\0","LP595\0","LP635\0","LP665\0",
 														"LP695\0","LP715\0","LP730\0","LP780\0","LP850\0"};
 /*LED name Modify */
-const char lightStr[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"White\0","UV365\0","Violet\0","Blue1\0","Blue2\0","Cyan\0",
-													 "Green\0","Orange\0","Red\0","640\0","690\0","720\0","750\0","770\0","840\0","930\0"};
+const char lightStr[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"#1 White\0","#2 UV365\0","#3 Violet\0","#4 Blue1\0","#5 Blue2\0","#6 Cyan\0",
+													 "#7 Green\0","#8 Orange\0","#9 Red\0","#10 640\0","#11 690\0","#12 720\0","#13 750\0",
+													 "#14 770\0","#15 840\0","#16 930\0"};
 
 /*SmartBotton union menu*/
 /*LED name Modify */
@@ -357,22 +358,7 @@ void printSettingInfo_MainLed(uint8_t unionIndex,uint8_t filterIndex,uint8_t lig
 
 	printFrame_Manual();//
 	
-	switch(group)
-	{
-	case ECHO_GROUP_A:
-		i=0;
-		if(tmpLight<16)//if(tmpLight<10)
-			tmpStr[i++]=tmpLight+0x30; 
-		else
-		{
-			tenNum=tmpLight/16;//tenNum=tmpLight/10;
-			tmpStr[i++]=tenNum+0x30;
-			tmpLight-= tenNum*16;//tmpLight-= tenNum*10;
-			tmpStr[i++]=tmpLight+0x30;
-		}
-		tmpStr[i++]=0;
-		//LedMainNumber = tmpLight ;
-		//LedMainNumber =lightIndex;
+	
 		
         u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 			
@@ -391,10 +377,6 @@ void printSettingInfo_MainLed(uint8_t unionIndex,uint8_t filterIndex,uint8_t lig
 		
 		
 
-		break;
-	default:
-		break;
-	}
 	u8g2_SendBuffer(&u8g2);
 
 
