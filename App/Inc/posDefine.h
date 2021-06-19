@@ -25,11 +25,14 @@
 
 
 
+
 #define VLINE_USER1_X      207
 #define HLINE_USER3_Y      78
 
 #define TITLE_UNION_SECOND_X   10
-#define SPOT_X             90
+#define SPOT_NUM_X             90
+#define SIDE_USER_X            50
+
 
 //#define HLINE4_X	107
 //#define HLINE4_Y	51
@@ -84,9 +87,15 @@
 #define UNION_INFO3_SUB_Y		      HLINE3_Y
 #define UNION_INFO3_SUB_HEIGHT	      (63-HLINE3_Y)
 
-#define LIGHT_NUM_SPOT_X				SPOT_X
+#define LIGHT_NUM_SPOT_X				SPOT_NUM_X
 #define LIGHT_NUM_SPOT_Y				HLINE3_Y
 #define LIGHT_NUM_SOPOT_HEIGHT			(63-HLINE3_Y)
+
+
+#define LIGHT_SIDE_USER_X		   SIDE_USER_X
+#define LIGHT_SIDE_USER_Y		   HLINE1_Y
+#define LIGHT_SIDE_USER_HEIGHT	   (HLINE3_Y-HLINE1_Y)
+
 
 
 /********************************Smart Mode********************************************/
@@ -156,7 +165,7 @@
 
 //define the sopt board of right and left 
 #define MAX_LIGHT_LR_INDEX		   5  //WT.EDIT 2021.04.23
-#define MAX_LIGHT_STR_LR_LEN       18  //  6  //wt.EDIT 2021.04.23
+#define MAX_LIGHT_STR_LR_LEN      200  //  6  //wt.EDIT 2021.04.23
 
 
 #define UNION_STR_X				136
