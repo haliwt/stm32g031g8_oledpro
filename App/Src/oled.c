@@ -472,8 +472,7 @@ void printSettingInfo_Manual(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 	char tmpStr[MAX_UNION_STR_LEN+1],tmpSfliter[1];
 	uint8_t tmpFilter, tmpLight, i,tenNum;
 	uint8_t group;
-	auxiliary_t.filterIDInit=0x35;
-    auxiliary_t.filterID=0x04;
+    auxiliary_t.filterID=0x00;
     tenNum=0;
 	group=retrieveEchoGroup();
 
@@ -529,10 +528,7 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 
 	printFrame_Manual();
 
-	switch(group)
-	{
-	case ECHO_GROUP_A:
-		
+	
 		
 		u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 		
@@ -541,15 +537,9 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
 			
-			 if(auxiliary_t.filterInit_Swtich ==0){
-				printWithFmt(&u8g2,FILTER_NAME_USER_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
+		
+			printWithFmt(&u8g2,FILTER_NAME_USER_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
 				
-            }
-			else{
-				printWithFmt(&u8g2,FILTER_NAME_USER_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
-				
-
-			}
 
 		}
 
@@ -593,10 +583,7 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 		}
 
 		
-		break;
-		default:
-		break;
-	}
+	
 	u8g2_SendBuffer(&u8g2);
 
 

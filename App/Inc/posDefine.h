@@ -22,6 +22,8 @@
 
 #define VLINE1_USER_SUB_X	 80
 #define SUB_X3_X    30
+#define  TITLE_FILTER_NAME_USER_X    195
+
 
 
 
@@ -63,7 +65,7 @@
 #define TITLE_LIGHT_USER_HEIGHT			HLINE1_Y
 
 //User Defined Mode 'fiter'
-#define TITLE_FILTER_USER_X				VLINE_USER1_X //VLINE1_X
+#define TITLE_FILTER_USER_X				TITLE_FILTER_NAME_USER_X //VLINE_USER1_X //VLINE1_X
 #define TITLE_FILTER_USER_Y		    	HLINE1_Y//0
 #define TITLE_FILTER_USER_HEIGHT		HLINE1_Y
 
@@ -162,7 +164,7 @@
 #define MAX_FILTER_INDEX	10
 #define MAX_FILTER_STR_LEN	 5
 
-#define MAX_FILTER_STR_SUB_LEN	 10
+#define MAX_FILTER_STR_SUB_LEN	 50//10
 
 
 // define the position of Light Index
