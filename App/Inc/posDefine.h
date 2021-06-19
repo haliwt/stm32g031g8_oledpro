@@ -162,14 +162,14 @@
 #define MAX_FILTER_INDEX	10
 #define MAX_FILTER_STR_LEN	 5
 
-#define MAX_FILTER_STR_SUB_LEN	 9
+#define MAX_FILTER_STR_SUB_LEN	 10
 
 
 // define the position of Light Index
 #define LIGHT_INDEX_X				17
 #define LIGHT_INDEX_Y				62
 #define MAX_LIGHT_INDEX				16//WT.EDIT //10
-#define MAX_LIGHT_STR_LEN			6
+#define MAX_LIGHT_STR_LEN			60//6
 #define MAX_LIGHT_LINEAR_STR_LEN        8
 #define  MAX_LIGHT_SPOT_INDEX       6     
 #define  MAX_LIGHT_LINEAR_INDEX     4
