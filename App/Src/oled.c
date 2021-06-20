@@ -519,6 +519,7 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 	uint8_t  tmpLight;
 	uint8_t group;
 
+    auxiliary_t.filterID = filterIndex; 
 	tmpLight = lightIndex_au;//unionIndex + 1;
 	
 	group=retrieveEchoGroup();
