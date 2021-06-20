@@ -453,7 +453,7 @@ void handleInput(void)
 						turnoffAllLight();//WT.EDIT 2021.06.03
 						HAL_Delay(200);
 						AuxiliaryWhichOneLed_Plus(auxiliary_t.AuxiliarySubItem);
-						printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,auxiliary_t.subSubItemLed_Num,BLINK_OFF); //echoLight = LED Name 
+						printSettingInfo_Auxiliary(echoUnion,echoFilter,auxiliary_t.subSubItemLed_Num,BLINK_OFF); //echoLight = LED Name 
 		            
 					}
 					else{
@@ -469,7 +469,6 @@ void handleInput(void)
 						}
 						echoGroup=ECHO_GROUP_A;
 						
-						//printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
 						printSettingInfo_Auxiliary(echoUnion,echoFilter,echoLight,BLINK_OFF); //echoLight = LED Name 
 					
 					}
@@ -487,7 +486,7 @@ void handleInput(void)
 				    turnoffAllLight();//WT.EDIT 2021.06.03
 					HAL_Delay(200);
 					AuxiliaryWhichOneLed_Reduce(auxiliary_t.AuxiliarySubItem);
-				    printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,auxiliary_t.subSubItemLed_Num,BLINK_OFF); //echoLight = LED Name 
+				    printSettingInfo_Auxiliary(echoUnion,echoFilter,auxiliary_t.subSubItemLed_Num,BLINK_OFF); //echoLight = LED Name 
 					
 				}
 			   else{ //Main Board
