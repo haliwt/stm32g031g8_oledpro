@@ -906,7 +906,7 @@ uint8_t SideButton_SubItem_Input(void)
 
     }
 
-    if(k11>20000 && k11< 200010){
+    if(k11>20000 && k11< 20010){
 	   	 value = 1;
 	    	k11=0;
 	    return value;
