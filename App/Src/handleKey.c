@@ -725,8 +725,8 @@ void handleInput(void)
 						echoGroup=ECHO_GROUP_A;
 						turnoffAllLight();
 						
-			            printSettingInfo_Manual(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
-						
+			            //printSettingInfo_Manual(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
+						printSettingInfo_MainLed(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF);
 					}
 					else { //
  						 auxiliary_t.SmartMenuItem =0; //default "Smart Mode "

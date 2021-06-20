@@ -345,8 +345,10 @@ void printSettingInfo_MainLed(uint8_t unionIndex,uint8_t filterIndex,uint8_t lig
      
 	    if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
-			//printWithFmt(&u8g2,FILTER_NAME_USER_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
-			printWithFmt(&u8g2,FILTER_NAME_USER_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
+			 if(auxiliary_t.filterID!=9)
+				printWithFmt(&u8g2,FILTER_NAME_USER_0_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
+			else
+				printWithFmt(&u8g2,FILTER_NAME_USER_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
 				
 		}
 			
@@ -396,15 +398,10 @@ void printSettingInfo_filter(uint8_t unionIndex,uint8_t filterIndex,uint8_t ligh
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
 			
-			 if(auxiliary_t.filterInit_Swtich ==0){
+			 if(auxiliary_t.filterID!=9)
+				printWithFmt(&u8g2,FILTER_NAME_USER_0_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
+			else
 				printWithFmt(&u8g2,FILTER_NAME_USER_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
-				
-            }
-			else{
-				printWithFmt(&u8g2,FILTER_NAME_USER_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
-				
-
-			}
 
 		}
 
@@ -529,17 +526,16 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 	printFrame_Manual();
 
 	
-		
+		//filter Name :
 		u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
-		
-		
 		
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
+			if(auxiliary_t.filterID!=9)
+				printWithFmt(&u8g2,FILTER_NAME_USER_0_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
+			else
+				printWithFmt(&u8g2,FILTER_NAME_USER_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
 			
-		
-			printWithFmt(&u8g2,FILTER_NAME_USER_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
-				
 
 		}
 
@@ -610,18 +606,19 @@ void printSettingInfo_SubItem(void)
 	case ECHO_GROUP_A:
 		
     
-		
+		 u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
         //if (blinkIndex != BLINK_ALL && blinkIndex != BLINK_FILTER)
 		{
-		   u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
-		   printWithFmt(&u8g2,FILTER_NAME_USER_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
+		  if(auxiliary_t.filterID!=9)
+				printWithFmt(&u8g2,FILTER_NAME_USER_0_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
+			else
+				printWithFmt(&u8g2,FILTER_NAME_USER_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
 			
 		}
 
 		//Group B
 	
         
-		//u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
 		u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
 		if(auxiliary_t.AuxiliarySubItem ==Main){
 			
