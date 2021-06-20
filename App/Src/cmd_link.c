@@ -408,14 +408,14 @@ static void runCmd(void)
 		ret=inputCmd[2]-0x30;
 		if(ret==1)	// change filter finished
 		{
-			//setEchoFilterBlink(DISABLE_BLINK);
-			//startTimeDown(0);
-           // if(auxiliary_t.Auxiliary_flag==1)
-				//printSettingInfo_filter(currUnion,currFilter,tmpLight,BLINK_OFF);
-		     //else
-			 	//printSettingInfo(currUnion,currFilter,tmpLight,BLINK_OFF);
-			//printEchoFilter(currFilter);
-			//updateLight(tmpLight);
+			setEchoFilterBlink(DISABLE_BLINK);
+			startTimeDown(0);
+            if(auxiliary_t.Auxiliary_flag==1)
+				printSettingInfo_Auxiliary(currUnion,currFilter,tmpLight,BLINK_OFF);
+		     else
+			 	printSettingInfo(currUnion,currFilter,tmpLight,BLINK_OFF);
+			
+			updateLight(tmpLight);
 		}
 
 		break;

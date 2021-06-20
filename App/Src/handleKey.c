@@ -400,10 +400,9 @@ void handleInput(void)
 		
 		if (auxiliary_t.Auxiliary_flag==1){
 			
-			  if(auxiliary_t.AuxiliarySubItem !=Main)
+			  
 			       printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);//WT.EDIT 2021.06.04
-			  else 
-			      printSettingInfo_Manual(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);
+			 
 		    
 		}
 		else
@@ -496,7 +495,6 @@ void handleInput(void)
 				 else
 					 echoFilter++;
 				 echoGroup = ECHO_GROUP_A;
-				  // printSettingInfo_filter(echoUnion, echoFilter, echoLight, BLINK_OFF);
 				  printSettingInfo_Auxiliary(echoUnion, echoFilter, echoLight, BLINK_OFF);
 				
 			 }
@@ -512,7 +510,6 @@ void handleInput(void)
 				 else
 					 echoFilter--;
 				 echoGroup = ECHO_GROUP_A;
-				//  printSettingInfo_filter(echoUnion, echoFilter, echoLight, BLINK_OFF);
 				printSettingInfo_Auxiliary(echoUnion, echoFilter, echoLight, BLINK_OFF);
 			}
 		}
@@ -726,7 +723,6 @@ void handleInput(void)
 						echoGroup=ECHO_GROUP_A;
 						turnoffAllLight();
 						
-			            //printSettingInfo_Manual(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF); 
 						printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF);
 					}
 					else { //
@@ -947,9 +943,6 @@ void SideButtonSub_KEY(void)
 			  }
 			   
 			   
-			  
-			   //printSettingInfo_SubItem();
-			    //printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex_au,uint8_t blinkIndex);
 				printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,auxiliary_t.subSubItemLed_Num,BLINK_OFF);	   
 			   }
 
