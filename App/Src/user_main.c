@@ -28,7 +28,7 @@ void user_main(void)
 		             subIO++;
 		  		   //initial subIO delay 2s
 		  		   HAL_Delay(3000);
-		            SideBotton_Init();
+		           SideBotton_Init();
 		 }
 
 
