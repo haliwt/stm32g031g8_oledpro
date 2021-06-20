@@ -296,8 +296,17 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 		tmpStr[i++]=0;
 		//u8g2_SetFont(&u8g2, u8g2_font_6x10_tr);
 		u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
-		printWithFmt(&u8g2,UNION_INFO1_X,UNION_INFO1_Y,WIDTH_UNION_SMART,UNION_INFO1_HEIGHT,ALIGN_MID_ALL,unionInfo1[unionIndex]);
-		printWithFmt(&u8g2,UNION_INFO2_X,UNION_INFO2_Y,WIDTH_UNION_SMART,UNION_INFO2_HEIGHT,ALIGN_MID_ALL,unionInfo2[unionIndex]);
+		if(unionIndex==4 ||unionIndex==5||unionIndex==6||unionIndex==7||unionIndex==8||unionIndex==9){
+			printWithFmt(&u8g2,UNION_INFO1_X,UNION_INFO1_Y,WIDTH_UNION_SMART,UNION_INFO1_HEIGHT,ALIGN_MID_ALL,unionInfo1[unionIndex]);
+			printWithFmt(&u8g2,UNION_INFO2_X,UNION_INFO2_Y,WIDTH_UNION_SMART,UNION_INFO2_HEIGHT,ALIGN_MID_ALL,unionInfo2[unionIndex]);
+		}
+		else{
+			printWithFmt(&u8g2,UNION_INFO1_X,UNION_INFO1_ONE_Y,WIDTH_UNION_SMART,UNION_INFO1_HEIGHT,ALIGN_MID_ALL,unionInfo1[unionIndex]);
+			//printWithFmt(&u8g2,UNION_INFO2_X,UNION_INFO2_Y,WIDTH_UNION_SMART,UNION_INFO2_HEIGHT,ALIGN_MID_ALL,unionInfo2[unionIndex]);
+
+		}
+
+
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
 			u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);
