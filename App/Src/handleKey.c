@@ -247,6 +247,7 @@ void AuxiliaryWhichOneLed_Plus(uint8_t wled)
    break;
 
 	case Spot:
+		  
 		  if(auxiliary_t.subSubItemLed_Num>=MAX_SPOT_NUMBER-1){
 		  	   
 				auxiliary_t.subSubItemLed_Num=0;
@@ -255,10 +256,11 @@ void AuxiliaryWhichOneLed_Plus(uint8_t wled)
 				
 				auxiliary_t.subSubItemLed_Num++;
 			}
-			echoGroup=ECHO_GROUP_A;
-		//	printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
-         
-	break;
+		   auxiliary_t.subsubItem_spot=1;
+		   auxiliary_t.subsubItem_side=0;
+		   auxiliary_t.subsubItem_left=0;
+		   auxiliary_t.subsubItem_right=0;
+     break;
 
 	case Side:
 		if(auxiliary_t.subSubItemLed_Num>=MAX_SIDE_NUMBER-1) {
@@ -269,7 +271,11 @@ void AuxiliaryWhichOneLed_Plus(uint8_t wled)
 			
 			auxiliary_t.subSubItemLed_Num++;
 		}
-		echoGroup=ECHO_GROUP_A;
+		auxiliary_t.subsubItem_spot=0;
+		auxiliary_t.subsubItem_side=1;
+		auxiliary_t.subsubItem_left=0;
+		auxiliary_t.subsubItem_right=0;
+		
 	break;
 
 	case Left:
@@ -279,14 +285,21 @@ void AuxiliaryWhichOneLed_Plus(uint8_t wled)
 		else{
 			auxiliary_t.subSubItemLed_Num++;
 			}
-		echoGroup=ECHO_GROUP_A;
+		   auxiliary_t.subsubItem_spot=0;
+		   auxiliary_t.subsubItem_side=0;
+		   auxiliary_t.subsubItem_left=1;
+		   auxiliary_t.subsubItem_right=0;
 	break;
 
 	case Right:
 		if(auxiliary_t.subSubItemLed_Num>=MAX_RIGHT_NUMBER-1)
 			auxiliary_t.subSubItemLed_Num=0;
 		else auxiliary_t.subSubItemLed_Num++;
-		echoGroup=ECHO_GROUP_A;
+
+		auxiliary_t.subsubItem_spot=0;
+		 auxiliary_t.subsubItem_side=0;
+		 auxiliary_t.subsubItem_left=0;
+		 auxiliary_t.subsubItem_right=1;
 
 	break;
 
@@ -319,8 +332,11 @@ void AuxiliaryWhichOneLed_Reduce(uint8_t wled)
 		 
 		  if(auxiliary_t.subSubItemLed_Num==0) auxiliary_t.subSubItemLed_Num=MAX_SPOT_NUMBER-1;
 		  else auxiliary_t.subSubItemLed_Num--;
-		  echoGroup=ECHO_GROUP_A;
-		//	printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_AU,BLINK_OFF); //echoLight = LED Name 
+		 auxiliary_t.subsubItem_spot=1;
+		 auxiliary_t.subsubItem_side=0;
+		 auxiliary_t.subsubItem_left=0;
+		 auxiliary_t.subsubItem_right=0;
+	
          
 	break;
 
@@ -328,21 +344,30 @@ void AuxiliaryWhichOneLed_Reduce(uint8_t wled)
 		
 		if(auxiliary_t.subSubItemLed_Num==0) auxiliary_t.subSubItemLed_Num=MAX_SIDE_NUMBER-1;
 		else auxiliary_t.subSubItemLed_Num--;
-		echoGroup=ECHO_GROUP_A;
+		auxiliary_t.subsubItem_spot=0;
+		 auxiliary_t.subsubItem_side=1;
+		 auxiliary_t.subsubItem_left=0;
+		 auxiliary_t.subsubItem_right=0;
 	break;
 
 	case Left: //03
 		
 		if(auxiliary_t.subSubItemLed_Num ==0) auxiliary_t.subSubItemLed_Num=MAX_LEFT_NUMBER-1;
 		else auxiliary_t.subSubItemLed_Num--;
-		echoGroup=ECHO_GROUP_A;
+		 auxiliary_t.subsubItem_spot=0;
+		 auxiliary_t.subsubItem_side=0;
+		 auxiliary_t.subsubItem_left=1;
+		 auxiliary_t.subsubItem_right=0;
 	break;
 
 	case Right://04
 		
 		if(auxiliary_t.subSubItemLed_Num == 0) auxiliary_t.subSubItemLed_Num=MAX_RIGHT_NUMBER-1;
 		else auxiliary_t.subSubItemLed_Num--;
-		echoGroup=ECHO_GROUP_A;
+		auxiliary_t.subsubItem_spot=0;
+		 auxiliary_t.subsubItem_side=0;
+		 auxiliary_t.subsubItem_left=0;
+		 auxiliary_t.subsubItem_right=1;
 
 	break;
 
@@ -713,8 +738,7 @@ void handleInput(void)
 						auxiliary_t.AuxiliarySubItem=Main ;
 						LedMainNumber=0;//WT.EDIT 2021.06.01
 						auxiliary_t.filterID=0;  //WT.EDIT 2021.06.01
-						auxiliary_t.filterRunNum =0;
-				        auxiliary_t.filterInit_Swtich=0;
+				
 						auxiliary_t.Auxiliary_flag=1;
 						mainled_t.MainLed_Num=0;
 						mainled_t.SW_Mode =1;

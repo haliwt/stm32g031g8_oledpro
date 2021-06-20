@@ -21,21 +21,24 @@ void SideButtonSub_KEY(void);
 
 typedef struct _auxiliary_
 {
-    uint8_t AuxiliaryLed_id;
+   
 	uint8_t AuxiliarySubItem;
 	uint8_t Auxiliary_flag;
 
 	uint8_t SmartMenuItem;
+	uint8_t subMenuOne;
  
 	uint8_t ManualMode;
 	uint8_t filterID;
-	uint8_t filterRunNum;
-	uint8_t filterIDInit;
-	uint8_t subMenuOne;  //main board led flag
+	uint8_t subSubmode_bits;
 
 	uint8_t subSubItemLed_Num;
-	uint8_t subSubmode_bits;
-	uint8_t filterInit_Swtich;
+	uint8_t subsubItem_spot;
+	uint8_t subsubItem_side;
+	uint8_t subsubItem_left;
+	uint8_t subsubItem_right;
+	
+	
 }auxiliary;
 
 typedef struct _mainLed_

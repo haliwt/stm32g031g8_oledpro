@@ -323,14 +323,11 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex_au,uint8_t blinkIndex) //echoLight = LED Name
 {
 	//char SubtmpStr[MAX_UNION_STR_LEN+1];
-	uint8_t  tmpLight;
-	uint8_t group;
+
+	
 
     auxiliary_t.filterID = filterIndex; 
-	tmpLight = lightIndex_au;//unionIndex + 1;
 	
-	group=retrieveEchoGroup();
-
 	printFrame_Manual();
 
 	
@@ -339,7 +336,7 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 		
 		if(blinkIndex!=BLINK_ALL && blinkIndex!=BLINK_FILTER)
 		{
-			if(auxiliary_t.filterID!=9)
+			if(auxiliary_t.filterID!=9) //Position changed
 				printWithFmt(&u8g2,FILTER_NAME_USER_0_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
 			else
 				printWithFmt(&u8g2,FILTER_NAME_USER_X,FILTER_NAME_USER_Y,WIDTH_FILTER,FILTER_NUM_HEIGHT,ALIGN_MID_ALL,filterStr_sub[auxiliary_t.filterID]);
@@ -360,29 +357,33 @@ void printSettingInfo_Auxiliary(uint8_t unionIndex,uint8_t filterIndex,uint8_t l
 		if(auxiliary_t.AuxiliarySubItem ==Spot){
 
 		    printWithFmt(&u8g2,LIGHT_SUBINFO_USER_X,LIGHT_SUBINFO_USER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,lightStr_LR[auxiliary_t.AuxiliarySubItem]);
+			if(auxiliary_t.subsubItem_spot ==0)auxiliary_t.subSubItemLed_Num=0;
 
-			printWithFmt(&u8g2,LIGHT_NUM_SPOT_X,LIGHT_NUM_SPOT_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,light_SPOT[tmpLight]);
-		    //auxiliary_t.subSubItemLed_Num=0;
+		    printWithFmt(&u8g2,LIGHT_NUM_SPOT_X,LIGHT_NUM_SPOT_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,light_SPOT[auxiliary_t.subSubItemLed_Num]);
+		 
 			auxiliary_t.subSubmode_bits=1;
 		}
 		if(auxiliary_t.AuxiliarySubItem ==Side){
 		
 			printWithFmt(&u8g2,LIGHT_SIDE_USER_X,LIGHT_SIDE_USER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,lightStr_LR[auxiliary_t.AuxiliarySubItem]);
-			printWithFmt(&u8g2,LIGHT_NUM_SPOT_X,LIGHT_NUM_SPOT_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,light_LINEAR[tmpLight]);
-			//auxiliary_t.subSubItemLed_Num=0;
+			if(auxiliary_t.subsubItem_side ==0)auxiliary_t.subSubItemLed_Num=0;
+		    printWithFmt(&u8g2,LIGHT_NUM_SPOT_X,LIGHT_NUM_SPOT_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,light_LINEAR[auxiliary_t.subSubItemLed_Num]);
+		
 			auxiliary_t.subSubmode_bits=2;
 		}
 		if(auxiliary_t.AuxiliarySubItem ==Right){ //Left is error
 			
 			printWithFmt(&u8g2,LIGHT_SIDE_USER_X,LIGHT_SIDE_USER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,lightStr_LR[auxiliary_t.AuxiliarySubItem]);
-			printWithFmt(&u8g2,LIGHT_NUM_SPOT_X,LIGHT_NUM_SPOT_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,light_LINEAR[tmpLight]);
-		    //auxiliary_t.subSubItemLed_Num=0;
+			if(auxiliary_t.subsubItem_right ==0)auxiliary_t.subSubItemLed_Num=0;
+		    printWithFmt(&u8g2,LIGHT_NUM_SPOT_X,LIGHT_NUM_SPOT_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,light_LINEAR[auxiliary_t.subSubItemLed_Num]);
+		  
 			auxiliary_t.subSubmode_bits=3;
 		}
 		if(auxiliary_t.AuxiliarySubItem ==Left){ //Right is error 
 			printWithFmt(&u8g2,LIGHT_SIDE_USER_X,LIGHT_SIDE_USER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,lightStr_LR[auxiliary_t.AuxiliarySubItem]);
-			printWithFmt(&u8g2,LIGHT_NUM_SPOT_X,LIGHT_NUM_SPOT_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,light_LINEAR[tmpLight]);
-			//auxiliary_t.subSubItemLed_Num=0;
+			if(auxiliary_t.subsubItem_left ==0)auxiliary_t.subSubItemLed_Num=0;
+		    printWithFmt(&u8g2,LIGHT_NUM_SPOT_X,LIGHT_NUM_SPOT_Y,WIDTH_LIGHT,LIGHT_NUM_HEIGHT,ALIGN_MID_ALL,light_LINEAR[auxiliary_t.subSubItemLed_Num]);
+			
 			auxiliary_t.subSubmode_bits=4;
 		}
         
