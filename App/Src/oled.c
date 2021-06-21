@@ -64,7 +64,7 @@ const char light_SPOT[MAX_LIGHT_SPOT_INDEX][MAX_LIGHT_LINEAR_STR_LEN+1]={"#1 Gre
 const char light_LINEAR[MAX_LIGHT_LINEAR_INDEX][MAX_LIGHT_LINEAR_STR_LEN+1]={"#1 IR730\0","#2 IR850\0","#3 IR940\0","#4 White\0"};
 /***************************************************************************************************************************************/
 /*LED name axuiliary WT.EDIT */
-const char lightStr_LR[MAX_LIGHT_LR_INDEX][MAX_LIGHT_STR_LR_LEN+1]={"mainlight\0","spot light\0","both linear light\0","left linear light\0","right linear light\0"};													 
+const char lightStr_LR[MAX_LIGHT_LR_INDEX][MAX_LIGHT_STR_LR_LEN+1]={"Mainlight\0","Spot light\0","Both linear light\0","Left linear light\0","Right linear light\0"};													 
 
 
 /***************************************************************************************************************************************/
@@ -501,7 +501,7 @@ static void NewPrintFrame(void)
 
 	u8g2_SetFontMode(&u8g2, 1);
 	u8g2_SetFontDirection(&u8g2, 0);
-	u8g2_SetFont(&u8g2, u8g2_font_7x13_tr);
+	u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);//u8g2_SetFont(&u8g2, u8g2_font_7x13_tr);
 	//printWithFmt(&u8g2,TITLE_LIGHT_X,TITLE_LIGHT_Y,WIDTH_LIGHT,TITLE_LIGHT_HEIGHT,ALIGN_MID_ALL,"Light");
 	//printWithFmt(&u8g2,TITLE_FILTER_X,TITLE_FILTER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,"Filter");
 	printWithFmt(&u8g2,TITLE_UNION_X,TITLE_UNION_Y,WIDTH_UNION,TITLE_UNION_HEIGHT,ALIGN_MID_ALL,"Smart  Mode");
@@ -530,7 +530,7 @@ static void printFrame_Manual(void)
 
 	u8g2_SetFontMode(&u8g2, 1);
 	u8g2_SetFontDirection(&u8g2, 0);
-	u8g2_SetFont(&u8g2, u8g2_font_7x13_tr);
+	u8g2_SetFont(&u8g2, u8g2_font_7x13B_tr);//u8g2_SetFont(&u8g2, u8g2_font_7x13_tr);
 	//printWithFmt(&u8g2,TITLE_LIGHT_USER_X,TITLE_LIGHT_USER_Y,WIDTH_USER_LIGHT,TITLE_LIGHT_USER_HEIGHT,ALIGN_MID_ALL,"mainlight");
 	printWithFmt(&u8g2,TITLE_FILTER_USER_X,TITLE_FILTER_USER_Y,WIDTH_FILTER,TITLE_FILTER_HEIGHT,ALIGN_MID_ALL,"Filter");
 	printWithFmt(&u8g2,TITLE_UNION_X,TITLE_UNION_Y,WIDTH_UNION,TITLE_UNION_HEIGHT,ALIGN_MID_ALL,"User Defined Mode");
