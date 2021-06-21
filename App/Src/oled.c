@@ -64,7 +64,7 @@ const char light_SPOT[MAX_LIGHT_SPOT_INDEX][MAX_LIGHT_LINEAR_STR_LEN+1]={"#1 Gre
 const char light_LINEAR[MAX_LIGHT_LINEAR_INDEX][MAX_LIGHT_LINEAR_STR_LEN+1]={"#1 IR730\0","#2 IR850\0","#3 IR940\0","#4 White\0"};
 /***************************************************************************************************************************************/
 /*LED name axuiliary WT.EDIT */
-const char lightStr_LR[MAX_LIGHT_LR_INDEX][MAX_LIGHT_STR_LR_LEN+1]={"Mainlight\0","Spot light\0","Both linear light\0","Left linear light\0","Right linear light\0"};													 
+const char lightStr_LR[MAX_LIGHT_LR_INDEX][MAX_LIGHT_STR_LR_LEN+1]={"Mainlight\0","Spot light\0","Both linear light\0","Right linear light\0","Left linear light\0"};													 
 
 
 /***************************************************************************************************************************************/
