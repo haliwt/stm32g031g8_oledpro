@@ -22,14 +22,16 @@ void user_main(void)
 		handleInput();
 		decode();
 		 /* USER CODE END WHILE */
-		SideButtonSub_KEY();
-		if(subIO==0) //SWDIO update softe GPIO initial
-		 {
-		             subIO++;
-		  		   //initial subIO delay 2s
-		  		   HAL_Delay(3000);
-		           SideBotton_Init();
-		 }
+		if(auxiliary_t.Auxiliary_flag==1){
+			SideButtonSub_KEY();
+			if(subIO==0) //SWDIO update softe GPIO initial
+			 {
+			           subIO++;
+			  		   //initial subIO delay 2s
+			  		   //HAL_Delay(3000);
+			           SideBotton_Init();
+			 }
+		}
 
 
 	}
