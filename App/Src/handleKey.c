@@ -425,10 +425,8 @@ void handleInput(void)
 		
 		if (auxiliary_t.Auxiliary_flag==1){
 			
-			  
-			       printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);//WT.EDIT 2021.06.04
+			printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,echoLight_LR,BLINK_OFF);//WT.EDIT 2021.06.04
 			 
-		    
 		}
 		else
 			printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
@@ -580,7 +578,9 @@ void handleInput(void)
 					else{
 					  if(echoUnion ==2)//oled display "#3"
 					      mainled_t.Same_23 =0;
-					  else if(echoUnion ==3)  mainled_t.Same_23 =1;
+					  else if(echoUnion ==3) 
+					  	 mainled_t.Same_23 =1;
+					  
 					  mainled_t.MainUnionSport_flag =0;
 					
 
@@ -654,22 +654,25 @@ void handleInput(void)
 			}
 			else
 			{
-                if(auxiliary_t.Auxiliary_flag==0 ||auxiliary_t.AuxiliarySubItem ==Main ){//WT.EDIT  2021.06.02
+                
+			     if(auxiliary_t.Auxiliary_flag==0 ){//WT.EDIT	2021.06.02
+			
+							   
+					if(mainled_t.MainUnionSport_flag ==1){
+							mainled_t.ledoff_flag =mainled_t.ledoff_flag-5;
+							TurnOnUnionSPOT_Light();
+					}
+					else
+						setCurrentLightOn();
+				}
+			     else{ 
+					if(auxiliary_t.AuxiliarySubItem==Main){
+							setCurrentLightOn();
+					}
+					else 
+					   setCurrentLightOn_AU(); //WT.EDIT 2021.06.02
 
-					
-					 if(mainled_t.MainUnionSport_flag ==1 && auxiliary_t.subMenuOne==1 )
-				            setCurrentLightOn();
-					 else{
-						 if(mainled_t.MainUnionSport_flag ==1){
-							 mainled_t.ledoff_flag =mainled_t.ledoff_flag-5;
-					         TurnOnUnionSPOT_Light();
-						 }
-						 else
-					         setCurrentLightOn();
-                      }
-				 }
-				 else 
-				 	  setCurrentLightOn_AU(); //WT.EDIT 2021.06.02
+			     }
 				
 				
 			}

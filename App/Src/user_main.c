@@ -23,7 +23,6 @@ void user_main(void)
 		decode();
 		 /* USER CODE END WHILE */
 		if(auxiliary_t.Auxiliary_flag==1){
-			SideButtonSub_KEY();
 			if(subIO==0) //SWDIO update softe GPIO initial
 			 {
 			           subIO++;
@@ -31,6 +30,7 @@ void user_main(void)
 			  		   //HAL_Delay(3000);
 			           SideBotton_Init();
 			 }
+			 SideButtonSub_KEY();
 		}
 
 

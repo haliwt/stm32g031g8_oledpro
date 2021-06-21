@@ -168,9 +168,13 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 	{
 		
 		
-		if(auxiliary_t.Auxiliary_flag == 1 && auxiliary_t.subMenuOne ==0){ //default mainLedKey =0 is main board LED 
+		if(auxiliary_t.Auxiliary_flag == 1){ //default mainLedKey =0 is main board LED 
 
-			updateLight_AU(lightIndx_AU); //WT.EDIT 2021.04.28 //SPOT board subItem
+            if(auxiliary_t.AuxiliarySubItem ==Main){
+				updateLight(mainled_t.MainLed_Num);
+			}
+			else
+			      updateLight_AU(lightIndx_AU); //WT.EDIT 2021.04.28 //SPOT board subItem
 			#if DEBUG
 			 HAL_UART_Transmit(&CMD_LINKER,&addA,1,2);
 			#endif 
@@ -190,7 +194,7 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 			  else
 			      TurnOnUnionSPOT_Light();
 
-			 if( mainled_t.MainUnionSport_flag ==0){
+			 if( mainled_t.MainUnionSport_flag ==0){ //切换到主板灯
 					updateLight(lightIndex);
 				}
 			 #if DEBUG 
