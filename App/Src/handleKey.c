@@ -459,7 +459,7 @@ void handleInput(void)
 					else{
 						turnoffAllLight();//WT.EDIT 2021.06.03
 						HAL_Delay(200);
-						if(echoLight>=MAX_LIGHT_NUMBER-1) {
+						if(mainled_t.MainLed_Num>=MAX_LIGHT_NUMBER-1) {
 							echoLight=0;
 							mainled_t.MainLed_Num=0;
 						}
@@ -493,7 +493,7 @@ void handleInput(void)
 			  		//mainLed switch
 			        turnoffAllLight();//WT.EDIT 2021.06.03
 					HAL_Delay(200);
-					if(echoLight==0){
+					if(mainled_t.MainLed_Num==0){
 						echoLight=MAX_LIGHT_NUMBER-1;
 						mainled_t.MainLed_Num =MAX_LIGHT_NUMBER-1;
 					}
