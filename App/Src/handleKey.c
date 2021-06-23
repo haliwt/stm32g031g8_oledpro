@@ -521,7 +521,8 @@ void handleInput(void)
 				 else
 					 echoFilter++;
 				 filter_t.filterInKey=1;
-				  if(filter_t.filterSendData_flag ==1){
+				//  if(filter_t.filterSendData_flag ==1)
+				  {
 					 filter_t.filterSendData_flag =0;
 				    printSettingInfo_Auxiliary(echoUnion, echoFilter, echoLight, BLINK_OFF);
 				  }
@@ -539,7 +540,8 @@ void handleInput(void)
 				 else
 					 echoFilter--;
 				  filter_t.filterInKey=1;
-				 if(filter_t.filterSendData_flag ==1){
+				// if(filter_t.filterSendData_flag ==1)
+				 {
 				  	filter_t.filterSendData_flag =0;
 				    printSettingInfo_Auxiliary(echoUnion, echoFilter, echoLight, BLINK_OFF);
 				 }
