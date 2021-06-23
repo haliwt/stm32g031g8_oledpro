@@ -24,15 +24,12 @@ typedef struct _auxiliary_
    
 	uint8_t AuxiliarySubItem;
 	uint8_t Auxiliary_flag;
-
-	uint8_t SmartMenuItem;
+    uint8_t SmartMenuItem;
 	uint8_t subMenuOne;
- 
-	uint8_t ManualMode;
+    uint8_t ManualMode;
 	uint8_t filterID;
 	uint8_t subSubmode_bits;
-
-	uint8_t subSubItemLed_Num;
+    uint8_t subSubItemLed_Num;
 	uint8_t subsubItem_spot;
 	uint8_t subsubItem_side;
 	uint8_t subsubItem_left;
@@ -40,6 +37,15 @@ typedef struct _auxiliary_
 	
 	
 }auxiliary;
+
+typedef struct {
+
+	uint8_t filterCallBack_flag;
+	uint8_t filterInKey;
+	uint8_t filterSendData_flag ;
+
+
+}_filterSt;
 
 typedef struct _mainLed_
 {
@@ -58,6 +64,8 @@ typedef struct _mainLed_
 extern auxiliary auxiliary_t;
 
 extern mainled  mainled_t;
+
+extern _filterSt filter_t;
 
 //void selectLight_Union(uint8_t index);
 

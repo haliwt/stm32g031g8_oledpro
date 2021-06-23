@@ -160,9 +160,19 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 		tmpLight_LR=lightIndx_LR;//mainItem
 		tmpLight_AU = lightIndx_AU;//subItem
 		
+//		setEchoFilterBlink(ENABLE_BLINK);
+//		selectFilter(filterIndex); //UART send data to Motor Board
+//		startTimeDown(1);
+	}
+	else if(filterIndex==currFilter && filter_t.filterInKey == 1 && filter_t.filterCallBack_flag==1 ){
+
+        filter_t.filterInKey++;
+		filter_t.filterSendData_flag =1;
+	    filter_t.filterCallBack_flag=0;
 		setEchoFilterBlink(ENABLE_BLINK);
 		selectFilter(filterIndex); //UART send data to Motor Board
 		startTimeDown(1);
+	
 	}
 	else //WT.EDIT 2021.06.02
 	{
@@ -412,6 +422,7 @@ static void runCmd(void)
 		ret=inputCmd[2]-0x30;
 		if(ret==1)	// change filter finished
 		{
+			filter_t.filterCallBack_flag=1;
 			setEchoFilterBlink(DISABLE_BLINK);
 			startTimeDown(0);
             if(auxiliary_t.Auxiliary_flag==1)

@@ -45,6 +45,7 @@
 
 #define LED_NUMBER 6
 
+_filterSt filter_t;
 
 
 static uint16_t scanKey(void);
@@ -119,6 +120,7 @@ void keyInit(void)
 	glKey.status=KEY_STATUS_NOPRESSED;
 	glKey.long_pressed=0;
 	glKey.multi_pressed=0;
+	filter_t.filterCallBack_flag=1;
 	retrieveSavedParameter(&echoUnion,&echoFilter,&echoLight,&echoLight_LR,&echoLight_AU,&echoGroup);
 	
 	printSettingInfo(echoUnion,echoFilter,echoLight,BLINK_OFF);
@@ -510,14 +512,19 @@ void handleInput(void)
 		else if(!(pkey->keyCode & KEY_CODE_KEY4))	// change filter +  //Only "Manul" Menu
 		{
 			
-			 mainled_t.MainSpotUnion_Led=0;
+			
+			    mainled_t.MainSpotUnion_Led=0;
 			 	if (auxiliary_t.Auxiliary_flag == 1){
+					
 				 if (echoFilter >= MAX_FILTER_NUMBER - 1)
 					 echoFilter = 0;
 				 else
 					 echoFilter++;
-				 echoGroup = ECHO_GROUP_A;
-				  printSettingInfo_Auxiliary(echoUnion, echoFilter, echoLight, BLINK_OFF);
+				 filter_t.filterInKey=1;
+				  if(filter_t.filterSendData_flag ==1){
+					 filter_t.filterSendData_flag =0;
+				    printSettingInfo_Auxiliary(echoUnion, echoFilter, echoLight, BLINK_OFF);
+				  }
 				
 			 }
 		}
@@ -531,8 +538,11 @@ void handleInput(void)
 					 echoFilter = MAX_FILTER_NUMBER - 1;
 				 else
 					 echoFilter--;
-				 echoGroup = ECHO_GROUP_A;
-				printSettingInfo_Auxiliary(echoUnion, echoFilter, echoLight, BLINK_OFF);
+				  filter_t.filterInKey=1;
+				 if(filter_t.filterSendData_flag ==1){
+				  	filter_t.filterSendData_flag =0;
+				    printSettingInfo_Auxiliary(echoUnion, echoFilter, echoLight, BLINK_OFF);
+				 }
 			}
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY5))	// change union + "Smart Button"
