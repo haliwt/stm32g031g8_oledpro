@@ -13,10 +13,11 @@
 
 void user_main(void)
 {
-	 static uint8_t subIO;
+	static uint8_t subIO;
 	oledInit();
 	cmdInit();
 	keyInit();
+
 	while(1)
 	{
 		handleInput();

@@ -9,6 +9,8 @@
 #include "posDefine.h"
 #include "handlekey.h"
 
+
+
 #define ENABLE_VCC_LEVEL	GPIO_PIN_RESET
 #define DISABLE_VCC_LEVEL	GPIO_PIN_SET
 
@@ -224,14 +226,15 @@ void oledTurnOnVcc(void)
 
 void oledInit(void)
 {
-
+ 
 	u8g2_Setup_ssd1322_nhd_256x64_f(&u8g2, U8G2_R2, u8x8_byte_4wire_hw_spi_stm32, u8g2_gpio_and_delay_stm32);
 	u8g2_InitDisplay(&u8g2); // send init sequence to the display, display is in sleep mode after this,
 	u8g2_SetPowerSave(&u8g2, 0); // wake up display
-	oledTurnOnVcc();
-	HAL_Delay(500);
-
+	//oledTurnOnVcc(); //WT.EDIT 
+	//HAL_Delay(500);
+   // oledTurnOnVcc();//WT.EDIT 2021.06.29
 	printLogo(&u8g2);
+	oledTurnOnVcc();//WT.EDIT 2021.06.29
 
 }
 /************************************************************************************************************
