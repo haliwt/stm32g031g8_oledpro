@@ -547,6 +547,7 @@ void handleInput(void)
 				 }
 			}
 		}
+		//Smart Mode
 		else if(!(pkey->keyCode & KEY_CODE_KEY5))	// change union + "Smart Button"
 		{
 			 mainled_t.MainSpotUnion_Led=1;
@@ -569,9 +570,8 @@ void handleInput(void)
 		
 				 if(echoUnion==4){ //display "#5"
 					    mainled_t.ledoff_flag=4;
-					   turnoffAllLight();
-
-					}
+					   
+ 					}
 					else if(echoUnion==5){
 					 mainled_t.ledoff_flag=5; //display '#6'
 					  
@@ -579,34 +579,26 @@ void handleInput(void)
 					else if(echoUnion ==19){//display '#20'			
 				
 					    mainled_t.ledoff_flag=19;
-					
-					   
-                    }
+					}
 					else if(echoUnion== 20){
 					    mainled_t.ledoff_flag=20;
-					
-
-					}
+						
+					  }
 					else{
 					  if(echoUnion ==2)//oled display "#3"
 					      mainled_t.Same_23 =0;
 					  else if(echoUnion ==3) 
 					  	 mainled_t.Same_23 =1;
-					  
-					  mainled_t.MainUnionSport_flag =0;
-					
+					     mainled_t.MainUnionSport_flag =0;
+				    }
 
-				
-				 	}
-
-				
-			 }
+			}
 		}
+		//Smart Mode 
 		else if(!(pkey->keyCode & KEY_CODE_KEY6))	// change union - //"smart Button"
 		{
 			
-		
-			  mainled_t.MainSpotUnion_Led=1;
+		      mainled_t.MainSpotUnion_Led=1;
 			 if (auxiliary_t.Auxiliary_flag == 0)
 			 {
 				 if (echoUnion == 0){
@@ -617,7 +609,7 @@ void handleInput(void)
 				 else{
 					  echoUnion--;
 					  mainled_t.ledoff_flag--;
-				      HAL_UART_Transmit(&CMD_LINKER,&echoUnion,1,2);
+				     // HAL_UART_Transmit(&CMD_LINKER,&echoUnion,1,2);
 				 }
 				 turnoffAllLight();
 				 HAL_Delay(200);
@@ -625,11 +617,12 @@ void handleInput(void)
 				
 				  if(echoUnion==4){ //display "#5"
 					    mainled_t.ledoff_flag=4;
-					 
+					   
 
 					}
 					else if(echoUnion==5){
-					 mainled_t.ledoff_flag=5; //display '#6'
+					  mainled_t.ledoff_flag=5; //display '#6'
+					  
 					  
 					}
 					else if(echoUnion ==19){//white					
@@ -640,6 +633,7 @@ void handleInput(void)
                     }
 					else if(echoUnion== 20){
 					    mainled_t.ledoff_flag=20;
+						
 				
 
 					}
@@ -756,7 +750,7 @@ void handleInput(void)
 						auxiliary_t.Auxiliary_flag=1;
 						mainled_t.MainLed_Num=0;
 						mainled_t.SW_Mode =1;
-                        auxiliary_t.subMenuOne=1; //for turn off differen main led and auxiliay board led 
+                       // auxiliary_t.subMenuOne=1; //for turn off differen main led and auxiliay board led 
 						//displayUnionInfo_Manual(echoUnion_manual);//Display Filter name and number 
 						echoGroup=ECHO_GROUP_A;
 						turnoffAllLight();
@@ -769,11 +763,11 @@ void handleInput(void)
 					     auxiliary_t.ManualMode=0;
 					
 						  auxiliary_t.Auxiliary_flag=0;
-						  mainled_t.SW_Mode =0;
+						  auxiliary_t.subMenuOne++;
 						  turnoffAllLight();
 						  displayUnionInfo(echoUnion);
 						  mainled_t.MainSpotUnion_Led=1;
-						   auxiliary_t.subMenuOne=0; 
+						  // auxiliary_t.subMenuOne=0; 
 						  if( mainled_t.ledoff_flag >0)//WT.EDIT 2021.06.02
 						  	mainled_t.ledoff_flag =mainled_t.ledoff_flag-5;
 						 
@@ -970,12 +964,12 @@ void SideButtonSub_KEY(void)
 			   if(auxiliary_t.AuxiliarySubItem>=MAX_LIGHT_LR_NUMBER-1){
 				   auxiliary_t.AuxiliarySubItem=Main;
 			   
-				   auxiliary_t.subMenuOne=1; //WT.EDIT 2021.06.03
+				  
 				   
 			   }
 			   else{ 
 				   
-					auxiliary_t.subMenuOne=0; //WT.EDIT 2021.06.03
+				
 				    auxiliary_t.AuxiliarySubItem ++;
 		   
 			  }

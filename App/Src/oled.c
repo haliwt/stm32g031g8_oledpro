@@ -38,19 +38,29 @@ const char filterStr_sub[MAX_FILTER_INDEX][MAX_FILTER_STR_SUB_LEN+1]={"#1 VIS\0"
 														"#6 LP695\0","#7 LP715\0","#8 LP730\0","#9 LP780\0","#10 LP850\0"};
 
 /*LED name Modify */
-const char lightStr[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"#1 White\0","#2 UV365\0","#3 Violet\0","#4 Blue1\0","#5 Blue2\0","#6 Cyan\0",
-													 "#7 Green\0","#8 Orange\0","#9 Red\0","#10 640\0","#11 690\0","#12 720\0","#13 750\0",
-													 "#14 770\0","#15 840\0","#16 930\0"};
+//const char lightStr[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"#1 White\0","#2 UV365\0","#3 Violet\0","#4 Blue\0","#5 Blue2\0","#6 Cyan\0",
+													// "#7 Green\0","#8 Orange\0","#9 Red\0","#10 640\0","#11 690\0","#12 720\0","#13 750\0",
+													// "#14 770\0","#15 840\0","#16 930\0"};
+
+/*LED name Union 'Smart Menu'Modify */
+const char lightStr[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"#1 White\0","#2 UV365\0","#3 Violet\0","#4 Blue\0","#5 Blue2\0",
+														   "#6 Cyan\0","#7 Green\0","#8 Orange\0","#9 Red\0","#10 640~650\0",
+													       "#11 690~700\0","#12 720~740\0","#13 750~770\0","#14 770~790\0","#15 840~860\0",
+													       "#16 930~950\0"};
+
 
 /*SmartBotton union menu*/
 /*LED name Modify */
-const char lightStr_MainUnion[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"White\0","UV310\0","UV275\0","Blue1\0","Blue2\0","Cyan\0",
-													 "Green\0","Orange\0","Red\0","640\0","690\0","720\0","750\0","770\0","840\0","930\0"};
+const char lightStr_Union[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"White\0","Spot UVB\0","Spot UVC\0","Blue\0","Blue2\0",
+                                                                     "Cyan\0","Green\0","Orange\0","Red\0","640~650\0",
+                                                                     "690~700\0","720~740\0","750~770\0","770~790\0","840~860\0",
+                                                                     "930~950\0"};
+const char lightStr_UnionSpecial[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"White\0","UV365\0","Spot UVC\0","Blue\0","Blue2\0",
+                                                                     "Cyan\0","Green\0","Orange\0","Red\0","640~650\0",
+                                                                     "690~700\0","720~740\0","750~770\0","770~790\0","840~860\0",
+                                                                     "930~950\0"};
 
-/*LED name Modify--Manual Button */
 
-const char lightStr_ML[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"930\0","White\0","UV365\0","Violet\0","Blue1\0","Blue2\0","Cyan\0",
-													 "Green\0","Orange\0","Red\0","640\0","690\0","720\0","750\0","770\0","840\0"};
 
 /*******************************************************************************************************************/
 /*Auxiliary Board SPOT LED Name*/
@@ -69,13 +79,13 @@ const char lightStr_LR[MAX_LIGHT_LR_INDEX][MAX_LIGHT_STR_LR_LEN+1]={"Mainlight\0
 
 /***************************************************************************************************************************************/
 const char unionInfo1[MAX_UNION_INDEX][MAX_UNION_INFO1_STR_LEN+1]={"Deleted Articles\0","Deleted Articles\0","Deleted Articles\0","Deleted Articles\0","Passport UVC+Money\0",
-																"Passport UVB+Money\0","Passport IR+ID IR+Money\0","Passport IR+ID IR+Money\0","Passport IR+ID IR+Money \0","Passport UVA+ID,UVA+Money\0",
+																"Passport UVB+Money\0","Passport IR+ID Card IR+Money\0","Passport IR+ID Card IR+Money\0","Passport IR+ID Card IR+Money\0","Passport UVA+ID Card UVA+Money\0",
 																"General Research Normal Picture\0","Black Pen\0","Black Pen\0","Black Pen+Blue Pen+Red Pen\0","Black Pen+Blue Pen+Red Pen\0",
 																"Black Pen+Blue Pen+Red Pen\0","Black Pen+Blue Pen+Red Pen\0","Black Pen+Blue Pen+Red Pen\0","Black Pen+Blue Pen+Red Pen\0","Scribble Marks White\0",
 																"Scribble Marks IR\0"};
 
 const char unionInfo2[MAX_UNION_INDEX][MAX_UNION_INFO2_STR_LEN+1]={"\0","\0","\0","\0","UVC+Driving License UVC\0",
-																"UVB+Driving License UVB\0","Checker Driving License\0","Checker Driving License\0","Checker Driving License\0","Checker Driving License\0",
+																"UVB+Driving License UVB\0","IR+Checker IR+Driving License\0","IR+Checker IR+Driving License\0","IR+Checker IR+Driving License\0","UVA+Checker UVA+Driving License UVA\0",
 																"\0","\0","\0","\0","\0",
 																" \0","\0","\0","\0","\0",
 																"\0"};
@@ -267,27 +277,20 @@ void printSettingInfo(uint8_t unionIndex,uint8_t filterIndex,uint8_t lightIndex,
 
 		j=0; //LED number 
 
-		 if(mainled_t.MainSpotUnion_Led==1){
-			while(lightStr_MainUnion[lightIndex][j]!=0)
-			{
-	            
-	            tmpStr[i++]=lightStr_MainUnion[lightIndex][j];
-				
-				j++;
-			}
-
-		 }
-		 else{
-			while(lightStr_MainUnion[lightIndex][j]!=0)
-			{
-	            tmpStr[i++]=lightStr_MainUnion[lightIndex][j];
-				j++;
-			}
-		 }
+	    while(lightStr_Union[lightIndex][j]!=0)
+		{
+            if(j==10)
+			   tmpStr[i++]=lightStr_UnionSpecial[lightIndex][j];
+			else
+			   tmpStr[i++]=lightStr_Union[lightIndex][j];
+			j++;
+		}
+		 
 		tmpStr[i++]='+';
 		
 
-		j=0;while(filterStr[filterIndex][j]!=0)
+		j=0;
+		while(filterStr[filterIndex][j]!=0)
 		{
 			tmpStr[i++]=filterStr[filterIndex][j];
 			j++;

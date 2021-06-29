@@ -28,7 +28,7 @@
 #define VLINE_USER1_X      207
 #define HLINE_USER3_Y      78
 
-#define TITLE_UNION_SECOND_X   10
+#define TITLE_UNION_SECOND_X   2//8//10
 #define SPOT_NUM_X             70//90
 #define SIDE_USER_X          30 // 50
 #define FILTER_NAME_X        185 
@@ -197,7 +197,7 @@
 #define MAX_UNION_INDEX			21//20 //WT.EDIT 2021.05.08
 #define MAX_UNION_MAIN_INDEX    5  //wt.EDIT 2021.05.08
 #define MAX_UNION_INFO1_STR_LEN	 38 //26//24 //WT.EDIT 2021.06.18 char number
-#define MAX_UNION_INFO2_STR_LEN	26//25
+#define MAX_UNION_INFO2_STR_LEN	38//25
 #define MAX_UNION_STR_LEN	(MAX_FILTER_STR_LEN+MAX_LIGHT_STR_LEN+5)
 
 #endif /* INC_POSDEFINE_H_ */

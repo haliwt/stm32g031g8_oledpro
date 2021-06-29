@@ -64,7 +64,7 @@ static void notifyStatusToHost(uint8_t lightNum,uint8_t lightNum_LR,uint8_t filt
 //static void getTargetStatus(uint8_t *pBuf);
 
 static uint8_t currUnion,currLight,currFilter,currLight_LR,currLight_AU,tmpLight,tmpLight_LR,tmpLight_AU; //WT.EDIT 
-static uint8_t currSW_Mode,currSame_23,currSub_item,currMainLed;
+static uint8_t currSW_Mode,currSame_23,currSub_item,currMainLed,currSubOne;
 static uint8_t inputCmd[32],bleInputCmd[32];
 static uint8_t cmdSize,bleCmdSize;
 static uint8_t paraIndex,bleParaIndex;
@@ -140,7 +140,7 @@ void decode(void)
 ****************************************************************************************************/
 void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,uint8_t lightIndx_AU, uint8_t filterIndex)
 {
-    uint8_t addA=0xAA,addb=0xBB;
+    uint8_t addA=0xAA,addB=0xBB,addD= 0xdd;
 	static uint8_t sw=0;
 
 	if(unionIndex!=currUnion || filterIndex !=currFilter || lightIndex!=currLight || lightIndx_LR != currLight_LR || lightIndx_AU != currLight_AU)//currUnion = 0xff,
@@ -182,13 +182,20 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 		if(auxiliary_t.Auxiliary_flag == 1){ //default mainLedKey =0 is main board LED 
 
             if(auxiliary_t.AuxiliarySubItem ==Main){
+
+			
 				updateLight(mainled_t.MainLed_Num);
+                #if DEBUG
+		           HAL_UART_Transmit(&CMD_LINKER,&addD,1,2);
+		        #endif 
+
 			}
-			else
+			else{
 			      updateLight_AU(lightIndx_AU); //WT.EDIT 2021.04.28 //SPOT board subItem
 			#if DEBUG
 			 HAL_UART_Transmit(&CMD_LINKER,&addA,1,2);
 			#endif 
+			}
 			
 		}
 	    else{ 
@@ -209,7 +216,7 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 					updateLight(lightIndex);
 				}
 			 #if DEBUG 
-			   HAL_UART_Transmit(&CMD_LINKER,&addb,1,2);
+			   HAL_UART_Transmit(&CMD_LINKER,&addB,1,2);
 			 #endif 
 
 	    }
@@ -226,9 +233,10 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 ****************************************************************************************************/
 void updateLight(uint8_t lightIndex)
 {
-	if(mainled_t.SW_Mode!=currSW_Mode || auxiliary_t.subSubmode_bits !=currSub_item || mainled_t.MainLed_Num!=currMainLed ) //WT.EDIT 2021.06.02
+	if(mainled_t.SW_Mode!=currSW_Mode||auxiliary_t.subMenuOne !=currSubOne || auxiliary_t.subSubmode_bits !=currSub_item || mainled_t.MainLed_Num!=currMainLed ) //WT.EDIT 2021.06.02
 	{
 		currSW_Mode=mainled_t.SW_Mode;
+		currSubOne = auxiliary_t.subMenuOne;
 		currSub_item = auxiliary_t.subSubmode_bits;
 		currMainLed = mainled_t.MainLed_Num;
 		if(powerOnFlag) powerOnFlag=0;	//need not turn on light when power on
@@ -343,6 +351,7 @@ uint8_t retrieveSavedParameter(uint8_t *revealUnion,uint8_t *revealFilter,uint8_
     currSame_23 = 0xff; //WT.EDIT 2021.06.02
     currSub_item = 0xff; //WT.EDIT 2021.06.03
     currMainLed= 0xff;
+	currSubOne=0xff;
 
 	*revealUnion=10; //9
 	*revealFilter=0;
