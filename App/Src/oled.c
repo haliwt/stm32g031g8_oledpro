@@ -554,7 +554,7 @@ static void printLogo(u8g2_t *pU8g2)
 {
 	u8g2_ClearBuffer(pU8g2);
 	u8g2_SetFont(pU8g2, u8g2_font_logisoso32_tr);
-	printWithFmt(pU8g2,0,0,0xff,63,ALIGN_MID_ALL,"ForenScope");
+	printWithFmt(pU8g2,0,10,0xff,63,ALIGN_MID_ALL,"FORENSCOPE");//"ForenScope");
 	u8g2_SendBuffer(pU8g2);
 	HAL_Delay(1500);
 }
