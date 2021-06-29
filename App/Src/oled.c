@@ -52,9 +52,9 @@ const char lightStr[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"#1 White\0","#2 UV36
 /*SmartBotton union menu*/
 /*LED name Modify */
 const char lightStr_Union[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"White\0","Spot UVB\0","Spot UVC\0","Blue\0","Blue2\0",
-                                                                     "Cyan\0","Green\0","Orange\0","Red\0","640~650\0",
-                                                                     "690~700\0","720~740\0","750~770\0","770~790\0","840~860\0",
-                                                                     "930~950\0"};
+                                                                 "Cyan\0","Green\0","Orange\0","Red\0","640~650\0",
+                                                                 "690~700\0","720~740\0","750~770\0","770~790\0","840~860\0",
+                                                                 "930~950\0","UV365\0"};
 const char lightStr_UnionSpecial[MAX_LIGHT_INDEX][MAX_LIGHT_STR_LEN+1]={"White\0","UV365\0","Spot UVC\0","Blue\0","Blue2\0",
                                                                      "Cyan\0","Green\0","Orange\0","Red\0","640~650\0",
                                                                      "690~700\0","720~740\0","750~770\0","770~790\0","840~860\0",
