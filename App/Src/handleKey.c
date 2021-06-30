@@ -731,14 +731,11 @@ void handleInput(void)
 			 }
 			//motionCtrl(MOTION_CW);
 		}
-	    else if(!(pkey->keyCode & KEY_CODE_KEY10))	// Switch auxiliary Menu button WT.EDIT 
+	    else if(!(pkey->keyCode & KEY_CODE_KEY10))	// Switch auxiliary BOARD Menu button WT.EDIT 
 		{
              
 			  	    mainled_t.MainSpotUnion_Led=0;
 					keySmartflag = keySmartflag ^ 0x1;
-					#if DEBUG
-   							HAL_UART_Transmit(&huart2,&keySmartflag ,1,2); //debug information
-					#endif 
 					if(keySmartflag ==1 ){ //ManualMode
 					
 					    auxiliary_t.SmartMenuItem=1;
@@ -750,8 +747,7 @@ void handleInput(void)
 						auxiliary_t.Auxiliary_flag=1;
 						mainled_t.MainLed_Num=0;
 						mainled_t.SW_Mode =1;
-                       // auxiliary_t.subMenuOne=1; //for turn off differen main led and auxiliay board led 
-						//displayUnionInfo_Manual(echoUnion_manual);//Display Filter name and number 
+                        auxiliary_t.subMenuOne=0;//WT.EDIT 2021.06.30
 						echoGroup=ECHO_GROUP_A;
 						turnoffAllLight();
 						
@@ -761,13 +757,11 @@ void handleInput(void)
  						 auxiliary_t.SmartMenuItem =0; //default "Smart Mode "
 					     auxiliary_t.SmartMenuItem=0;
 					     auxiliary_t.ManualMode=0;
-					
-						  auxiliary_t.Auxiliary_flag=0;
+					     auxiliary_t.Auxiliary_flag=0;
 						  auxiliary_t.subMenuOne++;
 						  turnoffAllLight();
 						  displayUnionInfo(echoUnion);
 						  mainled_t.MainSpotUnion_Led=1;
-						  // auxiliary_t.subMenuOne=0; 
 						  if( mainled_t.ledoff_flag >0)//WT.EDIT 2021.06.02
 						  	mainled_t.ledoff_flag =mainled_t.ledoff_flag-5;
 						 
