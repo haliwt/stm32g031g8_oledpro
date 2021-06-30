@@ -930,14 +930,19 @@ uint8_t SideButton_SubItem_Input(void)
 	uint8_t value=0;
 	if(HAL_GPIO_ReadPin(KEY11_GPIO_Port, KEY11_Pin)==0){
 
-	    cnt=0;
+        if(k11<10000)
+		cnt=0;
 		k11++;
 
     }
-
-    if(k11>20000 && k11< 20005){
+	else{
+          k11=0;
+  
+	}
+    
+    if(k11==9990){
 	   	 value = 1;
-	    	k11=0;
+	    k11=0;
 	    return value;
 
     }
@@ -965,8 +970,7 @@ void SideButtonSub_KEY(void)
 				   auxiliary_t.AuxiliarySubItem=Main;
 			   
 				  
-				   
-			   }
+				  }
 			   else{ 
 				   
 				
