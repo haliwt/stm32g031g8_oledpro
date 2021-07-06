@@ -142,6 +142,7 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 {
     uint8_t addA=0xAA,addB=0xBB,addD= 0xdd;
 	static uint8_t sw=0;
+	static uint16_t timer=0,subtimer=0;
 
 	if(unionIndex!=currUnion || filterIndex !=currFilter || lightIndex!=currLight || lightIndx_LR != currLight_LR || lightIndx_AU != currLight_AU)//currUnion = 0xff,
 	{
@@ -153,29 +154,47 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 	{
 		currUnion=unionIndex;
 	}
-	if(filterIndex!=currFilter) //currFilter = 0xff
-	{
-		currFilter=filterIndex;
-		tmpLight=lightIndex;
-		tmpLight_LR=lightIndx_LR;//mainItem
-		tmpLight_AU = lightIndx_AU;//subItem
-		if(auxiliary_t.Auxiliary_flag==0){
-			setEchoFilterBlink(ENABLE_BLINK);
-			selectFilter(filterIndex); //UART send data to Motor Board
-			startTimeDown(1);
+	if(auxiliary_t.Auxiliary_flag==0){
+		if((filterIndex!=currFilter||(currFilter==filterIndex && timer !=0)))//currFilter = 0xff
+		{
+			timer ++ ;
+			if(timer<2)
+			      currFilter=filterIndex;
+			tmpLight=lightIndex;
+			tmpLight_LR=lightIndx_LR;//mainItem
+			tmpLight_AU = lightIndx_AU;//subItem
+			if(timer >2 && timer < 4){
+				timer=0;
+				if( currFilter==filterIndex){
+					setEchoFilterBlink(ENABLE_BLINK);
+					selectFilter(filterIndex); //UART send data to Motor Board
+					startTimeDown(1);
+				}
+			}
 		}
 	}
-	else if(filterIndex==currFilter && filter_t.filterInKey == 1 && filter_t.filterCallBack_flag==1 && auxiliary_t.Auxiliary_flag==1){
-
-        filter_t.filterInKey++;
-		filter_t.filterSendData_flag =1;
-	    filter_t.filterCallBack_flag=0;
-		setEchoFilterBlink(ENABLE_BLINK);
-		selectFilter(filterIndex); //UART send data to Motor Board
-		startTimeDown(1);
 	
-	}
-	else //WT.EDIT 2021.06.02
+
+	 if((filterIndex!=currFilter||(currFilter==filterIndex && subtimer !=0))&&auxiliary_t.Auxiliary_flag==1 && filter_t.filterInKey==1){//currFilter = 0xff
+
+	        filter_t.filterInKey++;
+			filter_t.filterSendData_flag =1;
+		    filter_t.filterCallBack_flag=0;
+			subtimer ++ ;
+			if(subtimer<2)
+				    currFilter=filterIndex;
+	       
+			if(subtimer >2 && subtimer < 4){
+					subtimer=0;
+					if(currFilter==filterIndex){	
+						filter_t.filterInKey=0;
+						setEchoFilterBlink(ENABLE_BLINK);
+						selectFilter(filterIndex); //UART send data to Motor Board
+						startTimeDown(1);
+					}
+			}
+	 }
+    else //WT.EDIT 2021.06.02
 	{
 		
 		
