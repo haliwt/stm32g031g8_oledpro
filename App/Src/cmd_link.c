@@ -154,8 +154,8 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 	{
 		currUnion=unionIndex;
 	}
-	if(auxiliary_t.Auxiliary_flag==0){
-		if((filterIndex!=currFilter||(currFilter==filterIndex && timer !=0)))//currFilter = 0xff
+	
+		if((filterIndex!=currFilter||(currFilter==filterIndex && timer !=0)) &&auxiliary_t.Auxiliary_flag==0)//currFilter = 0xff
 		{
 			timer ++ ;
 			if(timer<2)
@@ -172,32 +172,26 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 				}
 			}
 		}
-	}
-	
-
-	 if((filterIndex!=currFilter||(currFilter==filterIndex && subtimer !=0))&&auxiliary_t.Auxiliary_flag==1 && filter_t.filterInKey==1){//currFilter = 0xff
+			
+	    if((filterIndex!=currFilter||(currFilter==filterIndex && subtimer !=0))&&auxiliary_t.Auxiliary_flag==1){//currFilter = 0xff
 
 	        filter_t.filterInKey++;
 			filter_t.filterSendData_flag =1;
 		    filter_t.filterCallBack_flag=0;
 			subtimer ++ ;
 			if(subtimer<2)
-				    currFilter=filterIndex;
+				      currFilter=filterIndex;
 	       
 			if(subtimer >2 && subtimer < 4){
 					subtimer=0;
-					if(currFilter==filterIndex){	
-						filter_t.filterInKey=0;
+					if( currFilter==filterIndex){	
 						setEchoFilterBlink(ENABLE_BLINK);
 						selectFilter(filterIndex); //UART send data to Motor Board
 						startTimeDown(1);
 					}
 			}
-	 }
-    else //WT.EDIT 2021.06.02
-	{
-		
-		
+	   }
+	else{
 		if(auxiliary_t.Auxiliary_flag == 1){ //default mainLedKey =0 is main board LED 
 
             if(auxiliary_t.AuxiliarySubItem ==Main){
@@ -238,7 +232,10 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 			   HAL_UART_Transmit(&CMD_LINKER,&addB,1,2);
 			 #endif 
 
-	    }
+	    }	
+				
+		
+	  
 	}
 }
 
