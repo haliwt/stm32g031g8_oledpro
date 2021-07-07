@@ -155,8 +155,8 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 		currUnion=unionIndex;
 	}
 	
-		if((filterIndex!=currFilter||(currFilter==filterIndex && timer !=0)) &&auxiliary_t.Auxiliary_flag==0)//currFilter = 0xff
-		{
+	if((filterIndex!=currFilter||(currFilter==filterIndex && timer !=0)) &&auxiliary_t.Auxiliary_flag==0)//currFilter = 0xff
+	{
 			timer ++ ;
 			if(timer<2)
 			      currFilter=filterIndex;
@@ -173,9 +173,9 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 			}
 		}
 			
-	    if((filterIndex!=currFilter||(currFilter==filterIndex && subtimer !=0))&&auxiliary_t.Auxiliary_flag==1){//currFilter = 0xff
+	  if((filterIndex!=currFilter||(currFilter==filterIndex && subtimer !=0))&&auxiliary_t.Auxiliary_flag==1 && filter_t.filterInKey==1){//currFilter = 0xff
 
-	        filter_t.filterInKey++;
+	        filter_t.filterInKey=1;  //filter_t.filterInKey=2
 			filter_t.filterSendData_flag =1;
 		    filter_t.filterCallBack_flag=0;
 			subtimer ++ ;
@@ -188,11 +188,12 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 						setEchoFilterBlink(ENABLE_BLINK);
 						selectFilter(filterIndex); //UART send data to Motor Board
 						startTimeDown(1);
+						filter_t.filterInKey=1;
 					}
 			}
-	   }
-	else{
-		if(auxiliary_t.Auxiliary_flag == 1){ //default mainLedKey =0 is main board LED 
+	  }
+	 else{
+		if(auxiliary_t.Auxiliary_flag == 1 && filter_t.filterInKey==0){ //default mainLedKey =0 is main board LED 
 
             if(auxiliary_t.AuxiliarySubItem ==Main){
 
@@ -211,7 +212,7 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 			}
 			
 		}
-	    else{ 
+	    else if(filter_t.filterInKey==0){ 
 
 			  if(auxiliary_t.SmartMenuItem ==1 ){
 			     
@@ -249,7 +250,7 @@ void updateParameter(uint8_t unionIndex,uint8_t lightIndex,uint8_t lightIndx_LR,
 ****************************************************************************************************/
 void updateLight(uint8_t lightIndex)
 {
-	if(mainled_t.SW_Mode!=currSW_Mode||auxiliary_t.subMenuOne !=currSubOne || auxiliary_t.subSubmode_bits !=currSub_item || mainled_t.MainLed_Num!=currMainLed ) //WT.EDIT 2021.06.02
+	if((filter_t.filterInKey==0) &&(mainled_t.SW_Mode!=currSW_Mode||auxiliary_t.subMenuOne !=currSubOne || auxiliary_t.subSubmode_bits !=currSub_item || mainled_t.MainLed_Num!=currMainLed )) //WT.EDIT 2021.06.02
 	{
 		currSW_Mode=mainled_t.SW_Mode;
 		currSubOne = auxiliary_t.subMenuOne;
@@ -262,14 +263,14 @@ void updateLight(uint8_t lightIndex)
 		}
 	}
 
-	if(mainled_t.Same_23 !=currSame_23) //WT.EDIT 2021.06.02
+	if(mainled_t.Same_23 !=currSame_23 && filter_t.filterInKey==0) //WT.EDIT 2021.06.02
 	{
 	
 		currSame_23 = mainled_t.Same_23;
 		selectLight(lightIndex);//WT.EDIT 2021.06.02
 			
 	}
-	if(lightIndex!=currLight) //WT.EDIT 2021.06.02
+	if(lightIndex!=currLight   && filter_t.filterInKey==0) //WT.EDIT 2021.06.02
 	{
 		currLight=lightIndex;
 		//setEchoLightBlink(ENABLE_BLINK);

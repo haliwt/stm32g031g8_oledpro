@@ -392,7 +392,7 @@ void AuxiliaryWhichOneLed_Reduce(uint8_t wled)
 *******************************************************************************************/
 void handleInput(void)
 {
-	static uint8_t keySmartflag,keyTurnOnflag;
+	static uint8_t keySmartflag;
 	static uint8_t power=0;
 	uint8_t temp;
 	pKeyStruct pkey=getKey();
@@ -447,8 +447,10 @@ void handleInput(void)
 		{
 			
 		     mainled_t.MainSpotUnion_Led=0;
+			 
 			  if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board 
-		            if(auxiliary_t.AuxiliarySubItem != Main){ //"Manual Menu" -'SPOT,SIDE ,LEFT, RIGHT'
+					filter_t.filterInKey=0;
+					if(auxiliary_t.AuxiliarySubItem != Main){ //"Manual Menu" -'SPOT,SIDE ,LEFT, RIGHT'
 							
 						turnoffAllLight();//WT.EDIT 2021.06.03
 						HAL_Delay(200);
@@ -479,8 +481,9 @@ void handleInput(void)
 		{
 		
 			 mainled_t.MainSpotUnion_Led=0;
+		
 			if(auxiliary_t.Auxiliary_flag==1){ //switch auxiliary board change light + spot and lin
-
+				filter_t.filterInKey=0;
 				if(auxiliary_t.AuxiliarySubItem != Main){
 
 				    turnoffAllLight();//WT.EDIT 2021.06.03
@@ -512,15 +515,15 @@ void handleInput(void)
 		else if(!(pkey->keyCode & KEY_CODE_KEY4))	// change filter +  //Only "Manul" Menu
 		{
 			
-			
-			    mainled_t.MainSpotUnion_Led=0;
-			 	if (auxiliary_t.Auxiliary_flag == 1){
-					
+			   
+			   if (auxiliary_t.Auxiliary_flag == 1){
+					 filter_t.filterInKey=1;
+					  mainled_t.MainSpotUnion_Led=0;
 				 if (echoFilter >= MAX_FILTER_NUMBER - 1)
-					 echoFilter = 0;
+					    echoFilter = 0;
 				 else
-					 echoFilter++;
-				 filter_t.filterInKey=1;
+					   echoFilter++;
+				 
 				//  if(filter_t.filterSendData_flag ==1)
 				  {
 					 filter_t.filterSendData_flag =0;
@@ -532,14 +535,17 @@ void handleInput(void)
 		else if(!(pkey->keyCode & KEY_CODE_KEY3))	// change filter -
 		{
 	
-			 mainled_t.MainSpotUnion_Led=0;
+			 
+			
 			if (auxiliary_t.Auxiliary_flag == 1)
 			 {
+					filter_t.filterInKey=1;
+					mainled_t.MainSpotUnion_Led=0;
 				 if (echoFilter == 0)
 					 echoFilter = MAX_FILTER_NUMBER - 1;
 				 else
 					 echoFilter--;
-				  filter_t.filterInKey=1;
+				   
 				// if(filter_t.filterSendData_flag ==1)
 				 {
 				  	filter_t.filterSendData_flag =0;
@@ -550,9 +556,10 @@ void handleInput(void)
 		//Smart Mode
 		else if(!(pkey->keyCode & KEY_CODE_KEY5))	// change union + "Smart Button"
 		{
-			 mainled_t.MainSpotUnion_Led=1;
+			 
 			 if (auxiliary_t.Auxiliary_flag == 0)
 			 {
+				mainled_t.MainSpotUnion_Led=1;
 				 if (echoUnion >= MAX_UNION_NUMBER - 1){
 					  echoUnion = 0;
 					  mainled_t.ledoff_flag =0;
@@ -598,9 +605,10 @@ void handleInput(void)
 		else if(!(pkey->keyCode & KEY_CODE_KEY6))	// change union - //"smart Button"
 		{
 			
-		      mainled_t.MainSpotUnion_Led=1;
+		      
 			 if (auxiliary_t.Auxiliary_flag == 0)
 			 {
+				mainled_t.MainSpotUnion_Led=1;
 				 if (echoUnion == 0){
 					 echoUnion = MAX_UNION_NUMBER - 1;
 					 mainled_t.ledoff_flag =MAX_UNION_NUMBER - 1;
@@ -652,9 +660,10 @@ void handleInput(void)
 		else if(!(pkey->keyCode & KEY_CODE_KEY7))	// turn off light
 		{
 		
-			keyTurnOnflag = keyTurnOnflag ^ 0x01;
-			if(keyTurnOnflag ==1)
+			
+			if(getLightOnoffState()==NOW_LIGHT_IS_ON)  //if(keyTurnOnflag ==1)
 			{
+				 filter_t.filterInKey=0;
 				turnoffAllLight();
 				HAL_Delay(200);
 			}
@@ -662,7 +671,7 @@ void handleInput(void)
 			{
                 
 			     if(auxiliary_t.Auxiliary_flag==0 ){//WT.EDIT	2021.06.02
-			
+			         
 							   
 					if(mainled_t.MainUnionSport_flag ==1){
 							mainled_t.ledoff_flag =mainled_t.ledoff_flag-5;
@@ -672,6 +681,7 @@ void handleInput(void)
 						setCurrentLightOn();
 				}
 			     else{ 
+				 	 filter_t.filterInKey=0;
 					if(auxiliary_t.AuxiliarySubItem==Main){
 							setCurrentLightOn();
 					}
@@ -686,7 +696,7 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY8))	// brightness adj -
 		{
-			
+			 filter_t.filterInKey=0;
 			 if(auxiliary_t.Auxiliary_flag==0){
 			 	if(mainled_t.MainUnionSport_flag ==1 && (mainled_t.unionNum !=5 && mainled_t.unionNum !=6))
 				{
@@ -709,7 +719,7 @@ void handleInput(void)
 		}
 		else if(!(pkey->keyCode & KEY_CODE_KEY9))	// brightness adj +
 		{
-			
+			 filter_t.filterInKey=0;
 			 if(auxiliary_t.Auxiliary_flag==0){
 			 		if(mainled_t.MainUnionSport_flag ==1 && (mainled_t.unionNum !=5 && mainled_t.unionNum !=6))
 					{
@@ -743,7 +753,7 @@ void handleInput(void)
 						auxiliary_t.AuxiliarySubItem=Main ;
 						LedMainNumber=0;//WT.EDIT 2021.06.01
 						auxiliary_t.filterID=0;  //WT.EDIT 2021.06.01
-				
+				    
 						auxiliary_t.Auxiliary_flag=1;
 						mainled_t.MainLed_Num=0;
 						mainled_t.SW_Mode =1;
@@ -759,6 +769,7 @@ void handleInput(void)
 					     auxiliary_t.ManualMode=0;
 					     auxiliary_t.Auxiliary_flag=0;
 						  auxiliary_t.subMenuOne++;
+						  filter_t.filterInKey=0;
 						  turnoffAllLight();
 						  displayUnionInfo(echoUnion);
 						  mainled_t.MainSpotUnion_Led=1;
