@@ -763,7 +763,7 @@ void handleInput(void)
 						
 						printSettingInfo_Auxiliary(echoUnion_manual,echoFilter,auxiliary_t.AuxiliarySubItem,BLINK_OFF);
 					}
-					else { //
+					else { //"Smart "
  						 auxiliary_t.SmartMenuItem =0; //default "Smart Mode "
 					     auxiliary_t.SmartMenuItem=0;
 					     auxiliary_t.ManualMode=0;

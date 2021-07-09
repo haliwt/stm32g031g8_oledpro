@@ -76,18 +76,18 @@ const char light_SPOT[MAX_LIGHT_SPOT_INDEX][MAX_LIGHT_LINEAR_STR_LEN+1]={"#1 Gre
 const char light_LINEAR[MAX_LIGHT_LINEAR_INDEX][MAX_LIGHT_LINEAR_STR_LEN+1]={"#1 IR730\0","#2 IR850\0","#3 IR940\0","#4 White\0"};
 /***************************************************************************************************************************************/
 /*LED name axuiliary WT.EDIT */
-const char lightStr_LR[MAX_LIGHT_LR_INDEX][MAX_LIGHT_STR_LR_LEN+1]={"Mainlight\0","Spot light\0","Both linear light\0","Right linear light\0","Left linear light\0"};													 
+const char lightStr_LR[MAX_LIGHT_LR_INDEX][MAX_LIGHT_STR_LR_LEN+1]={"Ring Light\0","Spot light\0","Both side light\0","Right side light\0","Left side light\0"};													 
 
 
 /***************************************************************************************************************************************/
-const char unionInfo1[MAX_UNION_INDEX][MAX_UNION_INFO1_STR_LEN+1]={"Deleted Articles\0","Deleted Articles\0","Deleted Articles\0","Deleted Articles\0","Passport UVC+Money\0",
-																"Passport UVB+Money\0","Passport IR+ID Card IR+Money\0","Passport IR+ID Card IR+Money\0","Passport IR+ID Card IR+Money\0","Passport UVA+ID Card UVA+Money\0",
+const char unionInfo1[MAX_UNION_INDEX][MAX_UNION_INFO1_STR_LEN+1]={"Deleted Articles\0","Deleted Articles\0","Deleted Articles\0","Deleted Articles\0","Passport UVC+Money UVC\0",
+																"Passport UVB+Money UVB\0","Passport IR+ID Card IR+Money IR\0","Passport IR+ID Card IR+Money IR\0","Passport IR+ID Card IR+Money IR\0","Passport UVA+ID Card UVA+Money UVA\0",
 																"General Research Normal Picture\0","Black Pen\0","Black Pen\0","Black Pen+Blue Pen+Red Pen\0","Black Pen+Blue Pen+Red Pen\0",
 																"Black Pen+Blue Pen+Red Pen\0","Black Pen+Blue Pen+Red Pen\0","Black Pen+Blue Pen+Red Pen\0","Black Pen+Blue Pen+Red Pen\0","Scribble Marks White\0",
 																"Scribble Marks IR\0"};
 
-const char unionInfo2[MAX_UNION_INDEX][MAX_UNION_INFO2_STR_LEN+1]={"\0","\0","\0","\0","UVC+Driving License UVC\0",
-																"UVB+Driving License UVB\0","IR+Checker IR+Driving License\0","IR+Checker IR+Driving License\0","IR+Checker IR+Driving License\0","UVA+Checker UVA+Driving License UVA\0",
+const char unionInfo2[MAX_UNION_INDEX][MAX_UNION_INFO2_STR_LEN+1]={"\0","\0","\0","\0","Driving License UVC\0",
+																"Driving License UVB\0","Checker IR+Driving License IR\0","Checker IR+Driving License IR\0","Checker IR+Driving License IR\0","Checker UVA+Driving License UVA\0",
 																"\0","\0","\0","\0","\0",
 																" \0","\0","\0","\0","\0",
 																"\0"};
