@@ -20,6 +20,7 @@
 #define HLINE2_ONE_Y   20
 #define HLINE3_X	98
 #define HLINE3_Y	39
+#define NEW_HLINE3_Y  42  //WT.EDIT 
 
 #define VLINE1_USER_SUB_X	 65//80
 #define SUB_X3_X    20
@@ -82,7 +83,7 @@
 
 
 #define UNION_INFO3_X				TITLE_UNION_X
-#define UNION_INFO3_Y				HLINE3_Y
+#define UNION_INFO3_Y				NEW_HLINE3_Y //WT.EDIT 2021.07.09 //HLINE3_Y
 #define UNION_INFO3_HEIGHT			(63-HLINE3_Y)
 
 #define UNION_INFO3_SUB_X		      SUB_X3_X  //TITLE_UNION_X

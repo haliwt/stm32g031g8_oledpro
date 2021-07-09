@@ -231,9 +231,9 @@ void oledInit(void)
 	u8g2_InitDisplay(&u8g2); // send init sequence to the display, display is in sleep mode after this,
 	u8g2_SetPowerSave(&u8g2, 0); // wake up display
 	//oledTurnOnVcc(); //WT.EDIT 
-	//HAL_Delay(500);
+	 HAL_Delay(500);
    // oledTurnOnVcc();//WT.EDIT 2021.06.29
-	printLogo(&u8g2);
+	printLogo(&u8g2); //WT.EDTI 2021.07.09
 	oledTurnOnVcc();//WT.EDIT 2021.06.29
 
 }
@@ -505,7 +505,7 @@ static void NewPrintFrame(void)
 	//u8g2_DrawVLine(&u8g2,VLINE2_X,0,63);
 
 	u8g2_DrawHLine(&u8g2,HLINE1_X,HLINE1_Y,255); //	绘制水平线--长恒线
-	u8g2_DrawHLine(&u8g2,HLINE1_X,HLINE3_Y,255); //
+	u8g2_DrawHLine(&u8g2,HLINE1_X,NEW_HLINE3_Y,255); // 绘制第二条水平线
 
 	u8g2_SetFontMode(&u8g2, 1);
 	u8g2_SetFontDirection(&u8g2, 0);
@@ -554,7 +554,7 @@ static void printLogo(u8g2_t *pU8g2)
 {
 	u8g2_ClearBuffer(pU8g2);
 	u8g2_SetFont(pU8g2, u8g2_font_logisoso32_tr);
-	printWithFmt(pU8g2,0,10,0xff,63,ALIGN_MID_ALL,"FORENSCOPE");//"ForenScope");
+	printWithFmt(pU8g2,0,10,0xff,63,ALIGN_MID_ALL,"\0");//"ForenScope");//printWithFmt(pU8g2,0,10,0xff,63,ALIGN_MID_ALL,"FORENSCOPE");//"ForenScope");
 	u8g2_SendBuffer(pU8g2);
 	HAL_Delay(1500);
 }
