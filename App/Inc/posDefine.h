@@ -31,7 +31,7 @@
 
 #define TITLE_UNION_SECOND_X   2//8//10
 #define SPOT_NUM_X             70//90
-#define SIDE_USER_X          30 // 50
+#define SIDE_USER_X          40//30 // 50
 #define FILTER_NAME_X        185 
 #define FILTER_NAME_0_X      190
 
